@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">KBC QnA</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sound">Sound</string>
+    <string name="region">Region</string>
+    <string name="on">ON</string>
+    <string name="off">OFF</string>
+    <string name="india">INDIA</string>
+    <string name="global">GLOBAL</string>
+    <string name="back">Back</string>
+    <string name="start">Start</string>
+    <string name="settings">Settings</string>
 </resources>
