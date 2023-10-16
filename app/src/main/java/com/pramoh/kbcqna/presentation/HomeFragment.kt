@@ -20,10 +20,10 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setListeners()
+        setOnClickListeners()
     }
 
-    private fun setListeners() {
+    private fun setOnClickListeners() {
         binding.btnStart.setOnClickListener {
             gotoFragment(PrizeListFragment())
         }

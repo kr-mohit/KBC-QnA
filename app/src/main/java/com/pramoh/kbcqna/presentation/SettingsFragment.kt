@@ -25,7 +25,7 @@ class SettingsFragment : BaseFragment() {
         viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
         setObservers()
-        setListeners()
+        setOnClickListeners()
     }
 
     private fun setObservers() {
@@ -47,7 +47,7 @@ class SettingsFragment : BaseFragment() {
         }
     }
 
-    private fun setListeners() {
+    private fun setOnClickListeners() {
 
         binding.btnSound.setOnClickListener {
             viewModel.onSoundClicked()

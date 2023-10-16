@@ -26,7 +26,7 @@ class PrizeListFragment : BaseFragment() {
         viewModel = ViewModelProvider(this)[PrizeListViewModel::class.java]
 
         setObservers()
-        setListener()
+        setOnClickListeners()
     }
 
     private fun setObservers() {
@@ -36,7 +36,7 @@ class PrizeListFragment : BaseFragment() {
         }
     }
 
-    private fun setListener() {
+    private fun setOnClickListeners() {
         binding.btnNext.setOnClickListener {
             gotoFragment(QuestionFragment())
         }
