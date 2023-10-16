@@ -1,6 +1,5 @@
 package com.pramoh.kbcqna.presentation
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,12 +31,13 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun setObservers() {
+
         viewModel.isLockButtonClickable.observe(viewLifecycleOwner) {
             if (it) {
-                binding.btnLock.setBackgroundColor(Color.GREEN)
+                binding.btnLock.setBackgroundColor(requireContext().getColor(R.color.metallic_green))
                 binding.btnLock.isClickable = true
             } else {
-                binding.btnLock.setBackgroundColor(Color.DKGRAY)
+                binding.btnLock.setBackgroundColor(requireContext().getColor(R.color.metallic_grey))
                 binding.btnLock.isClickable = false
             }
         }
@@ -74,39 +74,39 @@ class QuestionFragment : BaseFragment() {
             // TODO: show lifeline pop up
         }
 
-        binding.ivQuit.setOnClickListener {
+        binding.tvQuit.setOnClickListener {
             onBackPressed() //remove this
             // TODO: show quitting pop up
         }
 
         binding.tvOption1.setOnClickListener {
-            changeOptionColors(1, R.drawable.selected_option_background)
+            changeOptionColors(1, R.drawable.background_metallic_gold)
             viewModel.onOptionClick(1)
         }
 
         binding.tvOption2.setOnClickListener {
-            changeOptionColors(2, R.drawable.selected_option_background)
+            changeOptionColors(2, R.drawable.background_metallic_gold)
             viewModel.onOptionClick(2)
         }
 
         binding.tvOption3.setOnClickListener {
-            changeOptionColors(3, R.drawable.selected_option_background)
+            changeOptionColors(3, R.drawable.background_metallic_gold)
             viewModel.onOptionClick(3)
         }
 
         binding.tvOption4.setOnClickListener {
-            changeOptionColors(4, R.drawable.selected_option_background)
+            changeOptionColors(4, R.drawable.background_metallic_gold)
             viewModel.onOptionClick(4)
         }
 
         binding.btnLock.setOnClickListener {
             viewModel.currentQuestion.value?.let {
                 if (it.correctOptionNumber == viewModel.currentSelectedOption) {
-                    changeOptionColors(viewModel.currentSelectedOption, R.drawable.correct_option_background)
+                    changeOptionColors(viewModel.currentSelectedOption, R.drawable.background_metallic_green)
                     // TODO: play right answer music or delay
                     gotoFragment(PrizeListFragment())
                 } else {
-                    changeOptionColors(viewModel.currentSelectedOption, R.drawable.wrong_option_background)
+                    changeOptionColors(viewModel.currentSelectedOption, R.drawable.background_metallic_red)
                     // TODO: play wrong answer music or delay
                     gotoFragment(ResultFragment())
                 }
@@ -114,31 +114,31 @@ class QuestionFragment : BaseFragment() {
         }
     }
 
-    private fun changeOptionColors(option: Int, resId: Int) {
+    private fun changeOptionColors(option: Int, resId: Int, defaultResId: Int = R.drawable.background_metallic_blue) {
         when (option) {
             1 -> {
                 binding.tvOption1.setBackgroundResource(resId)
-                binding.tvOption2.setBackgroundResource(R.drawable.question_background)
-                binding.tvOption3.setBackgroundResource(R.drawable.question_background)
-                binding.tvOption4.setBackgroundResource(R.drawable.question_background)
+                binding.tvOption2.setBackgroundResource(defaultResId)
+                binding.tvOption3.setBackgroundResource(defaultResId)
+                binding.tvOption4.setBackgroundResource(defaultResId)
             }
             2 -> {
                 binding.tvOption2.setBackgroundResource(resId)
-                binding.tvOption1.setBackgroundResource(R.drawable.question_background)
-                binding.tvOption3.setBackgroundResource(R.drawable.question_background)
-                binding.tvOption4.setBackgroundResource(R.drawable.question_background)
+                binding.tvOption1.setBackgroundResource(defaultResId)
+                binding.tvOption3.setBackgroundResource(defaultResId)
+                binding.tvOption4.setBackgroundResource(defaultResId)
             }
             3 -> {
                 binding.tvOption3.setBackgroundResource(resId)
-                binding.tvOption2.setBackgroundResource(R.drawable.question_background)
-                binding.tvOption1.setBackgroundResource(R.drawable.question_background)
-                binding.tvOption4.setBackgroundResource(R.drawable.question_background)
+                binding.tvOption2.setBackgroundResource(defaultResId)
+                binding.tvOption1.setBackgroundResource(defaultResId)
+                binding.tvOption4.setBackgroundResource(defaultResId)
             }
             4 -> {
                 binding.tvOption4.setBackgroundResource(resId)
-                binding.tvOption2.setBackgroundResource(R.drawable.question_background)
-                binding.tvOption3.setBackgroundResource(R.drawable.question_background)
-                binding.tvOption1.setBackgroundResource(R.drawable.question_background)
+                binding.tvOption2.setBackgroundResource(defaultResId)
+                binding.tvOption3.setBackgroundResource(defaultResId)
+                binding.tvOption1.setBackgroundResource(defaultResId)
             }
         }
     }

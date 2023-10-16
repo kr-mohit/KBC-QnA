@@ -2,4 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="metallic_violet">#5B0A91</color>
+    <color name="metallic_blue">#32527b</color>
+    <color name="metallic_gold">#D4AF37</color>
+    <color name="metallic_red">#A62C2B</color>
+    <color name="metallic_green">#24855B</color>
+    <color name="metallic_yellow">#FDCC0D</color>
+    <color name="metallic_grey">#A0A1A1</color>
 </resources>

@@ -12,7 +12,7 @@ open class BaseFragment: Fragment() {
     fun gotoFragment(fragment: Fragment) {
         activity?.supportFragmentManager?.beginTransaction()?.apply {
             replace(R.id.fl_fragment_container, fragment)
-            addToBackStack(null)
+            addToBackStack(null) // TODO: remove this
             commit()
         }
     }

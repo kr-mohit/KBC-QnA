@@ -6,6 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/metallic_violet"
         tools:context=".presentation.HomeFragment">
 
         <TextView
@@ -36,6 +37,7 @@
             android:layout_height="wrap_content"
             android:text="@string/start"
             android:textAllCaps="true"
+            android:background="@drawable/background_metallic_blue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,6 +49,8 @@
             android:layout_height="wrap_content"
             android:text="@string/settings"
             android:textAllCaps="true"
+            android:background="@drawable/background_metallic_blue"
+            android:layout_marginTop="26dp"
             app:layout_constraintStart_toStartOf="@id/btn_start"
             app:layout_constraintEnd_toEndOf="@id/btn_start"
             app:layout_constraintTop_toBottomOf="@id/btn_start" />

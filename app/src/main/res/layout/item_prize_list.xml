@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         tools:text="Rs. 5000"
         android:textSize="26sp"
+        android:textColor="@color/white"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

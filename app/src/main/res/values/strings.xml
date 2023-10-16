@@ -12,4 +12,12 @@
     <string name="settings">Settings</string>
     <string name="next_question">Next Question</string>
     <string name="lock">LOCK</string>
+    <string name="you_won">You Won</string>
+    <string name="better_luck">BETTER LUCK</string>
+    <string name="next_time">NEXT TIME</string>
+    <string name="share_cheque">Share\nCheque</string>
+    <string name="more_games">More\nGames</string>
+    <string name="share_game">Share\nGame</string>
+    <string name="congratulations">CONGRATULATIONS!!</string>
+    <string name="quit">QUIT</string>
 </resources>

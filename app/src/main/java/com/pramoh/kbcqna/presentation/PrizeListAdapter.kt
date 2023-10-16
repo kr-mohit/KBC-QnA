@@ -1,6 +1,5 @@
 package com.pramoh.kbcqna.presentation
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,9 +22,9 @@ class PrizeListAdapter(private val list: List<String>, private val currentQuesti
     override fun onBindViewHolder(holder: PrizeListViewHolder, position: Int) {
         holder.tvPrizeAmount.text = list[position]
         if (position == (list.size - currentQuestion))
-            holder.tvPrizeAmount.setBackgroundColor(Color.GREEN)
+            holder.tvPrizeAmount.setBackgroundResource(R.drawable.background_metallic_green)
         else
-            holder.tvPrizeAmount.setBackgroundColor(Color.YELLOW)
+            holder.tvPrizeAmount.setBackgroundResource(R.drawable.background_metallic_yellow)
     }
 
     class PrizeListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

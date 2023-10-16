@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
+        android:background="@color/metallic_violet"
         tools:context=".presentation.SettingsFragment">
 
         <TextView
@@ -15,6 +16,7 @@
             android:layout_height="wrap_content"
             android:text="@string/sound"
             android:textSize="26sp"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_sound"
             app:layout_constraintTop_toTopOf="parent"
@@ -25,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="ON"
+            android:background="@drawable/background_metallic_blue"
             app:layout_constraintStart_toEndOf="@id/tv_sound"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_sound"
@@ -36,6 +39,7 @@
             android:layout_height="wrap_content"
             android:text="@string/region"
             android:textSize="26sp"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_sound"
             app:layout_constraintTop_toBottomOf="@id/tv_sound"
@@ -46,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="INDIA"
+            android:background="@drawable/background_metallic_blue"
             app:layout_constraintStart_toEndOf="@id/tv_region"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_region"
@@ -56,6 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back"
+            android:background="@drawable/background_metallic_blue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
