@@ -22,4 +22,5 @@
     <string name="quit">QUIT</string>
     <string name="wins">%1$s Wins</string>
     <string name="lost">%1$s Lost</string>
+    <string name="start_again">START AGAIN</string>
 </resources>

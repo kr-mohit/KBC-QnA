@@ -1,5 +1,6 @@
 package com.pramoh.kbcqna.presentation
 
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.pramoh.kbcqna.R
 
@@ -15,5 +16,9 @@ open class BaseFragment: Fragment() {
             addToBackStack(null) // TODO: remove this
             commit()
         }
+    }
+
+    fun displayComingSoonToast() {
+        Toast.makeText(context, "Feature Coming Soon", Toast.LENGTH_SHORT).show()
     }
 }

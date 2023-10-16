@@ -69,47 +69,53 @@
             app:layout_constraintEnd_toEndOf="@id/tv_prize_amount"
             app:layout_constraintTop_toBottomOf="@id/tv_better_luck" />
 
-        <TextView
-            android:id="@+id/tv_share_cheque"
+        <Button
+            android:id="@+id/btn_share_cheque"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/share_cheque"
-            android:textSize="26sp"
             android:textColor="@color/white"
             android:gravity="center"
             android:lines="2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_share_game"
+            app:layout_constraintEnd_toStartOf="@id/btn_share_game"
             app:layout_constraintTop_toBottomOf="@id/tv_next_time"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_share_game"
+        <Button
+            android:id="@+id/btn_share_game"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/share_game"
-            android:textSize="26sp"
             android:textColor="@color/white"
             android:gravity="center"
             android:lines="2"
-            app:layout_constraintStart_toEndOf="@id/tv_share_cheque"
-            app:layout_constraintEnd_toStartOf="@id/tv_more_games"
-            app:layout_constraintTop_toTopOf="@id/tv_share_cheque"
-            app:layout_constraintBottom_toBottomOf="@id/tv_share_cheque" />
+            app:layout_constraintStart_toEndOf="@id/btn_share_cheque"
+            app:layout_constraintEnd_toStartOf="@id/btn_more_games"
+            app:layout_constraintTop_toTopOf="@id/btn_share_cheque"
+            app:layout_constraintBottom_toBottomOf="@id/btn_share_cheque" />
 
-        <TextView
-            android:id="@+id/tv_more_games"
+        <Button
+            android:id="@+id/btn_more_games"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/more_games"
-            android:textSize="26sp"
             android:textColor="@color/white"
             android:gravity="center"
             android:lines="2"
-            app:layout_constraintStart_toEndOf="@+id/tv_share_game"
+            app:layout_constraintStart_toEndOf="@+id/btn_share_game"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_share_cheque"
-            app:layout_constraintBottom_toBottomOf="@id/tv_share_cheque" />
+            app:layout_constraintTop_toTopOf="@id/btn_share_cheque"
+            app:layout_constraintBottom_toBottomOf="@id/btn_share_cheque" />
+
+        <Button
+            android:id="@+id/btn_start_again"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/start_again"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

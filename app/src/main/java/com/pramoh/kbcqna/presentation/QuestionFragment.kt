@@ -57,21 +57,25 @@ class QuestionFragment : BaseFragment() {
         binding.ivLifeline1.setOnClickListener {
             viewModel.onLifelineClick(1)
             // TODO: show lifeline pop up
+            displayComingSoonToast()
         }
 
         binding.ivLifeline2.setOnClickListener {
             viewModel.onLifelineClick(2)
             // TODO: show lifeline pop up
+            displayComingSoonToast()
         }
 
         binding.ivLifeline3.setOnClickListener {
             viewModel.onLifelineClick(3)
             // TODO: show lifeline pop up
+            displayComingSoonToast()
         }
 
         binding.ivLifeline4.setOnClickListener {
             viewModel.onLifelineClick(4)
             // TODO: show lifeline pop up
+            displayComingSoonToast()
         }
 
         binding.tvQuit.setOnClickListener {
