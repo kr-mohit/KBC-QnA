@@ -20,4 +20,6 @@
     <string name="share_game">Share\nGame</string>
     <string name="congratulations">CONGRATULATIONS!!</string>
     <string name="quit">QUIT</string>
+    <string name="wins">%1$s Wins</string>
+    <string name="lost">%1$s Lost</string>
 </resources>
