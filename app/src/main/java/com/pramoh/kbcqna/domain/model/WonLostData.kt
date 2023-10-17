@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.domain.data_classes
+package com.pramoh.kbcqna.domain.model
 
 data class WonLostData(
     val wins: Int,

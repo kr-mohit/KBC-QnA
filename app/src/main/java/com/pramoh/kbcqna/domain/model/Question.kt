@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.data.data_classes
+package com.pramoh.kbcqna.domain.model
 
 data class Question(
     val question: String,

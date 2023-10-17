@@ -1,10 +1,6 @@
-package com.pramoh.kbcqna.domain
+package com.pramoh.kbcqna.domain.repository
 
 interface MainRepository {
-
-    fun setWonLostData()
-
-    fun getWonLostData()
 
     fun setSoundOnOff()
 

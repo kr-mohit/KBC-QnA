@@ -3,7 +3,7 @@ package com.pramoh.kbcqna.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.pramoh.kbcqna.domain.data_classes.Question
+import com.pramoh.kbcqna.domain.model.Question
 
 class QuestionViewModel:ViewModel() {
 
@@ -27,12 +27,13 @@ class QuestionViewModel:ViewModel() {
                 "Delhi",
                 "Kolkata",
                 3,
-                "Rs. 20,000"
+                "Rs. 20,000",
+                "INDIA"
         )
         )
     }
 
-    fun onLifelineClick(lifeline: Int) {
+    fun onLifelineClick() {
         // TODO: logic for lifeline click
     }
 

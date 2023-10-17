@@ -55,25 +55,25 @@ class QuestionFragment : BaseFragment() {
     private fun setOnClickListeners() {
 
         binding.ivLifeline1.setOnClickListener {
-            viewModel.onLifelineClick(1)
+            viewModel.onLifelineClick()
             // TODO: show lifeline pop up
             displayComingSoonToast()
         }
 
         binding.ivLifeline2.setOnClickListener {
-            viewModel.onLifelineClick(2)
+            viewModel.onLifelineClick()
             // TODO: show lifeline pop up
             displayComingSoonToast()
         }
 
         binding.ivLifeline3.setOnClickListener {
-            viewModel.onLifelineClick(3)
+            viewModel.onLifelineClick()
             // TODO: show lifeline pop up
             displayComingSoonToast()
         }
 
         binding.ivLifeline4.setOnClickListener {
-            viewModel.onLifelineClick(4)
+            viewModel.onLifelineClick()
             // TODO: show lifeline pop up
             displayComingSoonToast()
         }

@@ -10,7 +10,7 @@ class PrizeListViewModel: ViewModel() {
     val listOfPrizes: LiveData<List<String>>
         get() = _listOfPrizes
 
-    val list = mutableListOf<String>()
+    private val list = mutableListOf<String>()
 
     init {
         list.add("Rs. 10,00,00,000")

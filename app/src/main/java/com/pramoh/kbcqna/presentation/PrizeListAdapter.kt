@@ -28,6 +28,6 @@ class PrizeListAdapter(private val list: List<String>, private val currentQuesti
     }
 
     class PrizeListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvPrizeAmount = itemView.findViewById<TextView>(R.id.tv_prize_amount)
+        val tvPrizeAmount: TextView = itemView.findViewById(R.id.tv_prize_amount)
     }
 }

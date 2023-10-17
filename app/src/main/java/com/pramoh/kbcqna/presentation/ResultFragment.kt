@@ -5,14 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentResultBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class ResultFragment : BaseFragment() {
+@AndroidEntryPoint
+class ResultFragment: BaseFragment() {
 
     private lateinit var binding: FragmentResultBinding
-    private lateinit var viewModel: ResultViewModel
+    private val resultViewModel: ResultViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_result, container, false)
@@ -21,7 +23,6 @@ class ResultFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[ResultViewModel::class.java]
 
         setOnClickListeners()
         saveWonLostData()
@@ -47,6 +48,6 @@ class ResultFragment : BaseFragment() {
 
     private fun saveWonLostData() {
         // TODO: find out whether user won or lost
-        viewModel.saveWonLostData(false)
+        resultViewModel.saveWonLostData(false)
     }
 }

@@ -1,15 +1,14 @@
 package com.pramoh.kbcqna.domain.usecases
 
-import com.pramoh.kbcqna.data.MainRepository_Impl
-import com.pramoh.kbcqna.domain.MainRepository
+import com.pramoh.kbcqna.domain.model.WonLostData
+import com.pramoh.kbcqna.domain.repository.SharedPrefRepository
+import javax.inject.Inject
 
-class SetWonLostDataUseCase(
-    // TODO: get repository object here
+class SetWonLostDataUseCase @Inject constructor(
+    private val repository: SharedPrefRepository
 ) {
 
-    private val repository: MainRepository = MainRepository_Impl()
-
-    operator fun invoke(wins: Int) {
-        repository.setWonLostData()
+    operator fun invoke(newData: WonLostData) {
+        repository.setWonLostData(newData)
     }
 }
