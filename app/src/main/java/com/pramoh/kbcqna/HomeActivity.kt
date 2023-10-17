@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.presentation
+package com.pramoh.kbcqna
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,9 +6,11 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
-import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.ActivityHomeBinding
+import com.pramoh.kbcqna.presentation.HomeFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
