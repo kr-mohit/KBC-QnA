@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.domain
+package com.pramoh.kbcqna.data.data_classes
 
 data class Question(
     val question: String,
@@ -7,5 +7,6 @@ data class Question(
     val option3: String,
     val option4: String,
     val correctOptionNumber: Int,
-    val prizeAmount: String
+    val prizeAmount: String,
+    val region: String
 )

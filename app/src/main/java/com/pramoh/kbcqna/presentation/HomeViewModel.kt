@@ -3,7 +3,7 @@ package com.pramoh.kbcqna.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.pramoh.kbcqna.domain.WonLostData
+import com.pramoh.kbcqna.domain.data_classes.WonLostData
 
 class HomeViewModel:ViewModel() {
 
