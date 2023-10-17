@@ -13,9 +13,9 @@ class ResultViewModel @Inject constructor(
     private val getWonLostDataUseCase: GetWonLostDataUseCase
 ): ViewModel() {
 
-    fun saveWonLostData(hasWon: Boolean) {
+    fun saveWonLostData(didUserWin: Boolean) {
         val savedData = getWonLostDataUseCase.invoke()
-        if (hasWon) {
+        if (didUserWin) {
             setWonLostDataUseCase.invoke(
                 WonLostData(
                     wins = savedData.wins+1,

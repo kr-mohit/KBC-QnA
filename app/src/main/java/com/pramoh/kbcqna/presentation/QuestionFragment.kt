@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
 
@@ -13,7 +15,8 @@ import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
 class QuestionFragment : BaseFragment() {
 
     private lateinit var binding: FragmentQuestionBinding
-    private lateinit var viewModel: QuestionViewModel
+    private val questionViewModel: QuestionViewModel by viewModels()
+    private val args: PrizeListFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_question, container, false)
@@ -22,17 +25,17 @@ class QuestionFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[QuestionViewModel::class.java]
 
         setObservers()
         setOnClickListeners()
+        setQuestion()
         setTimer()
-        setQuestionnaireMusic()
+        setMusic()
     }
 
     private fun setObservers() {
 
-        viewModel.isLockButtonClickable.observe(viewLifecycleOwner) {
+        questionViewModel.isLockButtonClickable.observe(viewLifecycleOwner) {
             if (it) {
                 binding.btnLock.setBackgroundColor(requireContext().getColor(R.color.metallic_green))
                 binding.btnLock.isClickable = true
@@ -42,7 +45,7 @@ class QuestionFragment : BaseFragment() {
             }
         }
 
-        viewModel.currentQuestion.observe(viewLifecycleOwner) {
+        questionViewModel.currentQuestion.observe(viewLifecycleOwner) {
             binding.tvPrizeAmount.text = it.prizeAmount
             binding.tvQuestion.text = it.question
             binding.tvOption1.text = it.option1
@@ -55,25 +58,25 @@ class QuestionFragment : BaseFragment() {
     private fun setOnClickListeners() {
 
         binding.ivLifeline1.setOnClickListener {
-            viewModel.onLifelineClick()
+            questionViewModel.onLifelineClick()
             // TODO: show lifeline pop up
             displayComingSoonToast()
         }
 
         binding.ivLifeline2.setOnClickListener {
-            viewModel.onLifelineClick()
+            questionViewModel.onLifelineClick()
             // TODO: show lifeline pop up
             displayComingSoonToast()
         }
 
         binding.ivLifeline3.setOnClickListener {
-            viewModel.onLifelineClick()
+            questionViewModel.onLifelineClick()
             // TODO: show lifeline pop up
             displayComingSoonToast()
         }
 
         binding.ivLifeline4.setOnClickListener {
-            viewModel.onLifelineClick()
+            questionViewModel.onLifelineClick()
             // TODO: show lifeline pop up
             displayComingSoonToast()
         }
@@ -85,34 +88,43 @@ class QuestionFragment : BaseFragment() {
 
         binding.tvOption1.setOnClickListener {
             changeOptionColors(1, R.drawable.background_metallic_gold)
-            viewModel.onOptionClick(1)
+            questionViewModel.onOptionClick(1)
         }
 
         binding.tvOption2.setOnClickListener {
             changeOptionColors(2, R.drawable.background_metallic_gold)
-            viewModel.onOptionClick(2)
+            questionViewModel.onOptionClick(2)
         }
 
         binding.tvOption3.setOnClickListener {
             changeOptionColors(3, R.drawable.background_metallic_gold)
-            viewModel.onOptionClick(3)
+            questionViewModel.onOptionClick(3)
         }
 
         binding.tvOption4.setOnClickListener {
             changeOptionColors(4, R.drawable.background_metallic_gold)
-            viewModel.onOptionClick(4)
+            questionViewModel.onOptionClick(4)
         }
 
         binding.btnLock.setOnClickListener {
-            viewModel.currentQuestion.value?.let {
-                if (it.correctOptionNumber == viewModel.currentSelectedOption) {
-                    changeOptionColors(viewModel.currentSelectedOption, R.drawable.background_metallic_green)
+            questionViewModel.currentQuestion.value?.let {
+                if (it.correctOptionNumber == questionViewModel.currentSelectedOption) {
+
+                    changeOptionColors(questionViewModel.currentSelectedOption, R.drawable.background_metallic_green)
                     // TODO: play right answer music or delay
-                    gotoFragment(PrizeListFragment())
+
+                    if (args.questionToBeAsked > 14) {
+                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, "Rs. 10 Crores"))
+                        // TODO: get the prize money through list (or leave as it is)
+                    } else {
+                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked+1))
+                    }
+
                 } else {
-                    changeOptionColors(viewModel.currentSelectedOption, R.drawable.background_metallic_red)
+                    changeOptionColors(questionViewModel.currentSelectedOption, R.drawable.background_metallic_red)
+                    findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, "Rs. 0"))
                     // TODO: play wrong answer music or delay
-                    gotoFragment(ResultFragment())
+                    // TODO: get the prize money through list
                 }
             }
         }
@@ -151,7 +163,11 @@ class QuestionFragment : BaseFragment() {
         // TODO: set timer
     }
 
-    private fun setQuestionnaireMusic() {
+    private fun setQuestion() {
+        questionViewModel.setCurrentQuestion(args.questionToBeAsked)
+    }
+
+    private fun setMusic() {
         // TODO: set questionnaire music
     }
 }

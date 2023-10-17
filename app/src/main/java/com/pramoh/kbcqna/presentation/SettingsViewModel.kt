@@ -3,8 +3,20 @@ package com.pramoh.kbcqna.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pramoh.kbcqna.domain.usecases.GetSelectedRegionUseCase
+import com.pramoh.kbcqna.domain.usecases.GetSoundPreferenceUseCase
+import com.pramoh.kbcqna.domain.usecases.SetSelectedRegionUseCase
+import com.pramoh.kbcqna.domain.usecases.SetSoundPreferenceUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SettingsViewModel: ViewModel() {
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
+    private val getSoundPreferenceUseCase: GetSoundPreferenceUseCase,
+    private val setSoundPreferenceUseCase: SetSoundPreferenceUseCase,
+    private val getSelectedRegionUseCase: GetSelectedRegionUseCase,
+    private val setSelectedRegionUseCase: SetSelectedRegionUseCase
+): ViewModel() {
 
     private val _isSoundOn = MutableLiveData<Boolean>()
     val isSoundOn: LiveData<Boolean>
@@ -14,17 +26,19 @@ class SettingsViewModel: ViewModel() {
     val isRegionIndia: LiveData<Boolean>
         get() = _isRegionIndia
 
-    init {
-        _isSoundOn.value = false
-        _isRegionIndia.value = true
+    fun getDataFromSharedPref() {
+        _isSoundOn.postValue(getSoundPreferenceUseCase.invoke())
+        _isRegionIndia.postValue(getSelectedRegionUseCase.invoke() == "INDIA")
     }
 
     fun onSoundClicked() {
         if (isSoundOn.value == true) {
-            _isSoundOn.postValue(false) //remove this and save in shared pref
+            _isSoundOn.postValue(false)
+            setSoundPreferenceUseCase.invoke(false)
             // TODO: add code to turn sound off
         } else {
-            _isSoundOn.postValue(true) //remove this and save in shared pref
+            _isSoundOn.postValue(true)
+            setSoundPreferenceUseCase.invoke(true)
             // TODO: add code to turn sound on
         }
 
@@ -32,10 +46,12 @@ class SettingsViewModel: ViewModel() {
 
     fun onRegionClicked() {
         if (isRegionIndia.value == true) {
-            _isRegionIndia.postValue(false) //remove this and save in shared pref
+            _isRegionIndia.postValue(false)
+            setSelectedRegionUseCase.invoke("GLOBAL")
             // TODO: add code to change ques
         } else {
-            _isRegionIndia.postValue(true) //remove this and save in shared pref
+            _isRegionIndia.postValue(true)
+            setSelectedRegionUseCase.invoke("INDIA")
             // TODO: add code to change ques
         }
     }

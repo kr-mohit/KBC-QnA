@@ -5,14 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentSettingsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSettingsBinding
-    private lateinit var viewModel: SettingsViewModel
+    private val settingViewModel: SettingsViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
@@ -22,15 +24,18 @@ class SettingsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
-
+        getSavedData()
         setObservers()
         setOnClickListeners()
     }
 
+    private fun getSavedData() {
+        settingViewModel.getDataFromSharedPref()
+    }
+
     private fun setObservers() {
 
-        viewModel.isSoundOn.observe(viewLifecycleOwner) {
+        settingViewModel.isSoundOn.observe(viewLifecycleOwner) {
             if (it) {
                 binding.btnSound.text = getString(R.string.on)
             } else {
@@ -38,7 +43,7 @@ class SettingsFragment : BaseFragment() {
             }
         }
 
-        viewModel.isRegionIndia.observe(viewLifecycleOwner) {
+        settingViewModel.isRegionIndia.observe(viewLifecycleOwner) {
             if (it) {
                 binding.btnRegion.text = getString(R.string.india)
             } else {
@@ -50,11 +55,11 @@ class SettingsFragment : BaseFragment() {
     private fun setOnClickListeners() {
 
         binding.btnSound.setOnClickListener {
-            viewModel.onSoundClicked()
+            settingViewModel.onSoundClicked()
         }
 
         binding.btnRegion.setOnClickListener {
-            viewModel.onRegionClicked()
+            settingViewModel.onRegionClicked()
         }
 
         binding.btnBack.setOnClickListener {

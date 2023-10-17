@@ -8,14 +8,13 @@
         android:layout_height="match_parent"
         tools:context=".HomeActivity">
 
-        <FrameLayout
-            android:id="@+id/fl_fragment_container"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/container_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main_navigation"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

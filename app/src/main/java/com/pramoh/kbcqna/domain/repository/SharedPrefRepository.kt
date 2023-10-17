@@ -9,4 +9,12 @@ interface SharedPrefRepository {
 
     fun getWonLostData(): WonLostDataDTO
 
+    fun setSoundOnOff(value: Boolean)
+
+    fun getSoundOnOff(): Boolean
+
+    fun setSelectedRegion(value: String)
+
+    fun getSelectedRegion(): String
+
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,11 +43,11 @@ class HomeFragment: BaseFragment() {
 
     private fun setOnClickListeners() {
         binding.btnStart.setOnClickListener {
-            gotoFragment(PrizeListFragment())
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPrizeListFragment(1))
         }
 
         binding.btnSettings.setOnClickListener {
-            gotoFragment(SettingsFragment())
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
         }
     }
 }

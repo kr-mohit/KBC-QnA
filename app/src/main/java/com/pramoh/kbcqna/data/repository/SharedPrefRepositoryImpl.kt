@@ -23,6 +23,22 @@ class SharedPrefRepositoryImpl(val context: Context): SharedPrefRepository {
         )
     }
 
+    override fun setSoundOnOff(value: Boolean) {
+        Constants.PREF_SOUND_ON_OFF.put(value)
+    }
+
+    override fun getSoundOnOff(): Boolean {
+        return Constants.PREF_SOUND_ON_OFF.getBoolean()
+    }
+
+    override fun setSelectedRegion(value: String) {
+        Constants.PREF_REGION_SELECTED.put(value)
+    }
+
+    override fun getSelectedRegion(): String {
+        return Constants.PREF_REGION_SELECTED.getString()
+    }
+
     private fun String.put(int: Int) {
         editor.putInt(this, int)
         editor.commit()

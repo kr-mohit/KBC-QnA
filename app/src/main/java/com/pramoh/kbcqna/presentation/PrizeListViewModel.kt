@@ -31,7 +31,4 @@ class PrizeListViewModel: ViewModel() {
 
         _listOfPrizes.postValue(list)
     }
-
-    val currentQuestion = 4
-
 }

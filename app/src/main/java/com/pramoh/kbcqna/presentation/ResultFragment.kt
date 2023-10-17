@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentResultBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +17,7 @@ class ResultFragment: BaseFragment() {
 
     private lateinit var binding: FragmentResultBinding
     private val resultViewModel: ResultViewModel by viewModels()
+    private val args: ResultFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_result, container, false)
@@ -24,8 +27,20 @@ class ResultFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setUI()
         setOnClickListeners()
-        saveWonLostData()
+        saveWonLostData(args.didUserWin)
+    }
+
+    private fun setUI() {
+        binding.tvPrizeAmount.text = args.prizeMoney
+        if (args.didUserWin) {
+            binding.tvBetterLuck.visibility = View.GONE
+            binding.tvNextTime.visibility = View.GONE
+        } else {
+            binding.tvBetterLuck.visibility = View.VISIBLE
+            binding.tvNextTime.visibility = View.VISIBLE
+        }
     }
 
     private fun setOnClickListeners() {
@@ -42,12 +57,12 @@ class ResultFragment: BaseFragment() {
         }
 
         binding.btnStartAgain.setOnClickListener {
-            gotoFragment(HomeFragment())
+            findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHomeFragment())
         }
     }
 
-    private fun saveWonLostData() {
+    private fun saveWonLostData(didUserWin: Boolean) {
         // TODO: find out whether user won or lost
-        resultViewModel.saveWonLostData(false)
+        resultViewModel.saveWonLostData(didUserWin)
     }
 }

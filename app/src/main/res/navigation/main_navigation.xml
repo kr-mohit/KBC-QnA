@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.pramoh.kbcqna.presentation.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_prizeListFragment"
+            app:destination="@id/prizeListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/prizeListFragment"
+        android:name="com.pramoh.kbcqna.presentation.PrizeListFragment"
+        android:label="PrizeListFragment" >
+        <action
+            android:id="@+id/action_prizeListFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
+        <argument
+            android:name="questionToBeAsked"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionFragment"
+        android:name="com.pramoh.kbcqna.presentation.QuestionFragment"
+        android:label="QuestionFragment" >
+        <action
+            android:id="@+id/action_questionFragment_to_prizeListFragment"
+            app:destination="@id/prizeListFragment" />
+        <action
+            android:id="@+id/action_questionFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+        <argument
+            android:name="questionToBeAsked"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.pramoh.kbcqna.presentation.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.pramoh.kbcqna.presentation.ResultFragment"
+        android:label="ResultFragment" >
+        <action
+            android:id="@+id/action_resultFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="didUserWin"
+            app:argType="boolean" />
+        <argument
+            android:name="prizeMoney"
+            app:argType="string" />
+    </fragment>
+</navigation>
