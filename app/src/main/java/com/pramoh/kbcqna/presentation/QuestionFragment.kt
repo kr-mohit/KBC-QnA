@@ -1,6 +1,7 @@
 package com.pramoh.kbcqna.presentation
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class QuestionFragment : BaseFragment() {
     private lateinit var binding: FragmentQuestionBinding
     private val questionViewModel: QuestionViewModel by viewModels()
     private val args: PrizeListFragmentArgs by navArgs()
+    private lateinit var timer: CountDownTimer
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_question, container, false)
@@ -113,6 +115,7 @@ class QuestionFragment : BaseFragment() {
         }
 
         binding.btnLock.setOnClickListener {
+            timer.cancel()
             questionViewModel.currentQuestion.value?.let {
                 if (it.correctOptionNumber == questionViewModel.currentSelectedOption) {
 
@@ -170,7 +173,17 @@ class QuestionFragment : BaseFragment() {
             binding.tvTimer.visibility = View.GONE
         } else {
             binding.tvTimer.visibility = View.VISIBLE
-            // TODO: set timer
+            timer = object: CountDownTimer(15000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    binding.tvTimer.text = (millisUntilFinished / 1000).toString()
+                }
+
+                override fun onFinish() {
+                    timer.cancel()
+                    findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, "Rs. 0"))
+                    // TODO: show time up dialog
+                }
+            }.start()
         }
     }
 
