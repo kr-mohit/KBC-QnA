@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.fragment.findNavController
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentPopUpWindowBinding
 
@@ -54,7 +54,9 @@ class PopUpWindowFragment(
 
     private fun setOnClickListeners() {
         binding.btnPopupWindowButton1.setOnClickListener {
-            findNavController().navigate(PopUpWindowFragmentDirections.actionPopUpWindowFragment3ToResultFragment(false, prizeMoney))
+            // TODO: open result fragment
+            Toast.makeText(context, "Feature Coming Soon", Toast.LENGTH_SHORT).show()
+//            findNavController().navigate(PopUpWindowFragmentDirections.actionPopUpWindowFragment3ToResultFragment(false, prizeMoney))
         }
         binding.btnPopupWindowButton2.setOnClickListener {
             this.dismiss()
