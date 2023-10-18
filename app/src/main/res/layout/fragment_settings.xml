@@ -19,19 +19,20 @@
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_sound"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_region" />
+            app:layout_constraintTop_toTopOf="@id/btn_sound"
+            app:layout_constraintBottom_toBottomOf="@id/btn_sound" />
 
         <Button
             android:id="@+id/btn_sound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="ON"
+            tools:text="OFF"
             android:background="@drawable/background_metallic_blue"
+            app:layout_constraintVertical_bias="0.33"
             app:layout_constraintStart_toEndOf="@id/tv_sound"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_sound"
-            app:layout_constraintBottom_toBottomOf="@id/tv_sound" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/tv_region"
@@ -42,19 +43,19 @@
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_sound"
-            app:layout_constraintTop_toBottomOf="@id/tv_sound"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/btn_region"
+            app:layout_constraintBottom_toBottomOf="@id/btn_region" />
 
         <Button
             android:id="@+id/btn_region"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="INDIA"
+            android:layout_marginTop="10dp"
             android:background="@drawable/background_metallic_blue"
             app:layout_constraintStart_toEndOf="@id/tv_region"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_region"
-            app:layout_constraintBottom_toBottomOf="@id/tv_region" />
+            app:layout_constraintTop_toBottomOf="@id/btn_sound" />
 
         <Button
             android:id="@+id/btn_back"
@@ -62,6 +63,7 @@
             android:layout_height="wrap_content"
             android:text="@string/back"
             android:background="@drawable/background_metallic_blue"
+            android:layout_marginTop="26dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

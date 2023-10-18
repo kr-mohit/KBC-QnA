@@ -45,15 +45,15 @@ class ResultFragment: BaseFragment() {
 
     private fun setOnClickListeners() {
         binding.btnShareCheque.setOnClickListener {
-            displayComingSoonToast()
+            showComingSoonToast()
         }
 
         binding.btnShareGame.setOnClickListener {
-            displayComingSoonToast()
+            showComingSoonToast()
         }
 
         binding.btnMoreGames.setOnClickListener {
-            displayComingSoonToast()
+            showComingSoonToast()
         }
 
         binding.btnStartAgain.setOnClickListener {

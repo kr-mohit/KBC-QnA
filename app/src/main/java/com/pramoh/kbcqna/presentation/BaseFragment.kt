@@ -5,11 +5,7 @@ import androidx.fragment.app.Fragment
 
 open class BaseFragment: Fragment() {
 
-    fun onBackPressed() {
-        requireActivity().onBackPressedDispatcher.onBackPressed()
-    }
-
-    fun displayComingSoonToast() {
+    fun showComingSoonToast() {
         Toast.makeText(context, "Feature Coming Soon", Toast.LENGTH_SHORT).show()
     }
 }

@@ -28,6 +28,10 @@ class QuestionFragment : BaseFragment() {
 
         setObservers()
         setOnClickListeners()
+        setUI()
+    }
+
+    private fun setUI() {
         setQuestion()
         setTimer()
         setMusic()
@@ -60,29 +64,31 @@ class QuestionFragment : BaseFragment() {
         binding.ivLifeline1.setOnClickListener {
             questionViewModel.onLifelineClick()
             // TODO: show lifeline pop up
-            displayComingSoonToast()
+            showComingSoonToast()
         }
 
         binding.ivLifeline2.setOnClickListener {
             questionViewModel.onLifelineClick()
             // TODO: show lifeline pop up
-            displayComingSoonToast()
+            showComingSoonToast()
         }
 
         binding.ivLifeline3.setOnClickListener {
             questionViewModel.onLifelineClick()
             // TODO: show lifeline pop up
-            displayComingSoonToast()
+            showComingSoonToast()
         }
 
         binding.ivLifeline4.setOnClickListener {
             questionViewModel.onLifelineClick()
             // TODO: show lifeline pop up
-            displayComingSoonToast()
+            showComingSoonToast()
         }
 
         binding.tvQuit.setOnClickListener {
-            onBackPressed() //remove this
+            findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                false,
+                questionViewModel.moneyWonTillNow.value ?: "Error"))
             // TODO: show quitting pop up
         }
 
@@ -160,7 +166,12 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun setTimer() {
-        // TODO: set timer
+        if (args.questionToBeAsked >= 8) {
+            binding.tvTimer.visibility = View.GONE
+        } else {
+            binding.tvTimer.visibility = View.VISIBLE
+            // TODO: set timer
+        }
     }
 
     private fun setQuestion() {

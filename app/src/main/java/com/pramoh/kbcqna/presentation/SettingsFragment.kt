@@ -55,15 +55,17 @@ class SettingsFragment : BaseFragment() {
     private fun setOnClickListeners() {
 
         binding.btnSound.setOnClickListener {
-            settingViewModel.onSoundClicked()
+            showComingSoonToast()
+//            settingViewModel.onSoundClicked()
         }
 
         binding.btnRegion.setOnClickListener {
-            settingViewModel.onRegionClicked()
+            showComingSoonToast()
+//            settingViewModel.onRegionClicked()
         }
 
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 }

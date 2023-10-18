@@ -1,6 +1,5 @@
 package com.pramoh.kbcqna.domain.usecases
 
-import android.util.Log
 import com.pramoh.kbcqna.data.model.toDomainWonLostData
 import com.pramoh.kbcqna.domain.model.WonLostData
 import com.pramoh.kbcqna.domain.repository.SharedPrefRepository
@@ -11,8 +10,6 @@ class GetWonLostDataUseCase @Inject constructor(
 ) {
 
     operator fun invoke(): WonLostData {
-        val data = repository.getWonLostData().toDomainWonLostData()
-        Log.d("idonnoe", "won-lost-data = $data")
-        return data
+        return repository.getWonLostData().toDomainWonLostData()
     }
 }
