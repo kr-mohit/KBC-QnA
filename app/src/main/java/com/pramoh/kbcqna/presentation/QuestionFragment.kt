@@ -1,24 +1,26 @@
 package com.pramoh.kbcqna.presentation
 
 import android.os.Bundle
-import android.os.CountDownTimer
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
+import com.pramoh.kbcqna.utils.Constants
 
 
 class QuestionFragment : BaseFragment() {
 
     private lateinit var binding: FragmentQuestionBinding
     private val questionViewModel: QuestionViewModel by viewModels()
+    private val timerViewModel: TimerViewModel by viewModels()
     private val args: PrizeListFragmentArgs by navArgs()
-    private lateinit var timer: CountDownTimer
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_question, container, false)
@@ -59,6 +61,14 @@ class QuestionFragment : BaseFragment() {
             binding.tvOption3.text = it.option3
             binding.tvOption4.text = it.option4
         }
+
+        timerViewModel.didTimerEnd.observe(viewLifecycleOwner) {
+            showCorrectOption(Constants.TIMER_UP)
+        }
+
+        timerViewModel.timerValue.observe(viewLifecycleOwner) {
+            binding.tvTimer.text = it.toString()
+        }
     }
 
     private fun setOnClickListeners() {
@@ -88,10 +98,12 @@ class QuestionFragment : BaseFragment() {
         }
 
         binding.tvQuit.setOnClickListener {
-            findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
-                false,
-                questionViewModel.moneyWonTillNow.value ?: "Error"))
-            // TODO: show quitting pop up
+            PopUpWindowFragment(
+                "Do you want to Quit?",
+                "Yes",
+                "No",
+                questionViewModel.moneyWonTillNow.value ?: "Error"
+            ).show(childFragmentManager, null)
         }
 
         binding.tvOption1.setOnClickListener {
@@ -115,25 +127,13 @@ class QuestionFragment : BaseFragment() {
         }
 
         binding.btnLock.setOnClickListener {
-            timer.cancel()
+            timerViewModel.cancelTimer()
             questionViewModel.currentQuestion.value?.let {
                 if (it.correctOptionNumber == questionViewModel.currentSelectedOption) {
-
-                    changeOptionColors(questionViewModel.currentSelectedOption, R.drawable.background_metallic_green)
-                    // TODO: play right answer music or delay
-
-                    if (args.questionToBeAsked > 14) {
-                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, "Rs. 10 Crores"))
-                        // TODO: get the prize money through list (or leave as it is)
-                    } else {
-                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked+1))
-                    }
+                    showCorrectOption(Constants.RIGHT_ANSWER)
 
                 } else {
-                    changeOptionColors(questionViewModel.currentSelectedOption, R.drawable.background_metallic_red)
-                    findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, "Rs. 0"))
-                    // TODO: play wrong answer music or delay
-                    // TODO: get the prize money through list
+                    showCorrectOption(Constants.WRONG_ANSWER)
                 }
             }
         }
@@ -173,22 +173,47 @@ class QuestionFragment : BaseFragment() {
             binding.tvTimer.visibility = View.GONE
         } else {
             binding.tvTimer.visibility = View.VISIBLE
-            timer = object: CountDownTimer(15000, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    binding.tvTimer.text = (millisUntilFinished / 1000).toString()
-                }
-
-                override fun onFinish() {
-                    timer.cancel()
-                    findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, "Rs. 0"))
-                    // TODO: show time up dialog
-                }
-            }.start()
+            timerViewModel.startTimer(15)
         }
     }
 
     private fun setQuestion() {
         questionViewModel.setCurrentQuestion(args.questionToBeAsked)
+    }
+
+    private fun showCorrectOption(id: String) {
+
+        when (id) {
+
+            Constants.RIGHT_ANSWER -> {
+                changeOptionColors(questionViewModel.currentSelectedOption, R.drawable.background_metallic_green)
+                // TODO: play right answer music or delay
+                Handler().postDelayed(
+                    {
+                    if (args.questionToBeAsked > 14) {
+                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, "Rs. 10 Crores"))
+                        // TODO: get the prize money through list (or leave as it is)
+                    } else {
+                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1))
+                    }
+                    },
+                    5000
+                )
+
+            }
+
+            Constants.WRONG_ANSWER -> {
+                changeOptionColors(questionViewModel.currentSelectedOption, R.drawable.background_metallic_red)
+                findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, "Rs. 0"))
+                // TODO: play wrong answer music or delay
+                // TODO: get the last safe zone and money accordingly
+            }
+
+            Constants.TIMER_UP -> {
+                Toast.makeText(context, "Timer Ended", Toast.LENGTH_SHORT).show() // TODO: remove this
+            }
+        }
+
     }
 
     private fun setMusic() {

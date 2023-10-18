@@ -59,4 +59,25 @@
             android:name="prizeMoney"
             app:argType="string" />
     </fragment>
+    <dialog
+        android:id="@+id/popUpWindowFragment3"
+        android:name="com.pramoh.kbcqna.presentation.PopUpWindowFragment"
+        android:label="PopUpWindowFragment" >
+        <action
+            android:id="@+id/action_popUpWindowFragment3_to_resultFragment"
+            app:destination="@id/resultFragment" />
+        <argument
+            android:name="dialogText"
+            app:argType="string"
+            android:defaultValue="No Text Set" />
+        <argument
+            android:name="button1Text"
+            app:argType="string" />
+        <argument
+            android:name="button2Text"
+            app:argType="string" />
+        <argument
+            android:name="prizeMoney"
+            app:argType="string" />
+    </dialog>
 </navigation>
