@@ -21,12 +21,14 @@ class PrizeListAdapter(private val list: List<String>, private val currentQuesti
 
     override fun onBindViewHolder(holder: PrizeListViewHolder, position: Int) {
         holder.tvPrizeAmount.text = list[position]
-        if (position == (list.size - currentQuestion))
-            holder.tvPrizeAmount.setBackgroundResource(R.drawable.background_metallic_green)
-        else if (position < (list.size - currentQuestion))
-            holder.tvPrizeAmount.setBackgroundResource(R.drawable.background_metallic_yellow)
-        else {
-            holder.tvPrizeAmount.setBackgroundResource(R.drawable.background_metallic_yellow)
+
+        when (position) {
+            0, 6, 9 -> holder.tvPrizeAmount.setBackgroundResource(R.drawable.background_metallic_red)
+            list.size - currentQuestion -> holder.tvPrizeAmount.setBackgroundResource(R.drawable.background_metallic_green)
+            else -> holder.tvPrizeAmount.setBackgroundResource(R.drawable.background_metallic_yellow)
+        }
+
+        if (position > (list.size - currentQuestion)) {
             holder.tvPrizeAmount.alpha = 0.7F
         }
 

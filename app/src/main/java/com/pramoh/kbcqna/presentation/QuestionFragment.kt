@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
-import com.pramoh.kbcqna.utils.Constants
 
 
 class QuestionFragment : BaseFragment() {
@@ -37,32 +37,29 @@ class QuestionFragment : BaseFragment() {
     private fun setUI() {
         setQuestion()
         setTimer()
-        setMusic()
     }
 
     private fun setObservers() {
 
         questionViewModel.isLockButtonClickable.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.btnLock.setBackgroundColor(requireContext().getColor(R.color.metallic_green))
-                binding.btnLock.isClickable = true
-            } else {
-                binding.btnLock.setBackgroundColor(requireContext().getColor(R.color.metallic_grey))
-                binding.btnLock.isClickable = false
+            val backgroundColor = if (it) R.color.metallic_green else R.color.metallic_grey
+            binding.btnLock.setBackgroundColor(requireContext().getColor(backgroundColor))
+            binding.btnLock.isClickable = it
+        }
+
+        questionViewModel.currentQuestion.observe(viewLifecycleOwner) { question ->
+            with(binding) {
+                tvPrizeAmount.text = question.prizeAmount
+                tvQuestion.text = question.question
+                tvOption1.text = question.option1
+                tvOption2.text = question.option2
+                tvOption3.text = question.option3
+                tvOption4.text = question.option4
             }
         }
 
-        questionViewModel.currentQuestion.observe(viewLifecycleOwner) {
-            binding.tvPrizeAmount.text = it.prizeAmount
-            binding.tvQuestion.text = it.question
-            binding.tvOption1.text = it.option1
-            binding.tvOption2.text = it.option2
-            binding.tvOption3.text = it.option3
-            binding.tvOption4.text = it.option4
-        }
-
         timerViewModel.didTimerEnd.observe(viewLifecycleOwner) {
-            showCorrectOption(Constants.TIMER_UP)
+            showResult(TIMER_UP)
         }
 
         timerViewModel.timerValue.observe(viewLifecycleOwner) {
@@ -72,100 +69,73 @@ class QuestionFragment : BaseFragment() {
 
     private fun setOnClickListeners() {
 
-        binding.ivLifeline1.setOnClickListener {
-            questionViewModel.onLifelineClick()
-            // TODO: show lifeline pop up
-            showComingSoonToast()
-        }
+        with(binding) {
 
-        binding.ivLifeline2.setOnClickListener {
-            questionViewModel.onLifelineClick()
-            // TODO: show lifeline pop up
-            showComingSoonToast()
-        }
+            tvOption1.setOnClickListener { handleOptionClick(1) }
+            tvOption2.setOnClickListener { handleOptionClick(2) }
+            tvOption3.setOnClickListener { handleOptionClick(3) }
+            tvOption4.setOnClickListener { handleOptionClick(4) }
 
-        binding.ivLifeline3.setOnClickListener {
-            questionViewModel.onLifelineClick()
-            // TODO: show lifeline pop up
-            showComingSoonToast()
-        }
+            ivLifeline1.setOnClickListener { handleLifelineClick(1) }
+            ivLifeline2.setOnClickListener { handleLifelineClick(2) }
+            ivLifeline3.setOnClickListener { handleLifelineClick(3) }
+            ivLifeline4.setOnClickListener { handleLifelineClick(4) }
 
-        binding.ivLifeline4.setOnClickListener {
-            questionViewModel.onLifelineClick()
-            // TODO: show lifeline pop up
-            showComingSoonToast()
-        }
+            tvQuit.setOnClickListener {
+                PopUpWindowFragment(
+                    "Do you want to Quit?",
+                    "Yes",
+                    "No",
+                    questionViewModel.moneyWonTillNow
+                ).show(childFragmentManager, null)
+            }
 
-        binding.tvQuit.setOnClickListener {
-            PopUpWindowFragment(
-                "Do you want to Quit?",
-                "Yes",
-                "No",
-                questionViewModel.moneyWonTillNow
-            ).show(childFragmentManager, null)
-        }
+            btnLock.setOnClickListener {
+                timerViewModel.cancelTimer()
+                questionViewModel.currentQuestion.value?.let {
+                    if (it.correctOptionNumber == questionViewModel.currentSelectedOption) {
+                        showResult(RIGHT_ANSWER)
 
-        binding.tvOption1.setOnClickListener {
-            changeOptionColors(1, R.drawable.background_metallic_gold)
-            questionViewModel.onOptionClick(1)
-        }
-
-        binding.tvOption2.setOnClickListener {
-            changeOptionColors(2, R.drawable.background_metallic_gold)
-            questionViewModel.onOptionClick(2)
-        }
-
-        binding.tvOption3.setOnClickListener {
-            changeOptionColors(3, R.drawable.background_metallic_gold)
-            questionViewModel.onOptionClick(3)
-        }
-
-        binding.tvOption4.setOnClickListener {
-            changeOptionColors(4, R.drawable.background_metallic_gold)
-            questionViewModel.onOptionClick(4)
-        }
-
-        binding.btnLock.setOnClickListener {
-            timerViewModel.cancelTimer()
-            questionViewModel.currentQuestion.value?.let {
-                if (it.correctOptionNumber == questionViewModel.currentSelectedOption) {
-                    showCorrectOption(Constants.RIGHT_ANSWER)
-
-                } else {
-                    showCorrectOption(Constants.WRONG_ANSWER)
+                    } else {
+                        showResult(WRONG_ANSWER, it.correctOptionNumber)
+                    }
                 }
             }
         }
     }
 
-    private fun changeOptionColors(option: Int, resId: Int, defaultResId: Int = R.drawable.background_metallic_blue) {
-        when (option) {
-            1 -> {
-                binding.tvOption1.setBackgroundResource(resId)
-                binding.tvOption2.setBackgroundResource(defaultResId)
-                binding.tvOption3.setBackgroundResource(defaultResId)
-                binding.tvOption4.setBackgroundResource(defaultResId)
-            }
-            2 -> {
-                binding.tvOption2.setBackgroundResource(resId)
-                binding.tvOption1.setBackgroundResource(defaultResId)
-                binding.tvOption3.setBackgroundResource(defaultResId)
-                binding.tvOption4.setBackgroundResource(defaultResId)
-            }
-            3 -> {
-                binding.tvOption3.setBackgroundResource(resId)
-                binding.tvOption2.setBackgroundResource(defaultResId)
-                binding.tvOption1.setBackgroundResource(defaultResId)
-                binding.tvOption4.setBackgroundResource(defaultResId)
-            }
-            4 -> {
-                binding.tvOption4.setBackgroundResource(resId)
-                binding.tvOption2.setBackgroundResource(defaultResId)
-                binding.tvOption3.setBackgroundResource(defaultResId)
-                binding.tvOption1.setBackgroundResource(defaultResId)
+    private fun handleOptionClick(option: Int) {
+        changeOptionColors2(
+            option to R.drawable.background_metallic_gold
+        )
+        questionViewModel.onOptionClick(option)
+    }
+
+    private fun handleLifelineClick(lifeline: Int) {
+        questionViewModel.onLifelineClick()
+        showComingSoonToast()
+        // TODO: show lifeline pop up
+    }
+
+    private fun changeOptionColors2(vararg options: Pair<Int, Int>) {
+        with(binding) {
+            val defaultResId = R.drawable.background_metallic_blue
+
+            val optionViews = mapOf(
+                1 to tvOption1,
+                2 to tvOption2,
+                3 to tvOption3,
+                4 to tvOption4
+            )
+
+            optionViews.values.forEach { it.setBackgroundResource(defaultResId) }
+
+            options.forEach { (optionNumber, resId) ->
+                optionViews[optionNumber]?.setBackgroundResource(resId)
             }
         }
     }
+
 
     private fun setTimer() {
         if (args.questionToBeAsked >= 8) {
@@ -180,56 +150,55 @@ class QuestionFragment : BaseFragment() {
         questionViewModel.setCurrentQuestion(args.questionToBeAsked)
     }
 
-    private fun showCorrectOption(id: String) {
+    private fun showResult(result: String, correctOptionNumber: Int = 0) {
 
-        when (id) {
+        when (result) {
 
-            Constants.RIGHT_ANSWER -> {
-                changeOptionColors(questionViewModel.currentSelectedOption, R.drawable.background_metallic_green)
-                // TODO: play right answer music or delay
-                Handler().postDelayed(
-                    {
-                    if (args.questionToBeAsked > 14) {
-                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
-                            true, "Rs. 10 Crore"))
-                    } else {
-                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1))
-                    }
-                    },
-                    5000
+            RIGHT_ANSWER -> {
+                changeOptionColors2(
+                    questionViewModel.currentSelectedOption to R.drawable.background_metallic_green
                 )
+                val destination = if (args.questionToBeAsked > 14) {
+                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, "Rs. 10 Crore")
+                } else {
+                    QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
+                }
+                navigateWithDelay(destination)
             }
 
-            Constants.WRONG_ANSWER -> {
-                changeOptionColors(questionViewModel.currentSelectedOption, R.drawable.background_metallic_red)
-                findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
-                    false, questionViewModel.lastSafeZone))
-                // TODO: play wrong answer music or delay
-                // TODO: get the last safe zone and money accordingly
+            WRONG_ANSWER -> {
+                changeOptionColors2(
+                    questionViewModel.currentSelectedOption to R.drawable.background_metallic_red,
+                    correctOptionNumber to R.drawable.background_metallic_green
+                )
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.lastSafeZone)
+                navigateWithDelay(destination, 7000)
             }
 
-            Constants.TIMER_UP -> {
-                Handler().postDelayed(
-                    {
-                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
-                            false, questionViewModel.lastSafeZone))
-                    }, 5000
-                )
+            TIMER_UP -> {
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.lastSafeZone)
+                navigateWithDelay(destination)
             }
 
-            Constants.QUIT -> {
-                Handler().postDelayed(
-                    {
-                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
-                            false, questionViewModel.moneyWonTillNow))
-                    }, 5000
-                )
+            QUIT -> {
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.moneyWonTillNow)
+                navigateWithDelay(destination)
             }
         }
 
     }
 
-    private fun setMusic() {
-        // TODO: set questionnaire music
+    private fun navigateWithDelay(destination: NavDirections, delayDuration: Long = 5000) {
+        Handler().postDelayed({
+            findNavController().navigate(destination)
+        }, delayDuration)
     }
+
+    companion object {
+        private const val TIMER_UP = "TIMER_UP"
+        private const val RIGHT_ANSWER = "RIGHT_ANSWER"
+        private const val WRONG_ANSWER = "WRONG_ANSWER"
+        private const val QUIT = "QUIT"
+    }
+
 }
