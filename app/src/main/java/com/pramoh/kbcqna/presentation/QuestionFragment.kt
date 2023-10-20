@@ -5,7 +5,6 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -102,7 +101,7 @@ class QuestionFragment : BaseFragment() {
                 "Do you want to Quit?",
                 "Yes",
                 "No",
-                questionViewModel.moneyWonTillNow.value ?: "Error"
+                questionViewModel.moneyWonTillNow
             ).show(childFragmentManager, null)
         }
 
@@ -191,26 +190,40 @@ class QuestionFragment : BaseFragment() {
                 Handler().postDelayed(
                     {
                     if (args.questionToBeAsked > 14) {
-                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, "Rs. 10 Crores"))
-                        // TODO: get the prize money through list (or leave as it is)
+                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                            true, "Rs. 10 Crore"))
                     } else {
                         findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1))
                     }
                     },
                     5000
                 )
-
             }
 
             Constants.WRONG_ANSWER -> {
                 changeOptionColors(questionViewModel.currentSelectedOption, R.drawable.background_metallic_red)
-                findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, "Rs. 0"))
+                findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                    false, questionViewModel.lastSafeZone))
                 // TODO: play wrong answer music or delay
                 // TODO: get the last safe zone and money accordingly
             }
 
             Constants.TIMER_UP -> {
-                Toast.makeText(context, "Timer Ended", Toast.LENGTH_SHORT).show() // TODO: remove this
+                Handler().postDelayed(
+                    {
+                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                            false, questionViewModel.lastSafeZone))
+                    }, 5000
+                )
+            }
+
+            Constants.QUIT -> {
+                Handler().postDelayed(
+                    {
+                        findNavController().navigate(QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                            false, questionViewModel.moneyWonTillNow))
+                    }, 5000
+                )
             }
         }
 

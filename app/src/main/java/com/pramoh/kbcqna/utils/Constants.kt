@@ -12,5 +12,6 @@ object Constants {
     const val TIMER_UP = "TIMER_UP"
     const val RIGHT_ANSWER = "RIGHT_ANSWER"
     const val WRONG_ANSWER = "WRONG_ANSWER"
+    const val QUIT = "QUIT"
 
 }

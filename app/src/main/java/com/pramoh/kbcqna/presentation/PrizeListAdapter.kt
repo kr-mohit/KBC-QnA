@@ -23,8 +23,13 @@ class PrizeListAdapter(private val list: List<String>, private val currentQuesti
         holder.tvPrizeAmount.text = list[position]
         if (position == (list.size - currentQuestion))
             holder.tvPrizeAmount.setBackgroundResource(R.drawable.background_metallic_green)
-        else
+        else if (position < (list.size - currentQuestion))
             holder.tvPrizeAmount.setBackgroundResource(R.drawable.background_metallic_yellow)
+        else {
+            holder.tvPrizeAmount.setBackgroundResource(R.drawable.background_metallic_yellow)
+            holder.tvPrizeAmount.alpha = 0.7F
+        }
+
     }
 
     class PrizeListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

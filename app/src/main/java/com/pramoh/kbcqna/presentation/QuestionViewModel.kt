@@ -7,6 +7,11 @@ import com.pramoh.kbcqna.domain.model.Question
 
 class QuestionViewModel:ViewModel() {
 
+    private val listOfQuestions = mutableListOf<Question>() // TODO: get this from db or api
+    lateinit var moneyWonTillNow: String
+    lateinit var lastSafeZone: String
+    var currentSelectedOption: Int = 0
+
     private val _isLockButtonClickable = MutableLiveData<Boolean>()
     val isLockButtonClickable: LiveData<Boolean>
         get() = _isLockButtonClickable
@@ -14,14 +19,6 @@ class QuestionViewModel:ViewModel() {
     private val _currentQuestion = MutableLiveData<Question>()
     val currentQuestion: LiveData<Question>
         get() = _currentQuestion
-
-    private val _moneyWonTillNow = MutableLiveData<String>()
-    val moneyWonTillNow: LiveData<String>
-        get() = _moneyWonTillNow
-
-    private val listOfQuestions = mutableListOf<Question>() // TODO: get this from db or api
-
-    var currentSelectedOption: Int = 0
 
     init {
 
@@ -48,10 +45,18 @@ class QuestionViewModel:ViewModel() {
         // TODO: handle if ques number is less than 1
         _currentQuestion.postValue(listOfQuestions[quesNumber-1])
 
-        if (quesNumber < 2) {
-            _moneyWonTillNow.postValue("Rs. 0")
+        moneyWonTillNow = if (quesNumber < 2) {
+            "Rs. 0"
         } else {
-            _moneyWonTillNow.postValue(listOfQuestions[quesNumber-2].prizeAmount) // TODO: do something about this, can't set here
+            listOfQuestions[quesNumber-2].prizeAmount // TODO: do something about this, can't set here
+        }
+
+        lastSafeZone = if (quesNumber >= 10) {
+            "Rs. 6, 40, 000"
+        } else if (quesNumber >= 7) {
+            "Rs. 80, 000"
+        } else {
+            "Rs. 0"
         }
     }
 
