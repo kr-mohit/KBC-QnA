@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentSettingsBinding
@@ -15,6 +16,7 @@ class SettingsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSettingsBinding
     private val settingViewModel: SettingsViewModel by viewModels()
+    private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
@@ -30,16 +32,20 @@ class SettingsFragment : BaseFragment() {
     }
 
     private fun getSavedData() {
-        settingViewModel.getDataFromSharedPref()
+        settingViewModel.getRegionSharedPref()
+        exoplayerViewModel.getAudioSharedPref()
     }
 
     private fun setObservers() {
 
-        settingViewModel.isSoundOn.observe(viewLifecycleOwner) {
+        exoplayerViewModel.isSoundOn.observe(viewLifecycleOwner) {
+
             if (it) {
                 binding.btnSound.text = getString(R.string.on)
+                exoplayerViewModel.setupAndPlay(R.raw.audio_home_screen)
             } else {
                 binding.btnSound.text = getString(R.string.off)
+                exoplayerViewModel.stop()
             }
         }
 
@@ -56,7 +62,7 @@ class SettingsFragment : BaseFragment() {
 
         binding.btnSound.setOnClickListener {
             showComingSoonToast()
-//            settingViewModel.onSoundClicked()
+            exoplayerViewModel.setSoundOnOff()
         }
 
         binding.btnRegion.setOnClickListener {

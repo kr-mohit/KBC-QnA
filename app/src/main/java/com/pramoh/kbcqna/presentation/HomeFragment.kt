@@ -22,6 +22,7 @@ class HomeFragment: BaseFragment() {
     private lateinit var binding: FragmentHomeBinding
     private val questionViewModel: QuestionViewModel by activityViewModels()
     private val homeViewModel: HomeViewModel by viewModels()
+    private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
@@ -39,6 +40,7 @@ class HomeFragment: BaseFragment() {
 
     private fun fetchSavedData() {
         homeViewModel.getWonLostData()
+        exoplayerViewModel.getAudioSharedPref()
     }
 
     private fun setObservers() {
@@ -55,6 +57,7 @@ class HomeFragment: BaseFragment() {
                 is Response.Success -> {
                     binding.homeProgressBar.visibility = View.GONE
                     if (homeViewModel.getOnStartClicked()) {
+                        exoplayerViewModel.stop()
                         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPrizeListFragment(1))
                     }
                 }
@@ -62,6 +65,14 @@ class HomeFragment: BaseFragment() {
                     binding.homeProgressBar.visibility = View.GONE
                     Toast.makeText(context, response.error, Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+
+        exoplayerViewModel.isSoundOn.observe(viewLifecycleOwner) {
+            if (it) {
+                exoplayerViewModel.setupAndPlay(R.raw.audio_home_screen)
+            } else {
+                exoplayerViewModel.stop()
             }
         }
     }

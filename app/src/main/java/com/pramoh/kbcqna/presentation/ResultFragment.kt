@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,6 +18,7 @@ class ResultFragment: BaseFragment() {
 
     private lateinit var binding: FragmentResultBinding
     private val resultViewModel: ResultViewModel by viewModels()
+    private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
     private val args: ResultFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -30,6 +32,7 @@ class ResultFragment: BaseFragment() {
         setUI()
         setOnClickListeners()
         saveWonLostData(args.didUserWin)
+        setObservers()
     }
 
     private fun setUI() {
@@ -57,7 +60,16 @@ class ResultFragment: BaseFragment() {
         }
 
         binding.btnStartAgain.setOnClickListener {
+            exoplayerViewModel.stop()
             findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHomeFragment())
+        }
+    }
+
+    private fun setObservers() {
+        exoplayerViewModel.isSoundOn.observe(viewLifecycleOwner) {
+            if (it) {
+                exoplayerViewModel.setupAndPlay(R.raw.audio_result_screen)
+            }
         }
     }
 

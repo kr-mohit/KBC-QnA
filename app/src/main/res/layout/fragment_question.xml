@@ -178,6 +178,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/tv_option_3" />
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:constraint_referenced_ids="tv_option_1, tv_option_2, tv_option_3, tv_option_4" />
+
+
         <Button
             android:id="@+id/btn_lock"
             android:layout_width="0dp"
