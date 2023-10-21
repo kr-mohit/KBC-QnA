@@ -18,19 +18,21 @@ class TimerViewModel : ViewModel() {
         get() = _timerValue
 
     fun startTimer(seconds: Long) {
-        timer = object : CountDownTimer((seconds+1)*1000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                _timerValue.postValue(millisUntilFinished/1000)
-            }
+        if (timer == null) {
+            timer = object : CountDownTimer((seconds+1)*1000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    _timerValue.postValue(millisUntilFinished/1000)
+                }
 
-            override fun onFinish() {
-                _didTimeEnd.postValue(true)
-                // Handle timer finish
-            }
-        }.start()
+                override fun onFinish() {
+                    _didTimeEnd.postValue(true)
+                }
+            }.start()
+        }
     }
 
     fun cancelTimer() {
         timer?.cancel()
+        timer = null
     }
 }
