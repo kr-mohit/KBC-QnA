@@ -58,8 +58,13 @@ class QuestionFragment : BaseFragment() {
             }
         }
 
-        timerViewModel.didTimerEnd.observe(viewLifecycleOwner) {
-            showResult(TIMER_UP)
+        timerViewModel.didTimerEnd.observe(viewLifecycleOwner) {didTimeEnd ->
+            if (didTimeEnd) {
+                questionViewModel.currentQuestion.value?.correctOptionNumber?.let {
+                    disableAllButtonsClick()
+                    showResult(TIMER_UP, it)
+                }
+            }
         }
 
         timerViewModel.timerValue.observe(viewLifecycleOwner) {
@@ -92,10 +97,10 @@ class QuestionFragment : BaseFragment() {
 
             btnLock.setOnClickListener {
                 timerViewModel.cancelTimer()
+                disableAllButtonsClick()
                 questionViewModel.currentQuestion.value?.let {
                     if (it.correctOptionNumber == questionViewModel.currentSelectedOption) {
                         showResult(RIGHT_ANSWER)
-
                     } else {
                         showResult(WRONG_ANSWER, it.correctOptionNumber)
                     }
@@ -115,6 +120,13 @@ class QuestionFragment : BaseFragment() {
         questionViewModel.onLifelineClick()
         showComingSoonToast()
         // TODO: show lifeline pop up
+    }
+
+    private fun disableAllButtonsClick() {
+        with(binding) {
+            val allButtonList = listOf(ivLifeline1, ivLifeline2, ivLifeline3, ivLifeline4, tvQuit, tvOption1, tvOption2, tvOption3, tvOption4, btnLock)
+            allButtonList.forEach { it.isClickable = false }
+        }
     }
 
     private fun changeOptionColors2(vararg options: Pair<Int, Int>) {
@@ -176,6 +188,9 @@ class QuestionFragment : BaseFragment() {
             }
 
             TIMER_UP -> {
+                changeOptionColors2(
+                    correctOptionNumber to R.drawable.background_metallic_green
+                )
                 val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.lastSafeZone)
                 navigateWithDelay(destination)
             }
