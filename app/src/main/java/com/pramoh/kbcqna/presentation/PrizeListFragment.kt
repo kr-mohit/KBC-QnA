@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,7 +42,10 @@ class PrizeListFragment : BaseFragment() {
 
     private fun setOnClickListeners() {
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(PrizeListFragmentDirections.actionPrizeListFragmentToQuestionFragment(args.questionToBeAsked))
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.prizeListFragment, true)
+                .build()
+            findNavController().navigate(PrizeListFragmentDirections.actionPrizeListFragmentToQuestionFragment(args.questionToBeAsked),navOptions)
         }
     }
 }

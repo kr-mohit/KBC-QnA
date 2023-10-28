@@ -1,17 +1,21 @@
 package com.pramoh.kbcqna.presentation
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class QuestionFragment : BaseFragment() {
@@ -204,9 +208,14 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun navigateWithDelay(destination: NavDirections, delayDuration: Long = 5000) {
-        Handler().postDelayed({
-            findNavController().navigate(destination)
-        }, delayDuration)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(delayDuration)
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.questionFragment, true)
+                .build()
+            findNavController().navigate(destination,navOptions)
+        }
     }
 
     companion object {
