@@ -87,12 +87,18 @@ class QuestionFragment : BaseFragment() {
             ivLifeline4.setOnClickListener { handleLifelineClick(4) }
 
             tvQuit.setOnClickListener {
-                PopUpWindowFragment(
-                    "Do you want to Quit?",
-                    "Yes",
+                showDialog(
+                    requireContext(),
+                    "Do you want to Quit?\nYou will be getting ${questionViewModel.moneyWonTillNow}",
                     "No",
-                    questionViewModel.moneyWonTillNow
-                ).show(childFragmentManager, null)
+                    "Yes",
+                    positiveButtonAction = {
+                        timerViewModel.cancelTimer()
+                        questionViewModel.currentQuestion.value?.correctOptionNumber?.let {
+                            showResult(QUIT, it)
+                        }
+                    }
+                )
             }
 
             btnLock.setOnClickListener {
@@ -196,6 +202,9 @@ class QuestionFragment : BaseFragment() {
             }
 
             QUIT -> {
+                changeOptionColors2(
+                    correctOptionNumber to R.drawable.background_metallic_green
+                )
                 val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.moneyWonTillNow)
                 navigateWithDelay(destination)
             }

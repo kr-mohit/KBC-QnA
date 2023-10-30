@@ -64,6 +64,7 @@
                         android:background="#851635"
                         tools:text="YES"
                         android:textColor="#FFFFFF"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/btn_popup_window_button_2"
                         app:layout_constraintTop_toBottomOf="@id/tv_popup_window_text"
