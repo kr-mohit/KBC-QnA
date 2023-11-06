@@ -2,8 +2,8 @@ package com.pramoh.kbcqna
 
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.viewModels
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         exoplayerViewModel.stop()
-        exoplayerViewModel.player?.release()
+        exoplayerViewModel.getMusicPlayer()?.release()
     }
 
     private fun hideSystemBars() {
@@ -55,6 +55,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun attachExoPlayer() {
-        binding.exoplayer.player = exoplayerViewModel.player
+        binding.exoplayer.player = exoplayerViewModel.getMusicPlayer()
     }
 }

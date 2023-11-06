@@ -12,10 +12,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import com.pramoh.kbcqna.R
 
 
 open class BaseFragment: Fragment() {
+
+    private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
     fun showComingSoonToast() {
         Toast.makeText(context, "Feature Coming Soon", Toast.LENGTH_SHORT).show()
@@ -70,5 +77,36 @@ open class BaseFragment: Fragment() {
                             or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                             or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
         }
+    }
+
+    protected fun playAudio(audioRes: Int) {
+        if (exoplayerViewModel.isSoundOn.value == true) {
+            exoplayerViewModel.setupAndPlay(audioRes)
+        }
+    }
+
+    protected fun stopExoPlayer() {
+        exoplayerViewModel.stop()
+    }
+
+    protected fun setAudioTransitionFromQuestionnaireToTicktock(questionToBeAsked: Int) {
+        exoplayerViewModel.getMusicPlayer()?.addListener(
+            object : Player.Listener {
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    super.onPlaybackStateChanged(playbackState)
+                    if (playbackState == ExoPlayer.STATE_ENDED) {
+                        val mediaItem =
+                            MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.audio_questionnaire))
+                        if (exoplayerViewModel.getMusicPlayer()?.currentMediaItem == mediaItem) {
+                            stopExoPlayer()
+                            if (questionToBeAsked >= 8)
+                                playAudio(R.raw.audio_suspense)
+                            else
+                                playAudio(R.raw.audio_tick_tock)
+                        }
+                    }
+                }
+            }
+        )
     }
 }

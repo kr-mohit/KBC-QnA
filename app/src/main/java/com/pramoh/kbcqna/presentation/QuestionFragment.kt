@@ -2,7 +2,6 @@ package com.pramoh.kbcqna.presentation
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
 import dagger.hilt.android.AndroidEntryPoint
-import com.pramoh.kbcqna.utils.Constants
 
 @AndroidEntryPoint
 class QuestionFragment : BaseFragment() {
@@ -28,10 +22,13 @@ class QuestionFragment : BaseFragment() {
     private lateinit var binding: FragmentQuestionBinding
     private val questionViewModel: QuestionViewModel by activityViewModels()
     private val timerViewModel: TimerViewModel by viewModels()
-    private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
     private val args: PrizeListFragmentArgs by navArgs()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_question, container, false)
         return binding.root
     }
@@ -56,12 +53,6 @@ class QuestionFragment : BaseFragment() {
                 tvOption2.text = question.option2
                 tvOption3.text = question.option3
                 tvOption4.text = question.option4
-            }
-        }
-
-        exoplayerViewModel.isSoundOn.observe(viewLifecycleOwner) {
-            if (it) {
-                exoplayerViewModel.setupAndPlay(R.raw.audio_questionnaire)
             }
         }
 
@@ -141,7 +132,18 @@ class QuestionFragment : BaseFragment() {
 
     private fun disableAllButtonsClick() {
         with(binding) {
-            val allButtonList = listOf(ivLifeline1, ivLifeline2, ivLifeline3, ivLifeline4, tvQuit, tvOption1, tvOption2, tvOption3, tvOption4, btnLock)
+            val allButtonList = listOf(
+                ivLifeline1,
+                ivLifeline2,
+                ivLifeline3,
+                ivLifeline4,
+                tvQuit,
+                tvOption1,
+                tvOption2,
+                tvOption3,
+                tvOption4,
+                btnLock
+            )
             allButtonList.forEach { it.isClickable = false }
         }
     }
@@ -165,7 +167,6 @@ class QuestionFragment : BaseFragment() {
         }
     }
 
-
     private fun setTimer() {
         if (args.questionToBeAsked >= 8) {
             binding.tvTimer.visibility = View.GONE
@@ -185,19 +186,18 @@ class QuestionFragment : BaseFragment() {
 
     private fun showResult(result: String, correctOptionNumber: Int = 0) {
 
-        exoplayerViewModel.stop()
+        stopExoPlayer()
 
         when (result) {
 
             RIGHT_ANSWER -> {
-                changeOptionColors(
-                    questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green
-                )
-                if (exoplayerViewModel.isSoundOn.value == true) { // TODO: can put this condition in viewmodel
-                    exoplayerViewModel.setupAndPlay(R.raw.audio_correct_answer)
-                }
+                changeOptionColors(questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green)
+                playAudio(R.raw.audio_correct_answer)
                 val destination = if (args.questionToBeAsked > 14) {
-                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, "Rs. 10 Crore")
+                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                        true,
+                        "Rs. 10 Crore"
+                    )
                 } else {
                     QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
                 }
@@ -209,31 +209,32 @@ class QuestionFragment : BaseFragment() {
                     questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_red,
                     correctOptionNumber to R.drawable.background_metallic_green
                 )
-                if (exoplayerViewModel.isSoundOn.value == true) {
-                    exoplayerViewModel.setupAndPlay(R.raw.audio_wrong_answer)
-                }
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getLastSafeZone())
+                playAudio(R.raw.audio_wrong_answer)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                    false,
+                    questionViewModel.getLastSafeZone()
+                )
                 navigateWithDelay(destination, 7000)
             }
 
             TIMER_UP -> {
-                changeOptionColors(
-                    correctOptionNumber to R.drawable.background_metallic_green
+                changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
+                playAudio(R.raw.audio_wrong_answer)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                    false,
+                    questionViewModel.getLastSafeZone()
                 )
-                if (exoplayerViewModel.isSoundOn.value == true) {
-                    exoplayerViewModel.setupAndPlay(R.raw.audio_wrong_answer)
-                }
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getLastSafeZone())
                 navigateWithDelay(destination)
-                // TODO: play timer up sound
+                playAudio(R.raw.audio_wrong_answer)
             }
 
             QUIT -> {
-                changeOptionColors(
-                    correctOptionNumber to R.drawable.background_metallic_green
+                changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
+                playAudio(R.raw.audio_wrong_answer)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                    false,
+                    questionViewModel.getMoneyWonTillNow()
                 )
-                // TODO: play quit sound
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getMoneyWonTillNow())
                 navigateWithDelay(destination)
             }
         }
@@ -241,32 +242,15 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun navigateWithDelay(destination: NavDirections, delayDuration: Long = 5000) {
-        exoplayerViewModel.stop()
         Handler().postDelayed({
+            stopExoPlayer()
             findNavController().navigate(destination)
         }, delayDuration)
     }
 
     private fun setAudio() {
-        exoplayerViewModel.player?.addListener(
-            object : Player.Listener {
-                override fun onPlaybackStateChanged(playbackState: Int) {
-                    Log.d("idonnoe", "onPlaybackStateChanged() called")
-                    super.onPlaybackStateChanged(playbackState)
-                    if (playbackState == ExoPlayer.STATE_ENDED) {
-                        Log.d("idonnoe", "onPlaybackStateChanged() called")
-                        val mediaItem = MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.audio_questionnaire))
-                        if (exoplayerViewModel.player?.currentMediaItem == mediaItem) {
-                            exoplayerViewModel.stop()
-                            if (args.questionToBeAsked >= 8)
-                                exoplayerViewModel.setupAndPlay(R.raw.audio_suspense)
-                            else
-                                exoplayerViewModel.setupAndPlay(R.raw.audio_tick_tock)
-                        }
-                    }
-                }
-            }
-        )
+        playAudio(R.raw.audio_questionnaire)
+        setAudioTransitionFromQuestionnaireToTicktock(args.questionToBeAsked)
     }
 
     companion object {

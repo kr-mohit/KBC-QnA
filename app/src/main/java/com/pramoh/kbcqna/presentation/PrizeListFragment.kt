@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,7 +18,6 @@ class PrizeListFragment : BaseFragment() {
 
     private lateinit var binding: FragmentPrizeListBinding
     private val prizeListViewModel: PrizeListViewModel by viewModels()
-    private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
     private val args: PrizeListFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -32,6 +30,7 @@ class PrizeListFragment : BaseFragment() {
 
         setObservers()
         setOnClickListeners()
+        setAudio()
     }
 
     private fun setObservers() {
@@ -39,18 +38,16 @@ class PrizeListFragment : BaseFragment() {
             binding.listView.adapter = PrizeListAdapter(it, args.questionToBeAsked)
             binding.listView.layoutManager = LinearLayoutManager(context)
         }
-
-        exoplayerViewModel.isSoundOn.observe(viewLifecycleOwner) {
-            if (it) {
-                exoplayerViewModel.setupAndPlay(R.raw.audio_prize_list)
-            }
-        }
     }
 
     private fun setOnClickListeners() {
         binding.btnNext.setOnClickListener {
-            exoplayerViewModel.stop()
+            stopExoPlayer()
             findNavController().navigate(PrizeListFragmentDirections.actionPrizeListFragmentToQuestionFragment(args.questionToBeAsked))
         }
+    }
+
+    private fun setAudio() {
+        playAudio(R.raw.audio_prize_list)
     }
 }

@@ -24,38 +24,43 @@ class ExoplayerViewModel @Inject constructor(
     val isSoundOn: LiveData<Boolean>
         get() = _isSoundOn
 
-    var player: ExoPlayer ?= null
+    private var musicPlayer: ExoPlayer ?= null
+
 
     init {
-        player = ExoPlayer.Builder(context).build()
+        musicPlayer = ExoPlayer.Builder(context).build()
     }
 
     fun getAudioSharedPref() {
-        val value1 = getSoundPreferenceUseCase.invoke()
-        _isSoundOn.postValue(value1)
+        val value = getSoundPreferenceUseCase.invoke()
+        _isSoundOn.postValue(value)
+    }
+
+    fun getMusicPlayer(): ExoPlayer? {
+        return musicPlayer
     }
 
     fun setupAndPlay(audioRedId: Int) {
         val mediaItem = MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(audioRedId))
-        if (player?.currentMediaItem != mediaItem) {
-            player?.setMediaItem(mediaItem)
-            player?.playWhenReady = true
-            player?.prepare()
-            player?.play()
+        if (musicPlayer?.currentMediaItem != mediaItem) {
+            musicPlayer?.setMediaItem(mediaItem)
+            musicPlayer?.playWhenReady = true
+            musicPlayer?.prepare()
+            musicPlayer?.play()
         }
     }
 
     fun play() {
-        player?.play()
+        musicPlayer?.play()
     }
 
     fun pause() {
-        player?.pause()
+        musicPlayer?.pause()
     }
 
     fun stop() {
-        player?.stop()
-        player?.removeMediaItem(0)
+        musicPlayer?.stop()
+        musicPlayer?.removeMediaItem(0)
     }
 
     fun setSoundOnOff() {

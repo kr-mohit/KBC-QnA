@@ -71,7 +71,7 @@ dependencies {
     implementation ("androidx.fragment:fragment-ktx:1.6.1")
 
     // Hilt viewmodel (For activityViewModels())
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
 
     // Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
