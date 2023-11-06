@@ -40,7 +40,8 @@ class HomeFragment: BaseFragment() {
 
     private fun fetchSavedData() {
         homeViewModel.getWonLostData()
-        exoplayerViewModel.getAudioSharedPref()
+        exoplayerViewModel.getMusicSharedPref()
+        exoplayerViewModel.getSfxAudioSharedPref()
     }
 
     private fun setObservers() {
@@ -57,7 +58,7 @@ class HomeFragment: BaseFragment() {
                 is Response.Success -> {
                     binding.homeProgressBar.visibility = View.GONE
                     if (homeViewModel.getOnStartClicked()) {
-                        exoplayerViewModel.stop()
+                        exoplayerViewModel.stopMusicPlayer()
                         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPrizeListFragment(1))
                     }
                 }
@@ -68,17 +69,18 @@ class HomeFragment: BaseFragment() {
             }
         }
 
-        exoplayerViewModel.isSoundOn.observe(viewLifecycleOwner) {
+        exoplayerViewModel.isMusicOn.observe(viewLifecycleOwner) {
             if (it) {
-                exoplayerViewModel.setupAndPlay(R.raw.audio_home_screen)
+                exoplayerViewModel.setupAndPlayMusicPlayer(R.raw.audio_home_screen)
             } else {
-                exoplayerViewModel.stop()
+                exoplayerViewModel.stopMusicPlayer()
             }
         }
     }
 
     private fun setOnClickListeners() {
         binding.btnStart.setOnClickListener {
+            playSfxAudio()
             if (NetworkUtils.isOnline(requireContext())) {
                 homeViewModel.setOnStarClicked(true)
                 questionViewModel.fetchQuestions(Constants.FULL_URL)
@@ -88,6 +90,7 @@ class HomeFragment: BaseFragment() {
         }
 
         binding.btnSettings.setOnClickListener {
+            playSfxAudio()
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
         }
     }

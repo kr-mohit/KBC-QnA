@@ -47,6 +47,7 @@ open class BaseFragment: Fragment() {
             visibility = if (positiveButtonText != null) View.VISIBLE else View.GONE
             text = positiveButtonText
             setOnClickListener {
+                playSfxAudio()
                 positiveButtonAction?.invoke()
                 dialog.dismiss()
             }
@@ -54,6 +55,7 @@ open class BaseFragment: Fragment() {
         negativeButton.apply {
             text = negativeButtonText
             setOnClickListener {
+                playSfxAudio()
                 dialog.dismiss()
             }
         }
@@ -79,14 +81,20 @@ open class BaseFragment: Fragment() {
         }
     }
 
-    protected fun playAudio(audioRes: Int) {
-        if (exoplayerViewModel.isSoundOn.value == true) {
-            exoplayerViewModel.setupAndPlay(audioRes)
+    protected fun playMusic(audioRes: Int) {
+        if (exoplayerViewModel.isMusicOn.value == true) {
+            exoplayerViewModel.setupAndPlayMusicPlayer(audioRes)
         }
     }
 
-    protected fun stopExoPlayer() {
-        exoplayerViewModel.stop()
+    protected fun playSfxAudio() {
+        if (exoplayerViewModel.isSfxAudioOn.value == true) {
+            exoplayerViewModel.setupAndPlaySfxAudioPlayer(R.raw.audio_button_click)
+        }
+    }
+
+    protected fun stopMusicPlayer() {
+        exoplayerViewModel.stopMusicPlayer()
     }
 
     protected fun setAudioTransitionFromQuestionnaireToTicktock(questionToBeAsked: Int) {
@@ -98,11 +106,11 @@ open class BaseFragment: Fragment() {
                         val mediaItem =
                             MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.audio_questionnaire))
                         if (exoplayerViewModel.getMusicPlayer()?.currentMediaItem == mediaItem) {
-                            stopExoPlayer()
+                            stopMusicPlayer()
                             if (questionToBeAsked >= 8)
-                                playAudio(R.raw.audio_suspense)
+                                playMusic(R.raw.audio_suspense)
                             else
-                                playAudio(R.raw.audio_tick_tock)
+                                playMusic(R.raw.audio_tick_tock)
                         }
                     }
                 }

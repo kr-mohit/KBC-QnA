@@ -85,6 +85,7 @@ class QuestionFragment : BaseFragment() {
             ivLifeline4.setOnClickListener { handleLifelineClick(4) }
 
             tvQuit.setOnClickListener {
+                playSfxAudio()
                 showDialog(
                     requireContext(),
                     "Do you want to Quit?\nYou will be getting ${questionViewModel.getMoneyWonTillNow()}",
@@ -101,6 +102,7 @@ class QuestionFragment : BaseFragment() {
             }
 
             btnLock.setOnClickListener {
+                playSfxAudio()
                 timerViewModel.cancelTimer()
                 disableAllButtonsClick()
                 questionViewModel.currentQuestion.value?.let {
@@ -115,6 +117,7 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun handleOptionClick(option: Int) {
+        playSfxAudio()
         changeOptionColors(option to R.drawable.background_metallic_gold)
         binding.btnLock.setBackgroundColor(requireContext().getColor(R.color.metallic_green))
         binding.btnLock.isEnabled = true
@@ -122,10 +125,11 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun handleLifelineClick(lifeline: Int) {
+        playSfxAudio()
         questionViewModel.onLifelineClick()
         showDialog(
             requireContext(),
-            "Coming Soon\nStay Tuned...",
+            "Lifeline $lifeline coming soon\nStay Tuned...",
             "Okay"
         )
     }
@@ -185,14 +189,12 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun showResult(result: String, correctOptionNumber: Int = 0) {
-
-        stopExoPlayer()
-
+        stopMusicPlayer()
         when (result) {
 
             RIGHT_ANSWER -> {
                 changeOptionColors(questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green)
-                playAudio(R.raw.audio_correct_answer)
+                playMusic(R.raw.audio_correct_answer)
                 val destination = if (args.questionToBeAsked > 14) {
                     QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
                         true,
@@ -209,7 +211,7 @@ class QuestionFragment : BaseFragment() {
                     questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_red,
                     correctOptionNumber to R.drawable.background_metallic_green
                 )
-                playAudio(R.raw.audio_wrong_answer)
+                playMusic(R.raw.audio_wrong_answer)
                 val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
                     false,
                     questionViewModel.getLastSafeZone()
@@ -219,18 +221,18 @@ class QuestionFragment : BaseFragment() {
 
             TIMER_UP -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
-                playAudio(R.raw.audio_wrong_answer)
+                playMusic(R.raw.audio_wrong_answer)
                 val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
                     false,
                     questionViewModel.getLastSafeZone()
                 )
                 navigateWithDelay(destination)
-                playAudio(R.raw.audio_wrong_answer)
+                playMusic(R.raw.audio_wrong_answer)
             }
 
             QUIT -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
-                playAudio(R.raw.audio_wrong_answer)
+                playMusic(R.raw.audio_wrong_answer)
                 val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
                     false,
                     questionViewModel.getMoneyWonTillNow()
@@ -243,13 +245,13 @@ class QuestionFragment : BaseFragment() {
 
     private fun navigateWithDelay(destination: NavDirections, delayDuration: Long = 5000) {
         Handler().postDelayed({
-            stopExoPlayer()
+            stopMusicPlayer()
             findNavController().navigate(destination)
         }, delayDuration)
     }
 
     private fun setAudio() {
-        playAudio(R.raw.audio_questionnaire)
+        playMusic(R.raw.audio_questionnaire)
         setAudioTransitionFromQuestionnaireToTicktock(args.questionToBeAsked)
     }
 

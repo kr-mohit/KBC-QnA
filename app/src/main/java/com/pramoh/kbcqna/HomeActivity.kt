@@ -39,8 +39,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        exoplayerViewModel.stop()
-        exoplayerViewModel.getMusicPlayer()?.release()
+        exoplayerViewModel.destroy()
     }
 
     private fun hideSystemBars() {
@@ -55,6 +54,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun attachExoPlayer() {
-        binding.exoplayer.player = exoplayerViewModel.getMusicPlayer()
+        binding.exoplayerMusic.player = exoplayerViewModel.getMusicPlayer()
+        binding.exoplayerSfxAudio.player = exoplayerViewModel.getSfxAudioPlayer()
     }
 }

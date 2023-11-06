@@ -33,19 +33,30 @@ class SettingsFragment : BaseFragment() {
 
     private fun getSavedData() {
         settingViewModel.getRegionSharedPref()
-        exoplayerViewModel.getAudioSharedPref()
+        exoplayerViewModel.getMusicSharedPref()
+        exoplayerViewModel.getSfxAudioSharedPref()
     }
 
     private fun setObservers() {
 
-        exoplayerViewModel.isSoundOn.observe(viewLifecycleOwner) {
+        exoplayerViewModel.isMusicOn.observe(viewLifecycleOwner) {
 
             if (it) {
-                binding.btnSound.text = getString(R.string.on)
-                exoplayerViewModel.setupAndPlay(R.raw.audio_home_screen)
+                binding.btnMusic.text = getString(R.string.on)
+                exoplayerViewModel.setupAndPlayMusicPlayer(R.raw.audio_home_screen)
             } else {
-                binding.btnSound.text = getString(R.string.off)
-                exoplayerViewModel.stop()
+                binding.btnMusic.text = getString(R.string.off)
+                exoplayerViewModel.stopMusicPlayer()
+            }
+        }
+
+        exoplayerViewModel.isSfxAudioOn.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.btnSfxAudio.text = getString(R.string.on)
+                exoplayerViewModel.setupAndPlaySfxAudioPlayer(R.raw.audio_button_click)
+            } else {
+                binding.btnSfxAudio.text = getString(R.string.off)
+                exoplayerViewModel.stopSfxAudioPlayer()
             }
         }
 
@@ -60,17 +71,23 @@ class SettingsFragment : BaseFragment() {
 
     private fun setOnClickListeners() {
 
-        binding.btnSound.setOnClickListener {
-            showComingSoonToast()
-            exoplayerViewModel.setSoundOnOff()
+        binding.btnMusic.setOnClickListener {
+            playSfxAudio()
+            exoplayerViewModel.setMusicOnOff()
+        }
+
+        binding.btnSfxAudio.setOnClickListener {
+            exoplayerViewModel.setSfxAudioOnOff()
         }
 
         binding.btnRegion.setOnClickListener {
+            playSfxAudio()
             showComingSoonToast()
 //            settingViewModel.onRegionClicked()
         }
 
         binding.btnBack.setOnClickListener {
+            playSfxAudio()
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
