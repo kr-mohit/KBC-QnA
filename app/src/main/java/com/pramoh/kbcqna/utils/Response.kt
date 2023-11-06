@@ -1,10 +1,8 @@
 package com.pramoh.kbcqna.utils
 
-sealed class Response<T>(val data: T? = null, val message: String? = null) {
+sealed class Response<T>(val data: T? = null, val error: String? = null) {
 
-    class Success<T>(data: T) : Response<T>(data)
-
-    class Error<T>(message: String, data: T? = null) : Response<T>(data, message)
-
-    class Loading<T>(data: T? = null) : Response<T>(data)
+    class Loading<T> : Response<T>()
+    class Success<T>(data: T? = null) : Response<T>(data = data)
+    class Error<T>(errorMessage: String) : Response<T>(error = errorMessage)
 }
