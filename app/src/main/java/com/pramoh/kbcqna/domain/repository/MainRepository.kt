@@ -1,7 +1,10 @@
 package com.pramoh.kbcqna.domain.repository
 
+import com.pramoh.kbcqna.domain.model.Question
+import com.pramoh.kbcqna.utils.Response
+
 interface MainRepository {
 
-    fun getQuestions()
+    suspend fun getQuestionsFromRemote(url: String): Response<List<Question>>
 
 }

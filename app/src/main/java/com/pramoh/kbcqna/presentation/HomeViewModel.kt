@@ -17,7 +17,17 @@ class HomeViewModel @Inject constructor(
     val wonLostData: LiveData<WonLostData>
         get() = _wonLostData
 
+    private var onStartClicked: Boolean = false
+
     fun getWonLostData() {
         _wonLostData.postValue(getWonLostDataUseCase.invoke())
+    }
+
+    fun setOnStarClicked(value: Boolean) {
+        onStartClicked = value
+    }
+
+    fun getOnStartClicked(): Boolean {
+        return onStartClicked
     }
 }

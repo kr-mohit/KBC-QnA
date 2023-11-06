@@ -8,5 +8,8 @@ object Constants {
     const val PREF_LOST_DATA = "PREF_LOST_DATA"
     const val PREF_SOUND_ON_OFF = "PREF_SOUND_ON_OFF"
     const val PREF_REGION_SELECTED = "PREF_REGION_SELECTED"
+    const val BASE_URL = "https://script.googleusercontent.com/"
+    const val USER_CONTENT_KEY = "pZMuQugZ11zbM-UkIfk3pIgoDSiv6jZoToucQ1xQsDZYt8JRA8XNu87uAoPFwafJjYYm1zlyG7UDJZwoBGAzfDf85Lw4T7LDm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnILnCg881Nz4DhzbpPHT94WpvDQ-gsSZcWvZe2dlnII3DpwVYFROjLSNbC1ELBGQjDnqCCb5wyKSzDN1Q-5VdoDX79_0GvQkftz9Jw9Md8uu&lib=Me2utDzfdRNmVJjqYvXJz0DhJ4Mr1NMxp"
 
+    const val FULL_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=pZMuQugZ11zbM-UkIfk3pIgoDSiv6jZoToucQ1xQsDZYt8JRA8XNu87uAoPFwafJjYYm1zlyG7UDJZwoBGAzfDf85Lw4T7LDm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnILnCg881Nz4DhzbpPHT94WpvDQ-gsSZcWvZe2dlnII3DpwVYFROjLSNbC1ELBGQjDnqCCb5wyKSzDN1Q-5VdoDX79_0GvQkftz9Jw9Md8uu&lib=Me2utDzfdRNmVJjqYvXJz0DhJ4Mr1NMxp"
 }

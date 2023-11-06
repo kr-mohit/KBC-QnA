@@ -5,19 +5,22 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class QuestionFragment : BaseFragment() {
 
     private lateinit var binding: FragmentQuestionBinding
-    private val questionViewModel: QuestionViewModel by viewModels()
+    private val questionViewModel: QuestionViewModel by activityViewModels()
     private val timerViewModel: TimerViewModel by viewModels()
     private val args: PrizeListFragmentArgs by navArgs()
 
@@ -31,24 +34,14 @@ class QuestionFragment : BaseFragment() {
 
         setObservers()
         setOnClickListeners()
-        setUI()
-    }
-
-    private fun setUI() {
         setQuestion()
-        setTimer()
     }
 
     private fun setObservers() {
 
-        questionViewModel.isLockButtonClickable.observe(viewLifecycleOwner) {
-            val backgroundColor = if (it) R.color.metallic_green else R.color.metallic_grey
-            binding.btnLock.setBackgroundColor(requireContext().getColor(backgroundColor))
-            binding.btnLock.isClickable = it
-        }
-
         questionViewModel.currentQuestion.observe(viewLifecycleOwner) { question ->
             with(binding) {
+                setTimer()
                 tvPrizeAmount.text = question.prizeAmount
                 tvQuestion.text = question.question
                 tvOption1.text = question.option1
@@ -58,7 +51,7 @@ class QuestionFragment : BaseFragment() {
             }
         }
 
-        timerViewModel.didTimerEnd.observe(viewLifecycleOwner) {didTimeEnd ->
+        timerViewModel.didTimerEnd.observe(viewLifecycleOwner) { didTimeEnd ->
             if (didTimeEnd) {
                 questionViewModel.currentQuestion.value?.correctOptionNumber?.let {
                     disableAllButtonsClick()
@@ -89,11 +82,12 @@ class QuestionFragment : BaseFragment() {
             tvQuit.setOnClickListener {
                 showDialog(
                     requireContext(),
-                    "Do you want to Quit?\nYou will be getting ${questionViewModel.moneyWonTillNow}",
+                    "Do you want to Quit?\nYou will be getting ${questionViewModel.getMoneyWonTillNow()}",
                     "No",
                     "Yes",
                     positiveButtonAction = {
                         timerViewModel.cancelTimer()
+                        disableAllButtonsClick()
                         questionViewModel.currentQuestion.value?.correctOptionNumber?.let {
                             showResult(QUIT, it)
                         }
@@ -105,7 +99,7 @@ class QuestionFragment : BaseFragment() {
                 timerViewModel.cancelTimer()
                 disableAllButtonsClick()
                 questionViewModel.currentQuestion.value?.let {
-                    if (it.correctOptionNumber == questionViewModel.currentSelectedOption) {
+                    if (it.correctOptionNumber == questionViewModel.getCurrentSelectedOption()) {
                         showResult(RIGHT_ANSWER)
                     } else {
                         showResult(WRONG_ANSWER, it.correctOptionNumber)
@@ -116,16 +110,19 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun handleOptionClick(option: Int) {
-        changeOptionColors2(
-            option to R.drawable.background_metallic_gold
-        )
-        questionViewModel.onOptionClick(option)
+        changeOptionColors(option to R.drawable.background_metallic_gold)
+        binding.btnLock.setBackgroundColor(requireContext().getColor(R.color.metallic_green))
+        binding.btnLock.isEnabled = true
+        questionViewModel.setCurrentSelectedOption(option)
     }
 
     private fun handleLifelineClick(lifeline: Int) {
         questionViewModel.onLifelineClick()
-        showComingSoonToast()
-        // TODO: show lifeline pop up
+        showDialog(
+            requireContext(),
+            "Coming Soon\nStay Tuned...",
+            "Okay"
+        )
     }
 
     private fun disableAllButtonsClick() {
@@ -135,7 +132,7 @@ class QuestionFragment : BaseFragment() {
         }
     }
 
-    private fun changeOptionColors2(vararg options: Pair<Int, Int>) {
+    private fun changeOptionColors(vararg options: Pair<Int, Int>) {
         with(binding) {
             val defaultResId = R.drawable.background_metallic_blue
 
@@ -165,7 +162,11 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun setQuestion() {
-        questionViewModel.setCurrentQuestion(args.questionToBeAsked)
+        if (args.questionToBeAsked < 1 || args.questionToBeAsked > 15) {
+            Toast.makeText(context, "Question Number out of bounds", Toast.LENGTH_SHORT).show()
+        } else {
+            questionViewModel.setCurrentQuestion(args.questionToBeAsked)
+        }
     }
 
     private fun showResult(result: String, correctOptionNumber: Int = 0) {
@@ -173,8 +174,8 @@ class QuestionFragment : BaseFragment() {
         when (result) {
 
             RIGHT_ANSWER -> {
-                changeOptionColors2(
-                    questionViewModel.currentSelectedOption to R.drawable.background_metallic_green
+                changeOptionColors(
+                    questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green
                 )
                 val destination = if (args.questionToBeAsked > 14) {
                     QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, "Rs. 10 Crore")
@@ -185,27 +186,27 @@ class QuestionFragment : BaseFragment() {
             }
 
             WRONG_ANSWER -> {
-                changeOptionColors2(
-                    questionViewModel.currentSelectedOption to R.drawable.background_metallic_red,
+                changeOptionColors(
+                    questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_red,
                     correctOptionNumber to R.drawable.background_metallic_green
                 )
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.lastSafeZone)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getLastSafeZone())
                 navigateWithDelay(destination, 7000)
             }
 
             TIMER_UP -> {
-                changeOptionColors2(
+                changeOptionColors(
                     correctOptionNumber to R.drawable.background_metallic_green
                 )
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.lastSafeZone)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getLastSafeZone())
                 navigateWithDelay(destination)
             }
 
             QUIT -> {
-                changeOptionColors2(
+                changeOptionColors(
                     correctOptionNumber to R.drawable.background_metallic_green
                 )
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.moneyWonTillNow)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getMoneyWonTillNow())
                 navigateWithDelay(destination)
             }
         }
