@@ -30,6 +30,7 @@ class ResultFragment: BaseFragment() {
         setUI()
         setOnClickListeners()
         saveWonLostData(args.didUserWin)
+        setAudio()
     }
 
     private fun setUI() {
@@ -45,24 +46,32 @@ class ResultFragment: BaseFragment() {
 
     private fun setOnClickListeners() {
         binding.btnShareCheque.setOnClickListener {
+            playSfxAudio()
             showComingSoonToast()
         }
 
         binding.btnShareGame.setOnClickListener {
+            playSfxAudio()
             showComingSoonToast()
         }
 
         binding.btnMoreGames.setOnClickListener {
+            playSfxAudio()
             showComingSoonToast()
         }
 
         binding.btnStartAgain.setOnClickListener {
+            playSfxAudio()
+            stopMusicPlayer()
             findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHomeFragment())
         }
     }
 
+    private fun setAudio() {
+        playMusic(R.raw.audio_result_screen)
+    }
+
     private fun saveWonLostData(didUserWin: Boolean) {
-        // TODO: find out whether user won or lost
         resultViewModel.saveWonLostData(didUserWin)
     }
 }

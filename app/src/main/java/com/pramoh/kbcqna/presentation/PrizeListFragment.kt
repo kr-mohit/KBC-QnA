@@ -30,6 +30,7 @@ class PrizeListFragment : BaseFragment() {
 
         setObservers()
         setOnClickListeners()
+        setMusic()
     }
 
     private fun setObservers() {
@@ -41,7 +42,13 @@ class PrizeListFragment : BaseFragment() {
 
     private fun setOnClickListeners() {
         binding.btnNext.setOnClickListener {
+            playSfxAudio()
+            stopMusicPlayer()
             findNavController().navigate(PrizeListFragmentDirections.actionPrizeListFragmentToQuestionFragment(args.questionToBeAsked))
         }
+    }
+
+    private fun setMusic() {
+        playMusic(R.raw.audio_prize_list)
     }
 }

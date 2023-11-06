@@ -12,10 +12,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import com.pramoh.kbcqna.R
 
 
 open class BaseFragment: Fragment() {
+
+    private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
     fun showComingSoonToast() {
         Toast.makeText(context, "Feature Coming Soon", Toast.LENGTH_SHORT).show()
@@ -40,6 +47,7 @@ open class BaseFragment: Fragment() {
             visibility = if (positiveButtonText != null) View.VISIBLE else View.GONE
             text = positiveButtonText
             setOnClickListener {
+                playSfxAudio()
                 positiveButtonAction?.invoke()
                 dialog.dismiss()
             }
@@ -47,6 +55,7 @@ open class BaseFragment: Fragment() {
         negativeButton.apply {
             text = negativeButtonText
             setOnClickListener {
+                playSfxAudio()
                 dialog.dismiss()
             }
         }
@@ -70,5 +79,42 @@ open class BaseFragment: Fragment() {
                             or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                             or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
         }
+    }
+
+    protected fun playMusic(audioRes: Int) {
+        if (exoplayerViewModel.isMusicOn.value == true) {
+            exoplayerViewModel.setupAndPlayMusicPlayer(audioRes)
+        }
+    }
+
+    protected fun playSfxAudio() {
+        if (exoplayerViewModel.isSfxAudioOn.value == true) {
+            exoplayerViewModel.setupAndPlaySfxAudioPlayer(R.raw.audio_button_click)
+        }
+    }
+
+    protected fun stopMusicPlayer() {
+        exoplayerViewModel.stopMusicPlayer()
+    }
+
+    protected fun setAudioTransitionFromQuestionnaireToTicktock(questionToBeAsked: Int) {
+        exoplayerViewModel.getMusicPlayer()?.addListener(
+            object : Player.Listener {
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    super.onPlaybackStateChanged(playbackState)
+                    if (playbackState == ExoPlayer.STATE_ENDED) {
+                        val mediaItem =
+                            MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.audio_questionnaire))
+                        if (exoplayerViewModel.getMusicPlayer()?.currentMediaItem == mediaItem) {
+                            stopMusicPlayer()
+                            if (questionToBeAsked >= 8)
+                                playMusic(R.raw.audio_suspense)
+                            else
+                                playMusic(R.raw.audio_tick_tock)
+                        }
+                    }
+                }
+            }
+        )
     }
 }

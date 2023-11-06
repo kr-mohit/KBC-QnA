@@ -6,33 +6,56 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        android:padding="20dp"
         android:background="@color/metallic_violet"
         tools:context=".presentation.SettingsFragment">
 
         <TextView
-            android:id="@+id/tv_sound"
+            android:id="@+id/tv_music"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sound"
+            android:text="@string/music"
             android:textSize="26sp"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_sound"
-            app:layout_constraintTop_toTopOf="@id/btn_sound"
-            app:layout_constraintBottom_toBottomOf="@id/btn_sound" />
+            app:layout_constraintEnd_toStartOf="@id/btn_music"
+            app:layout_constraintTop_toTopOf="@id/btn_music"
+            app:layout_constraintBottom_toBottomOf="@id/btn_music" />
 
         <Button
-            android:id="@+id/btn_sound"
+            android:id="@+id/btn_music"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="OFF"
             android:background="@drawable/background_metallic_blue"
             app:layout_constraintVertical_bias="0.33"
-            app:layout_constraintStart_toEndOf="@id/tv_sound"
+            app:layout_constraintStart_toEndOf="@id/tv_music"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_sfx_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sfx_sound"
+            android:textSize="26sp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_sfx_Audio"
+            app:layout_constraintTop_toTopOf="@id/btn_sfx_Audio"
+            app:layout_constraintBottom_toBottomOf="@id/btn_sfx_Audio" />
+
+        <Button
+            android:id="@+id/btn_sfx_Audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="OFF"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_metallic_blue"
+            app:layout_constraintStart_toEndOf="@id/tv_region"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_music" />
 
         <TextView
             android:id="@+id/tv_region"
@@ -42,7 +65,7 @@
             android:textSize="26sp"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_sound"
+            app:layout_constraintEnd_toStartOf="@id/btn_region"
             app:layout_constraintTop_toTopOf="@id/btn_region"
             app:layout_constraintBottom_toBottomOf="@id/btn_region" />
 
@@ -55,7 +78,7 @@
             android:background="@drawable/background_metallic_blue"
             app:layout_constraintStart_toEndOf="@id/tv_region"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_sound" />
+            app:layout_constraintTop_toBottomOf="@id/btn_sfx_Audio" />
 
         <Button
             android:id="@+id/btn_back"

@@ -8,6 +8,22 @@
         android:layout_height="match_parent"
         tools:context=".HomeActivity">
 
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/exoplayer_music"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.google.android.exoplayer2.ui.StyledPlayerView
+            android:id="@+id/exoplayer_sfx_audio"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/container_fragment"
             android:layout_width="match_parent"

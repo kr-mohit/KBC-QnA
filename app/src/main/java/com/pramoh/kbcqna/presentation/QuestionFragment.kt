@@ -24,7 +24,11 @@ class QuestionFragment : BaseFragment() {
     private val timerViewModel: TimerViewModel by viewModels()
     private val args: PrizeListFragmentArgs by navArgs()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_question, container, false)
         return binding.root
     }
@@ -35,6 +39,7 @@ class QuestionFragment : BaseFragment() {
         setObservers()
         setOnClickListeners()
         setQuestion()
+        setAudio()
     }
 
     private fun setObservers() {
@@ -80,6 +85,7 @@ class QuestionFragment : BaseFragment() {
             ivLifeline4.setOnClickListener { handleLifelineClick(4) }
 
             tvQuit.setOnClickListener {
+                playSfxAudio()
                 showDialog(
                     requireContext(),
                     "Do you want to Quit?\nYou will be getting ${questionViewModel.getMoneyWonTillNow()}",
@@ -96,6 +102,7 @@ class QuestionFragment : BaseFragment() {
             }
 
             btnLock.setOnClickListener {
+                playSfxAudio()
                 timerViewModel.cancelTimer()
                 disableAllButtonsClick()
                 questionViewModel.currentQuestion.value?.let {
@@ -110,6 +117,7 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun handleOptionClick(option: Int) {
+        playSfxAudio()
         changeOptionColors(option to R.drawable.background_metallic_gold)
         binding.btnLock.setBackgroundColor(requireContext().getColor(R.color.metallic_green))
         binding.btnLock.isEnabled = true
@@ -117,17 +125,29 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun handleLifelineClick(lifeline: Int) {
+        playSfxAudio()
         questionViewModel.onLifelineClick()
         showDialog(
             requireContext(),
-            "Coming Soon\nStay Tuned...",
+            "Lifeline $lifeline coming soon\nStay Tuned...",
             "Okay"
         )
     }
 
     private fun disableAllButtonsClick() {
         with(binding) {
-            val allButtonList = listOf(ivLifeline1, ivLifeline2, ivLifeline3, ivLifeline4, tvQuit, tvOption1, tvOption2, tvOption3, tvOption4, btnLock)
+            val allButtonList = listOf(
+                ivLifeline1,
+                ivLifeline2,
+                ivLifeline3,
+                ivLifeline4,
+                tvQuit,
+                tvOption1,
+                tvOption2,
+                tvOption3,
+                tvOption4,
+                btnLock
+            )
             allButtonList.forEach { it.isClickable = false }
         }
     }
@@ -151,7 +171,6 @@ class QuestionFragment : BaseFragment() {
         }
     }
 
-
     private fun setTimer() {
         if (args.questionToBeAsked >= 8) {
             binding.tvTimer.visibility = View.GONE
@@ -170,15 +189,17 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun showResult(result: String, correctOptionNumber: Int = 0) {
-
+        stopMusicPlayer()
         when (result) {
 
             RIGHT_ANSWER -> {
-                changeOptionColors(
-                    questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green
-                )
+                changeOptionColors(questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green)
+                playMusic(R.raw.audio_correct_answer)
                 val destination = if (args.questionToBeAsked > 14) {
-                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, "Rs. 10 Crore")
+                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                        true,
+                        "Rs. 10 Crore"
+                    )
                 } else {
                     QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
                 }
@@ -190,23 +211,32 @@ class QuestionFragment : BaseFragment() {
                     questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_red,
                     correctOptionNumber to R.drawable.background_metallic_green
                 )
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getLastSafeZone())
+                playMusic(R.raw.audio_wrong_answer)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                    false,
+                    questionViewModel.getLastSafeZone()
+                )
                 navigateWithDelay(destination, 7000)
             }
 
             TIMER_UP -> {
-                changeOptionColors(
-                    correctOptionNumber to R.drawable.background_metallic_green
+                changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
+                playMusic(R.raw.audio_wrong_answer)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                    false,
+                    questionViewModel.getLastSafeZone()
                 )
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getLastSafeZone())
                 navigateWithDelay(destination)
+                playMusic(R.raw.audio_wrong_answer)
             }
 
             QUIT -> {
-                changeOptionColors(
-                    correctOptionNumber to R.drawable.background_metallic_green
+                changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
+                playMusic(R.raw.audio_wrong_answer)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                    false,
+                    questionViewModel.getMoneyWonTillNow()
                 )
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getMoneyWonTillNow())
                 navigateWithDelay(destination)
             }
         }
@@ -215,8 +245,14 @@ class QuestionFragment : BaseFragment() {
 
     private fun navigateWithDelay(destination: NavDirections, delayDuration: Long = 5000) {
         Handler().postDelayed({
+            stopMusicPlayer()
             findNavController().navigate(destination)
         }, delayDuration)
+    }
+
+    private fun setAudio() {
+        playMusic(R.raw.audio_questionnaire)
+        setAudioTransitionFromQuestionnaireToTicktock(args.questionToBeAsked)
     }
 
     companion object {

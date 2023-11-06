@@ -23,12 +23,20 @@ class SharedPrefRepositoryImpl(val context: Context): SharedPrefRepository {
         )
     }
 
-    override fun setSoundOnOff(value: Boolean) {
-        Constants.PREF_SOUND_ON_OFF.put(value)
+    override fun setMusicOnOff(value: Boolean) {
+        Constants.PREF_MUSIC_ON_OFF.put(value)
     }
 
-    override fun getSoundOnOff(): Boolean {
-        return Constants.PREF_SOUND_ON_OFF.getBoolean()
+    override fun getMusicOnOff(): Boolean {
+        return Constants.PREF_MUSIC_ON_OFF.getBoolean()
+    }
+
+    override fun setSfxAudioOnOff(value: Boolean) {
+        Constants.PREF_SFX_AUDIO_ON_OFF.put(value)
+    }
+
+    override fun getSfxAudioOnOff(): Boolean {
+        return Constants.PREF_SFX_AUDIO_ON_OFF.getBoolean()
     }
 
     override fun setSelectedRegion(value: String) {
@@ -59,12 +67,5 @@ class SharedPrefRepositoryImpl(val context: Context): SharedPrefRepository {
     }
 
     private fun String.getBoolean() = pref.getBoolean(this, false)
-
-    private fun String.put(long: Long) {
-        editor.putLong(this, long)
-        editor.commit()
-    }
-
-    private fun String.getLong() = pref.getLong(this, 0)
 
 }
