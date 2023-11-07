@@ -24,6 +24,8 @@ class ExoplayerViewModel @Inject constructor(
     private val getSfxAudioPreferenceUseCase: GetSfxAudioPreferenceUseCase
 ): ViewModel() {
 
+    private lateinit var musicTransitionState: MusicTransitionState
+
     private val _isMusicOn = MutableLiveData<Boolean>()
     val isMusicOn: LiveData<Boolean>
         get() = _isMusicOn
@@ -57,6 +59,14 @@ class ExoplayerViewModel @Inject constructor(
 
     fun getSfxAudioPlayer(): ExoPlayer? {
         return sfxAudioPlayer
+    }
+
+    fun getMusicTransitionState(): MusicTransitionState {
+        return musicTransitionState
+    }
+
+    fun setMusicTransitionState(state: MusicTransitionState) {
+        musicTransitionState = state
     }
 
     fun setupAndPlayMusicPlayer(audioRedId: Int) {
@@ -127,5 +137,9 @@ class ExoplayerViewModel @Inject constructor(
             _isSfxAudioOn.postValue(true)
             setSfxAudioPreferenceUseCase.invoke(true)
         }
+    }
+
+    enum class MusicTransitionState {
+        QUESTIONNAIRE_TO_TICKTOCK, QUESTIONNAIRE_TO_SUSPENSE
     }
 }

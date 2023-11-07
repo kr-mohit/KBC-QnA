@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
+import com.pramoh.kbcqna.presentation.ExoplayerViewModel.MusicTransitionState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -252,7 +253,11 @@ class QuestionFragment : BaseFragment() {
 
     private fun setAudio() {
         playMusic(R.raw.audio_questionnaire)
-        setAudioTransitionFromQuestionnaireToTicktock(args.questionToBeAsked)
+        if (args.questionToBeAsked > 9) {
+            setMusicAfterQuestionnaire(MusicTransitionState.QUESTIONNAIRE_TO_SUSPENSE)
+        } else {
+            setMusicAfterQuestionnaire(MusicTransitionState.QUESTIONNAIRE_TO_TICKTOCK)
+        }
     }
 
     companion object {

@@ -10,7 +10,7 @@ class LoggingInterceptor: Interceptor {
         val request: Request = chain.request()
         val url = request.url.toString()
 
-        Log.d("idonnoe", url)
+        Log.d("mohit", url)
 
         return chain.proceed(request)
     }

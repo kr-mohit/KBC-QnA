@@ -18,6 +18,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import com.pramoh.kbcqna.R
+import com.pramoh.kbcqna.presentation.ExoplayerViewModel.MusicTransitionState
 
 
 open class BaseFragment: Fragment() {
@@ -81,23 +82,24 @@ open class BaseFragment: Fragment() {
         }
     }
 
-    protected fun playMusic(audioRes: Int) {
+    fun playMusic(audioRes: Int) {
         if (exoplayerViewModel.isMusicOn.value == true) {
             exoplayerViewModel.setupAndPlayMusicPlayer(audioRes)
         }
     }
 
-    protected fun playSfxAudio() {
+    fun playSfxAudio() {
         if (exoplayerViewModel.isSfxAudioOn.value == true) {
             exoplayerViewModel.setupAndPlaySfxAudioPlayer(R.raw.audio_button_click)
         }
     }
 
-    protected fun stopMusicPlayer() {
+    fun stopMusicPlayer() {
         exoplayerViewModel.stopMusicPlayer()
     }
 
-    protected fun setAudioTransitionFromQuestionnaireToTicktock(questionToBeAsked: Int) {
+    fun setMusicAfterQuestionnaire(state: MusicTransitionState) {
+        exoplayerViewModel.setMusicTransitionState(state)
         exoplayerViewModel.getMusicPlayer()?.addListener(
             object : Player.Listener {
                 override fun onPlaybackStateChanged(playbackState: Int) {
@@ -107,10 +109,14 @@ open class BaseFragment: Fragment() {
                             MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.audio_questionnaire))
                         if (exoplayerViewModel.getMusicPlayer()?.currentMediaItem == mediaItem) {
                             stopMusicPlayer()
-                            if (questionToBeAsked >= 8)
-                                playMusic(R.raw.audio_suspense)
-                            else
-                                playMusic(R.raw.audio_tick_tock)
+                            when (exoplayerViewModel.getMusicTransitionState()) {
+                                MusicTransitionState.QUESTIONNAIRE_TO_SUSPENSE -> {
+                                    playMusic(R.raw.audio_suspense)
+                                }
+                                MusicTransitionState.QUESTIONNAIRE_TO_TICKTOCK -> {
+                                    playMusic(R.raw.audio_ticktock)
+                                }
+                            }
                         }
                     }
                 }
