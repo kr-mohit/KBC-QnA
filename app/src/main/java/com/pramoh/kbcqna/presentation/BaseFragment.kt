@@ -18,8 +18,6 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import com.pramoh.kbcqna.R
-import com.pramoh.kbcqna.presentation.ExoplayerViewModel.MusicTransitionState
-
 
 open class BaseFragment: Fragment() {
 
@@ -82,45 +80,61 @@ open class BaseFragment: Fragment() {
         }
     }
 
-    fun playMusic(audioRes: Int) {
+    fun playMusic(musicToPlay: MusicToPlay, ticktock: Boolean = true) {
         if (exoplayerViewModel.isMusicOn.value == true) {
-            exoplayerViewModel.setupAndPlayMusicPlayer(audioRes)
+            when(musicToPlay) {
+                MusicToPlay.HOME_SCREEN -> {
+                    val mediaItem = MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(musicToPlay.source))
+                    if (exoplayerViewModel.getMusicPlayer()?.currentMediaItem != mediaItem) {
+                        exoplayerViewModel.playMusic(musicToPlay.source, true)
+                    }
+                }
+                MusicToPlay.PRIZE_LIST,
+                MusicToPlay.SUSPENSE,
+                MusicToPlay.RESULT_SCREEN -> exoplayerViewModel.playMusic(musicToPlay.source, true)
+                MusicToPlay.QUESTIONNAIRE -> {
+                    exoplayerViewModel.playMusic(musicToPlay.source, false)
+                    if (ticktock) setQuestionnaireTransition(MusicToPlay.TICKTOCK) else setQuestionnaireTransition(MusicToPlay.SUSPENSE)
+                }
+                else -> {exoplayerViewModel.playMusic(musicToPlay.source, false)}
+            }
         }
+    }
+
+    fun stopMusic() {
+        exoplayerViewModel.stopMusic()
     }
 
     fun playSfxAudio() {
         if (exoplayerViewModel.isSfxAudioOn.value == true) {
-            exoplayerViewModel.setupAndPlaySfxAudioPlayer(R.raw.audio_button_click)
+            exoplayerViewModel.playSfxAudio(R.raw.audio_button_click)
         }
     }
 
-    fun stopMusicPlayer() {
-        exoplayerViewModel.stopMusicPlayer()
+    fun stopSfxAudio() {
+        exoplayerViewModel.stopSfxAudio()
     }
 
-    fun setMusicAfterQuestionnaire(state: MusicTransitionState) {
-        exoplayerViewModel.setMusicTransitionState(state)
-        exoplayerViewModel.getMusicPlayer()?.addListener(
-            object : Player.Listener {
-                override fun onPlaybackStateChanged(playbackState: Int) {
-                    super.onPlaybackStateChanged(playbackState)
-                    if (playbackState == ExoPlayer.STATE_ENDED) {
-                        val mediaItem =
-                            MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.audio_questionnaire))
-                        if (exoplayerViewModel.getMusicPlayer()?.currentMediaItem == mediaItem) {
-                            stopMusicPlayer()
-                            when (exoplayerViewModel.getMusicTransitionState()) {
-                                MusicTransitionState.QUESTIONNAIRE_TO_SUSPENSE -> {
-                                    playMusic(R.raw.audio_suspense)
-                                }
-                                MusicTransitionState.QUESTIONNAIRE_TO_TICKTOCK -> {
-                                    playMusic(R.raw.audio_ticktock)
-                                }
-                            }
-                        }
-                    }
+    private fun setQuestionnaireTransition(musicToPlay: MusicToPlay) {
+        exoplayerViewModel.getMusicPlayer()?.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                super.onPlaybackStateChanged(playbackState)
+                if (playbackState == ExoPlayer.STATE_ENDED) {
+                    stopMusic()
+                    playMusic(musicToPlay)
                 }
             }
-        )
+        })
+    }
+
+    enum class MusicToPlay(val source: Int) {
+        HOME_SCREEN(R.raw.audio_home_screen),
+        PRIZE_LIST(R.raw.audio_prize_list),
+        QUESTIONNAIRE(R.raw.audio_questionnaire),
+        TICKTOCK(R.raw.audio_ticktock),
+        SUSPENSE(R.raw.audio_suspense),
+        CORRECT_ANSWER(R.raw.audio_correct_answer),
+        WRONG_ANSWER(R.raw.audio_wrong_answer),
+        RESULT_SCREEN(R.raw.audio_result_screen)
     }
 }

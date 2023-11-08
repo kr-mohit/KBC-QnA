@@ -35,7 +35,7 @@ class HomeFragment: BaseFragment() {
         fetchSavedData()
         setObservers()
         setOnClickListeners()
-        homeViewModel.setOnStarClicked(false)
+        homeViewModel.setOnStartClicked(false)
     }
 
     private fun fetchSavedData() {
@@ -58,7 +58,7 @@ class HomeFragment: BaseFragment() {
                 is Response.Success -> {
                     binding.homeProgressBar.visibility = View.GONE
                     if (homeViewModel.getOnStartClicked()) {
-                        exoplayerViewModel.stopMusicPlayer()
+                        stopMusic()
                         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPrizeListFragment(1))
                     }
                 }
@@ -71,18 +71,19 @@ class HomeFragment: BaseFragment() {
 
         exoplayerViewModel.isMusicOn.observe(viewLifecycleOwner) {
             if (it) {
-                exoplayerViewModel.setupAndPlayMusicPlayer(R.raw.audio_home_screen)
+                playMusic(MusicToPlay.HOME_SCREEN)
             } else {
-                exoplayerViewModel.stopMusicPlayer()
+                stopMusic()
             }
         }
     }
 
     private fun setOnClickListeners() {
         binding.btnStart.setOnClickListener {
+            binding.btnSettings.isClickable = false
             playSfxAudio()
             if (NetworkUtils.isOnline(requireContext())) {
-                homeViewModel.setOnStarClicked(true)
+                homeViewModel.setOnStartClicked(true)
                 questionViewModel.fetchQuestions(Constants.FULL_URL)
             } else {
                 Toast.makeText(context, "Check internet connection", Toast.LENGTH_SHORT).show()

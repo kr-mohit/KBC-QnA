@@ -40,23 +40,22 @@ class SettingsFragment : BaseFragment() {
     private fun setObservers() {
 
         exoplayerViewModel.isMusicOn.observe(viewLifecycleOwner) {
-
             if (it) {
                 binding.btnMusic.text = getString(R.string.on)
-                exoplayerViewModel.setupAndPlayMusicPlayer(R.raw.audio_home_screen)
+                playMusic(MusicToPlay.HOME_SCREEN)
             } else {
                 binding.btnMusic.text = getString(R.string.off)
-                exoplayerViewModel.stopMusicPlayer()
+                stopMusic()
             }
         }
 
         exoplayerViewModel.isSfxAudioOn.observe(viewLifecycleOwner) {
             if (it) {
                 binding.btnSfxAudio.text = getString(R.string.on)
-                exoplayerViewModel.setupAndPlaySfxAudioPlayer(R.raw.audio_button_click)
+                playSfxAudio()
             } else {
                 binding.btnSfxAudio.text = getString(R.string.off)
-                exoplayerViewModel.stopSfxAudioPlayer()
+                stopSfxAudio()
             }
         }
 

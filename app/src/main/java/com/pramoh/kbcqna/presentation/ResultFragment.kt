@@ -30,7 +30,7 @@ class ResultFragment: BaseFragment() {
         setUI()
         setOnClickListeners()
         saveWonLostData(args.didUserWin)
-        setAudio()
+        playMusic(MusicToPlay.RESULT_SCREEN)
     }
 
     private fun setUI() {
@@ -62,13 +62,9 @@ class ResultFragment: BaseFragment() {
 
         binding.btnStartAgain.setOnClickListener {
             playSfxAudio()
-            stopMusicPlayer()
+            stopMusic()
             findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHomeFragment())
         }
-    }
-
-    private fun setAudio() {
-        playMusic(R.raw.audio_result_screen)
     }
 
     private fun saveWonLostData(didUserWin: Boolean) {

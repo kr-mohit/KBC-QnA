@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
-import com.pramoh.kbcqna.presentation.ExoplayerViewModel.MusicTransitionState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,7 +39,11 @@ class QuestionFragment : BaseFragment() {
         setObservers()
         setOnClickListeners()
         setQuestion()
-        setAudio()
+        if (args.questionToBeAsked >= 10) {
+            playMusic(MusicToPlay.QUESTIONNAIRE, false)
+        } else {
+            playMusic(MusicToPlay.QUESTIONNAIRE)
+        }
     }
 
     private fun setObservers() {
@@ -173,7 +176,7 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun setTimer() {
-        if (args.questionToBeAsked >= 8) {
+        if (args.questionToBeAsked >= 10) {
             binding.tvTimer.visibility = View.GONE
         } else {
             binding.tvTimer.visibility = View.VISIBLE
@@ -190,12 +193,12 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun showResult(result: String, correctOptionNumber: Int = 0) {
-        stopMusicPlayer()
+        stopMusic()
         when (result) {
 
             RIGHT_ANSWER -> {
                 changeOptionColors(questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green)
-                playMusic(R.raw.audio_correct_answer)
+                playMusic(MusicToPlay.CORRECT_ANSWER)
                 val destination = if (args.questionToBeAsked > 14) {
                     QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
                         true,
@@ -212,7 +215,7 @@ class QuestionFragment : BaseFragment() {
                     questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_red,
                     correctOptionNumber to R.drawable.background_metallic_green
                 )
-                playMusic(R.raw.audio_wrong_answer)
+                playMusic(MusicToPlay.WRONG_ANSWER)
                 val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
                     false,
                     questionViewModel.getLastSafeZone()
@@ -222,18 +225,17 @@ class QuestionFragment : BaseFragment() {
 
             TIMER_UP -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
-                playMusic(R.raw.audio_wrong_answer)
+                playMusic(MusicToPlay.WRONG_ANSWER)
                 val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
                     false,
                     questionViewModel.getLastSafeZone()
                 )
                 navigateWithDelay(destination)
-                playMusic(R.raw.audio_wrong_answer)
             }
 
             QUIT -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
-                playMusic(R.raw.audio_wrong_answer)
+                playMusic(MusicToPlay.WRONG_ANSWER)
                 val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
                     false,
                     questionViewModel.getMoneyWonTillNow()
@@ -246,18 +248,9 @@ class QuestionFragment : BaseFragment() {
 
     private fun navigateWithDelay(destination: NavDirections, delayDuration: Long = 5000) {
         Handler().postDelayed({
-            stopMusicPlayer()
+            stopMusic()
             findNavController().navigate(destination)
         }, delayDuration)
-    }
-
-    private fun setAudio() {
-        playMusic(R.raw.audio_questionnaire)
-        if (args.questionToBeAsked > 9) {
-            setMusicAfterQuestionnaire(MusicTransitionState.QUESTIONNAIRE_TO_SUSPENSE)
-        } else {
-            setMusicAfterQuestionnaire(MusicTransitionState.QUESTIONNAIRE_TO_TICKTOCK)
-        }
     }
 
     companion object {

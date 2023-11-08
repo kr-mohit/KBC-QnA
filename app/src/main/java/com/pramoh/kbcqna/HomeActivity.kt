@@ -29,17 +29,17 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        exoplayerViewModel.play()
+        exoplayerViewModel.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        exoplayerViewModel.pause()
+        exoplayerViewModel.onPause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        exoplayerViewModel.destroy()
+        exoplayerViewModel.onDestroy()
     }
 
     private fun hideSystemBars() {

@@ -23,7 +23,7 @@ class HomeViewModel @Inject constructor(
         _wonLostData.postValue(getWonLostDataUseCase.invoke())
     }
 
-    fun setOnStarClicked(value: Boolean) {
+    fun setOnStartClicked(value: Boolean) {
         onStartClicked = value
     }
 
