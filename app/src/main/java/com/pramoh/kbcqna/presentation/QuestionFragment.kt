@@ -92,10 +92,10 @@ class QuestionFragment : BaseFragment() {
             tvOption3.setOnClickListener { handleOptionClick(3) }
             tvOption4.setOnClickListener { handleOptionClick(4) }
 
-            ivLifeline1.setOnClickListener { handleLifelineClick(Lifeline.AUDIENCE_POLL) }
-            ivLifeline2.setOnClickListener { handleLifelineClick(Lifeline.PHONE_A_FRIEND) }
-            ivLifeline3.setOnClickListener { handleLifelineClick(Lifeline.FIFTY_FIFTY) }
-            ivLifeline4.setOnClickListener { handleLifelineClick(Lifeline.SKIP_QUESTION) }
+            ivLifeline1.setOnClickListener { handleLifelineClick(Lifeline.AUDIENCE_POLL, false) }
+            ivLifeline2.setOnClickListener { handleLifelineClick(Lifeline.PHONE_A_FRIEND, false) }
+            ivLifeline3.setOnClickListener { handleLifelineClick(Lifeline.FIFTY_FIFTY, true) }
+            ivLifeline4.setOnClickListener { handleLifelineClick(Lifeline.SKIP_QUESTION, true) }
 
             tvQuit.setOnClickListener {
                 playSfxAudio()
@@ -137,14 +137,16 @@ class QuestionFragment : BaseFragment() {
         questionViewModel.setCurrentSelectedOption(option)
     }
 
-    private fun handleLifelineClick(lifeline: Lifeline) {
+    private fun handleLifelineClick(lifeline: Lifeline, positiveButtonNeeded: Boolean) {
         playSfxAudio()
         if (questionViewModel.lifelines.value?.get(lifeline.num-1) != false) {
-            questionViewModel.onLifelineClick(lifeline.num)
+            if (!positiveButtonNeeded) questionViewModel.onLifelineClick(lifeline.num)
             showDialog(
                 requireContext(),
                 getTextForLifelines(lifeline),
-                "Okay"
+                if (positiveButtonNeeded) "No" else "Okay",
+                if (positiveButtonNeeded) "Yes" else null,
+                positiveButtonAction = { if (positiveButtonNeeded) onLifelinePositiveButtonClick(lifeline) }
             )
         }
     }
@@ -168,7 +170,38 @@ class QuestionFragment : BaseFragment() {
                     percentageList[0], percentageList[1], percentageList[2], percentageList[3]
                 )
             }
-            Lifeline.PHONE_A_FRIEND, Lifeline.FIFTY_FIFTY, Lifeline.SKIP_QUESTION -> "Coming soon"
+            Lifeline.PHONE_A_FRIEND -> "Coming Soon"
+            Lifeline.SKIP_QUESTION -> "Do you want to skip the question ?"
+            Lifeline.FIFTY_FIFTY -> "Do you want to use 50-50 ?"
+        }
+    }
+
+    private fun onLifelinePositiveButtonClick(lifeline: Lifeline) {
+        questionViewModel.onLifelineClick(lifeline.num)
+        if (lifeline == Lifeline.FIFTY_FIFTY) {
+            val viewsMap = mapOf(0 to binding.tvOption1, 1 to binding.tvOption2, 2 to binding.tvOption3, 3 to binding.tvOption4)
+            val correctOptionNumber = questionViewModel.currentQuestion.value?.correctOptionNumber ?: 0
+
+            val optionVisibility = mutableListOf(false, false, false)
+            optionVisibility[(0.. 2).random()] = true
+            optionVisibility.add(correctOptionNumber-1, true)
+
+            for (i in optionVisibility.indices) {
+                if (!optionVisibility[i]) {
+                    viewsMap[i]?.apply {
+                        text = ""
+                        isClickable = false
+                    }
+                }
+            }
+
+
+        } else if (lifeline == Lifeline.SKIP_QUESTION) {
+            timerViewModel.cancelTimer()
+            disableAllButtonsClick()
+            questionViewModel.currentQuestion.value?.correctOptionNumber?.let {
+                showResult(ResultType.SKIP_QUESTION, it)
+            }
         }
     }
 
@@ -291,7 +324,12 @@ class QuestionFragment : BaseFragment() {
                 navigateWithDelay(destination)
             }
 
-            ResultType.SKIP_QUESTION -> TODO()
+            ResultType.SKIP_QUESTION -> {
+                changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
+                playMusic(MusicToPlay.CORRECT_ANSWER)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
+                navigateWithDelay(destination)
+            }
         }
 
     }
