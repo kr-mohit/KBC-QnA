@@ -28,6 +28,10 @@ class QuestionViewModel @Inject constructor(
     val currentQuestion: LiveData<Question>
         get() = _currentQuestion
 
+    private val _lifelines = MutableLiveData<List<Boolean>>()
+    val lifelines: LiveData<List<Boolean>>
+        get() = _lifelines
+
     fun fetchQuestions(url: String) {
         viewModelScope.launch {
             _questionsLiveData.postValue(Response.Loading())
@@ -43,8 +47,14 @@ class QuestionViewModel @Inject constructor(
         setLastSafeZone(quesNumber)
     }
 
-    fun onLifelineClick() {
-        // TODO: logic for lifeline click
+    fun setLifelines() {
+        _lifelines.postValue(listOf(true, true, true, true))
+    }
+
+    fun onLifelineClick(lifeline: Int) {
+        val lifelineList = lifelines.value!!.toMutableList()
+        lifelineList[lifeline-1] = false
+        _lifelines.postValue(lifelineList)
     }
 
     fun setCurrentSelectedOption(option: Int) {

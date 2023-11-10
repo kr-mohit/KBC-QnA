@@ -39,11 +39,8 @@ class QuestionFragment : BaseFragment() {
         setObservers()
         setOnClickListeners()
         setQuestion()
-        if (args.questionToBeAsked >= 10) {
-            playMusic(MusicToPlay.QUESTIONNAIRE, false)
-        } else {
-            playMusic(MusicToPlay.QUESTIONNAIRE)
-        }
+        setLifelines()
+        setMusic()
     }
 
     private fun setObservers() {
@@ -71,6 +68,18 @@ class QuestionFragment : BaseFragment() {
 
         timerViewModel.timerValue.observe(viewLifecycleOwner) {
             binding.tvTimer.text = it.toString()
+        }
+
+        questionViewModel.lifelines.observe(viewLifecycleOwner) {
+            val lifelineMap = mapOf(
+                0 to binding.ivLifeline1Cross,
+                1 to binding.ivLifeline2Cross,
+                2 to binding.ivLifeline3Cross,
+                3 to binding.ivLifeline4Cross
+            )
+            for (i in it.indices) {
+                lifelineMap[i]?.visibility = if (it[i]) View.INVISIBLE else View.VISIBLE
+            }
         }
     }
 
@@ -130,12 +139,50 @@ class QuestionFragment : BaseFragment() {
 
     private fun handleLifelineClick(lifeline: Int) {
         playSfxAudio()
-        questionViewModel.onLifelineClick()
-        showDialog(
-            requireContext(),
-            "Lifeline $lifeline coming soon\nStay Tuned...",
-            "Okay"
-        )
+        if (questionViewModel.lifelines.value?.get(lifeline-1) != false) {
+            questionViewModel.onLifelineClick(lifeline)
+            showDialog(
+                requireContext(),
+                getTextForLifelines(lifeline),
+                "Okay"
+            )
+        }
+    }
+
+    private fun getTextForLifelines(lifeline: Int): String {
+        val correctOptionNumber = questionViewModel.currentQuestion.value?.correctOptionNumber ?: 0
+
+        return when(lifeline) {
+            1 -> {
+
+                val incorrectOption1Percentage = (0..MAX_RANDOM_PERCENTAGE).random()
+                val incorrectOption2Percentage = (0..MAX_RANDOM_PERCENTAGE).random()
+                val incorrectOption3Percentage = (0..MAX_RANDOM_PERCENTAGE).random()
+                val sumOfIncorrectOptionsPercentage = incorrectOption1Percentage + incorrectOption2Percentage + incorrectOption3Percentage
+                val correctOptionPercentage = 100 - sumOfIncorrectOptionsPercentage
+
+                val percentageList = getPercentageList(
+                    correctOptionNumber,
+                    correctOptionPercentage,
+                    incorrectOption1Percentage,
+                    incorrectOption2Percentage,
+                    incorrectOption3Percentage
+                )
+
+                String.format(
+                    "Option A: %d %%\nOption B: %d %%\nOption C: %d %%\nOption D: %d %%",
+                    percentageList[0], percentageList[1], percentageList[2], percentageList[3]
+                )
+            }
+            2, 3, 4 -> "Coming soon"
+            else -> ""
+        }
+    }
+
+    private fun getPercentageList(correctOptionNumber: Int, correctOptionPercentage: Int, p2: Int, p3: Int, p4: Int): List<Int> {
+        val list = mutableListOf(p2, p3, p4)
+        list.add(correctOptionNumber -1, correctOptionPercentage)
+        return list
     }
 
     private fun disableAllButtonsClick() {
@@ -189,6 +236,20 @@ class QuestionFragment : BaseFragment() {
             Toast.makeText(context, "Question Number out of bounds", Toast.LENGTH_SHORT).show()
         } else {
             questionViewModel.setCurrentQuestion(args.questionToBeAsked)
+        }
+    }
+
+    private fun setLifelines() {
+        if (args.questionToBeAsked == 1) {
+            questionViewModel.setLifelines()
+        }
+    }
+
+    private fun setMusic() {
+        if (args.questionToBeAsked >= 10) {
+            playMusic(MusicToPlay.QUESTIONNAIRE, false)
+        } else {
+            playMusic(MusicToPlay.QUESTIONNAIRE)
         }
     }
 
@@ -258,6 +319,7 @@ class QuestionFragment : BaseFragment() {
         private const val RIGHT_ANSWER = "RIGHT_ANSWER"
         private const val WRONG_ANSWER = "WRONG_ANSWER"
         private const val QUIT = "QUIT"
+        private const val MAX_RANDOM_PERCENTAGE = 15
     }
 
 }

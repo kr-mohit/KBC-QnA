@@ -25,6 +25,18 @@
             tools:ignore="ContentDescription" />
 
         <ImageView
+            android:id="@+id/iv_lifeline_1_cross"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_cross_red"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/iv_lifeline_1"
+            app:layout_constraintEnd_toEndOf="@id/iv_lifeline_1"
+            app:layout_constraintTop_toTopOf="@id/iv_lifeline_1"
+            app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_1"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
             android:id="@+id/iv_lifeline_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -34,6 +46,18 @@
             app:layout_constraintEnd_toStartOf="@id/iv_lifeline_3"
             app:layout_constraintStart_toEndOf="@id/iv_lifeline_1"
             app:layout_constraintTop_toTopOf="@+id/iv_lifeline_1"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/iv_lifeline_2_cross"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_cross_red"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/iv_lifeline_2"
+            app:layout_constraintEnd_toEndOf="@id/iv_lifeline_2"
+            app:layout_constraintTop_toTopOf="@id/iv_lifeline_2"
+            app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_2"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -49,6 +73,18 @@
             tools:ignore="ContentDescription" />
 
         <ImageView
+            android:id="@+id/iv_lifeline_3_cross"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_cross_red"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/iv_lifeline_3"
+            app:layout_constraintEnd_toEndOf="@id/iv_lifeline_3"
+            app:layout_constraintTop_toTopOf="@id/iv_lifeline_3"
+            app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_3"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
             android:id="@+id/iv_lifeline_4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -58,6 +94,18 @@
             app:layout_constraintStart_toEndOf="@id/iv_lifeline_3"
             app:layout_constraintEnd_toStartOf="@id/tv_quit"
             app:layout_constraintTop_toTopOf="@id/iv_lifeline_1"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/iv_lifeline_4_cross"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_cross_red"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/iv_lifeline_4"
+            app:layout_constraintEnd_toEndOf="@id/iv_lifeline_4"
+            app:layout_constraintTop_toTopOf="@id/iv_lifeline_4"
+            app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_4"
             tools:ignore="ContentDescription" />
 
         <TextView
