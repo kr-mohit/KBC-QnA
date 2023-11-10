@@ -39,11 +39,8 @@ class QuestionFragment : BaseFragment() {
         setObservers()
         setOnClickListeners()
         setQuestion()
-        if (args.questionToBeAsked >= 10) {
-            playMusic(MusicToPlay.QUESTIONNAIRE, false)
-        } else {
-            playMusic(MusicToPlay.QUESTIONNAIRE)
-        }
+        setLifelines()
+        setMusic()
     }
 
     private fun setObservers() {
@@ -64,13 +61,25 @@ class QuestionFragment : BaseFragment() {
             if (didTimeEnd) {
                 questionViewModel.currentQuestion.value?.correctOptionNumber?.let {
                     disableAllButtonsClick()
-                    showResult(TIMER_UP, it)
+                    showResult(ResultType.TIMER_UP, it)
                 }
             }
         }
 
         timerViewModel.timerValue.observe(viewLifecycleOwner) {
             binding.tvTimer.text = it.toString()
+        }
+
+        questionViewModel.lifelines.observe(viewLifecycleOwner) {
+            val lifelineMap = mapOf(
+                0 to binding.ivLifeline1Cross,
+                1 to binding.ivLifeline2Cross,
+                2 to binding.ivLifeline3Cross,
+                3 to binding.ivLifeline4Cross
+            )
+            for (i in it.indices) {
+                lifelineMap[i]?.visibility = if (it[i]) View.INVISIBLE else View.VISIBLE
+            }
         }
     }
 
@@ -83,10 +92,10 @@ class QuestionFragment : BaseFragment() {
             tvOption3.setOnClickListener { handleOptionClick(3) }
             tvOption4.setOnClickListener { handleOptionClick(4) }
 
-            ivLifeline1.setOnClickListener { handleLifelineClick(1) }
-            ivLifeline2.setOnClickListener { handleLifelineClick(2) }
-            ivLifeline3.setOnClickListener { handleLifelineClick(3) }
-            ivLifeline4.setOnClickListener { handleLifelineClick(4) }
+            ivLifeline1.setOnClickListener { handleLifelineClick(Lifeline.AUDIENCE_POLL, false) }
+            ivLifeline2.setOnClickListener { handleLifelineClick(Lifeline.PHONE_A_FRIEND, false) }
+            ivLifeline3.setOnClickListener { handleLifelineClick(Lifeline.FIFTY_FIFTY, true) }
+            ivLifeline4.setOnClickListener { handleLifelineClick(Lifeline.SKIP_QUESTION, true) }
 
             tvQuit.setOnClickListener {
                 playSfxAudio()
@@ -99,7 +108,7 @@ class QuestionFragment : BaseFragment() {
                         timerViewModel.cancelTimer()
                         disableAllButtonsClick()
                         questionViewModel.currentQuestion.value?.correctOptionNumber?.let {
-                            showResult(QUIT, it)
+                            showResult(ResultType.QUIT, it)
                         }
                     }
                 )
@@ -111,9 +120,9 @@ class QuestionFragment : BaseFragment() {
                 disableAllButtonsClick()
                 questionViewModel.currentQuestion.value?.let {
                     if (it.correctOptionNumber == questionViewModel.getCurrentSelectedOption()) {
-                        showResult(RIGHT_ANSWER)
+                        showResult(ResultType.RIGHT_ANSWER)
                     } else {
-                        showResult(WRONG_ANSWER, it.correctOptionNumber)
+                        showResult(ResultType.WRONG_ANSWER, it.correctOptionNumber)
                     }
                 }
             }
@@ -128,14 +137,75 @@ class QuestionFragment : BaseFragment() {
         questionViewModel.setCurrentSelectedOption(option)
     }
 
-    private fun handleLifelineClick(lifeline: Int) {
+    private fun handleLifelineClick(lifeline: Lifeline, positiveButtonNeeded: Boolean) {
         playSfxAudio()
-        questionViewModel.onLifelineClick()
-        showDialog(
-            requireContext(),
-            "Lifeline $lifeline coming soon\nStay Tuned...",
-            "Okay"
-        )
+        if (questionViewModel.lifelines.value?.get(lifeline.num-1) != false) {
+            if (!positiveButtonNeeded) questionViewModel.onLifelineClick(lifeline.num)
+            showDialog(
+                requireContext(),
+                getTextForLifelines(lifeline),
+                if (positiveButtonNeeded) "No" else "Okay",
+                if (positiveButtonNeeded) "Yes" else null,
+                positiveButtonAction = { if (positiveButtonNeeded) onLifelinePositiveButtonClick(lifeline) }
+            )
+        }
+    }
+
+    private fun getTextForLifelines(lifeline: Lifeline): String {
+        val correctOptionNumber = questionViewModel.currentQuestion.value?.correctOptionNumber ?: 0
+
+        return when(lifeline) {
+            Lifeline.AUDIENCE_POLL -> {
+                val percentageList = mutableListOf(
+                    (0..MAX_RANDOM_PERCENTAGE).random(),
+                    (0..MAX_RANDOM_PERCENTAGE).random(),
+                    (0..MAX_RANDOM_PERCENTAGE).random()
+                )
+                val correctOptionPercentage = 100 - percentageList.sum()
+
+                percentageList.add(correctOptionNumber-1, correctOptionPercentage)
+
+                String.format(
+                    "Option A: %d %%\nOption B: %d %%\nOption C: %d %%\nOption D: %d %%",
+                    percentageList[0], percentageList[1], percentageList[2], percentageList[3]
+                )
+            }
+            Lifeline.PHONE_A_FRIEND -> {
+                val stringMap = mapOf(1 to "Option A", 2 to "Option B", 3 to "Option C", 4 to "Option D")
+                "Your friend has suggested you the ${stringMap[correctOptionNumber]} with ${(61..85).random()}% probability."
+            }
+            Lifeline.SKIP_QUESTION -> "Do you want to skip the question ?"
+            Lifeline.FIFTY_FIFTY -> "Do you want to use 50-50 ?"
+        }
+    }
+
+    private fun onLifelinePositiveButtonClick(lifeline: Lifeline) {
+        questionViewModel.onLifelineClick(lifeline.num)
+        if (lifeline == Lifeline.FIFTY_FIFTY) {
+            val viewsMap = mapOf(0 to binding.tvOption1, 1 to binding.tvOption2, 2 to binding.tvOption3, 3 to binding.tvOption4)
+            val correctOptionNumber = questionViewModel.currentQuestion.value?.correctOptionNumber ?: 0
+
+            val optionVisibility = mutableListOf(false, false, false)
+            optionVisibility[(0.. 2).random()] = true
+            optionVisibility.add(correctOptionNumber-1, true)
+
+            for (i in optionVisibility.indices) {
+                if (!optionVisibility[i]) {
+                    viewsMap[i]?.apply {
+                        text = ""
+                        isClickable = false
+                    }
+                }
+            }
+
+
+        } else if (lifeline == Lifeline.SKIP_QUESTION) {
+            timerViewModel.cancelTimer()
+            disableAllButtonsClick()
+            questionViewModel.currentQuestion.value?.correctOptionNumber?.let {
+                showResult(ResultType.SKIP_QUESTION, it)
+            }
+        }
     }
 
     private fun disableAllButtonsClick() {
@@ -192,11 +262,25 @@ class QuestionFragment : BaseFragment() {
         }
     }
 
-    private fun showResult(result: String, correctOptionNumber: Int = 0) {
+    private fun setLifelines() {
+        if (args.questionToBeAsked == 1) {
+            questionViewModel.setLifelines()
+        }
+    }
+
+    private fun setMusic() {
+        if (args.questionToBeAsked >= 10) {
+            playMusic(MusicToPlay.QUESTIONNAIRE, false)
+        } else {
+            playMusic(MusicToPlay.QUESTIONNAIRE)
+        }
+    }
+
+    private fun showResult(result: ResultType, correctOptionNumber: Int = 0) {
         stopMusic()
         when (result) {
 
-            RIGHT_ANSWER -> {
+            ResultType.RIGHT_ANSWER -> {
                 changeOptionColors(questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.CORRECT_ANSWER)
                 val destination = if (args.questionToBeAsked > 14) {
@@ -210,7 +294,7 @@ class QuestionFragment : BaseFragment() {
                 navigateWithDelay(destination)
             }
 
-            WRONG_ANSWER -> {
+            ResultType.WRONG_ANSWER -> {
                 changeOptionColors(
                     questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_red,
                     correctOptionNumber to R.drawable.background_metallic_green
@@ -223,7 +307,7 @@ class QuestionFragment : BaseFragment() {
                 navigateWithDelay(destination, 7000)
             }
 
-            TIMER_UP -> {
+            ResultType.TIMER_UP -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.WRONG_ANSWER)
                 val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
@@ -233,13 +317,20 @@ class QuestionFragment : BaseFragment() {
                 navigateWithDelay(destination)
             }
 
-            QUIT -> {
+            ResultType.QUIT -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.WRONG_ANSWER)
                 val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
                     false,
                     questionViewModel.getMoneyWonTillNow()
                 )
+                navigateWithDelay(destination)
+            }
+
+            ResultType.SKIP_QUESTION -> {
+                changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
+                playMusic(MusicToPlay.CORRECT_ANSWER)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
                 navigateWithDelay(destination)
             }
         }
@@ -254,10 +345,15 @@ class QuestionFragment : BaseFragment() {
     }
 
     companion object {
-        private const val TIMER_UP = "TIMER_UP"
-        private const val RIGHT_ANSWER = "RIGHT_ANSWER"
-        private const val WRONG_ANSWER = "WRONG_ANSWER"
-        private const val QUIT = "QUIT"
+        private const val MAX_RANDOM_PERCENTAGE = 15
+    }
+
+    enum class ResultType {
+        TIMER_UP, RIGHT_ANSWER, WRONG_ANSWER, QUIT, SKIP_QUESTION
+    }
+
+    enum class Lifeline(val num: Int) {
+        AUDIENCE_POLL(1), PHONE_A_FRIEND(2), FIFTY_FIFTY(3), SKIP_QUESTION(4)
     }
 
 }
