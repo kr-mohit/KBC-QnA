@@ -170,7 +170,10 @@ class QuestionFragment : BaseFragment() {
                     percentageList[0], percentageList[1], percentageList[2], percentageList[3]
                 )
             }
-            Lifeline.PHONE_A_FRIEND -> "Coming Soon"
+            Lifeline.PHONE_A_FRIEND -> {
+                val stringMap = mapOf(1 to "Option A", 2 to "Option B", 3 to "Option C", 4 to "Option D")
+                "Your friend has suggested you the ${stringMap[correctOptionNumber]} with ${(61..85).random()}% probability."
+            }
             Lifeline.SKIP_QUESTION -> "Do you want to skip the question ?"
             Lifeline.FIFTY_FIFTY -> "Do you want to use 50-50 ?"
         }
