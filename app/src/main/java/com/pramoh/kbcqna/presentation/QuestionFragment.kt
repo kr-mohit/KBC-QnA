@@ -156,13 +156,8 @@ class QuestionFragment : BaseFragment() {
 
         return when(lifeline) {
             Lifeline.AUDIENCE_POLL -> {
-                val percentageList = mutableListOf(
-                    (0..MAX_RANDOM_PERCENTAGE).random(),
-                    (0..MAX_RANDOM_PERCENTAGE).random(),
-                    (0..MAX_RANDOM_PERCENTAGE).random()
-                )
+                val percentageList = MutableList(3) {(0..15).random() }
                 val correctOptionPercentage = 100 - percentageList.sum()
-
                 percentageList.add(correctOptionNumber-1, correctOptionPercentage)
 
                 String.format(
@@ -185,20 +180,18 @@ class QuestionFragment : BaseFragment() {
             val viewsMap = mapOf(0 to binding.tvOption1, 1 to binding.tvOption2, 2 to binding.tvOption3, 3 to binding.tvOption4)
             val correctOptionNumber = questionViewModel.currentQuestion.value?.correctOptionNumber ?: 0
 
-            val optionVisibility = mutableListOf(false, false, false)
+            val optionVisibility = MutableList(3) {false}
             optionVisibility[(0.. 2).random()] = true
             optionVisibility.add(correctOptionNumber-1, true)
 
-            for (i in optionVisibility.indices) {
-                if (!optionVisibility[i]) {
-                    viewsMap[i]?.apply {
+            optionVisibility.forEachIndexed { index, isVisible ->
+                if (!isVisible) {
+                    viewsMap[index]?.apply {
                         text = ""
                         isClickable = false
                     }
                 }
             }
-
-
         } else if (lifeline == Lifeline.SKIP_QUESTION) {
             timerViewModel.cancelTimer()
             disableAllButtonsClick()
@@ -229,7 +222,6 @@ class QuestionFragment : BaseFragment() {
     private fun changeOptionColors(vararg options: Pair<Int, Int>) {
         with(binding) {
             val defaultResId = R.drawable.background_metallic_blue
-
             val optionViews = mapOf(
                 1 to tvOption1,
                 2 to tvOption2,
@@ -238,7 +230,6 @@ class QuestionFragment : BaseFragment() {
             )
 
             optionViews.values.forEach { it.setBackgroundResource(defaultResId) }
-
             options.forEach { (optionNumber, resId) ->
                 optionViews[optionNumber]?.setBackgroundResource(resId)
             }
@@ -255,7 +246,7 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun setQuestion() {
-        if (args.questionToBeAsked < 1 || args.questionToBeAsked > 15) {
+        if (args.questionToBeAsked !in 1..15) {
             Toast.makeText(context, "Question Number out of bounds", Toast.LENGTH_SHORT).show()
         } else {
             questionViewModel.setCurrentQuestion(args.questionToBeAsked)
@@ -269,11 +260,7 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun setMusic() {
-        if (args.questionToBeAsked >= 10) {
-            playMusic(MusicToPlay.QUESTIONNAIRE, false)
-        } else {
-            playMusic(MusicToPlay.QUESTIONNAIRE)
-        }
+        playMusic(MusicToPlay.QUESTIONNAIRE, args.questionToBeAsked < 10)
     }
 
     private fun showResult(result: ResultType, correctOptionNumber: Int = 0) {
@@ -284,10 +271,7 @@ class QuestionFragment : BaseFragment() {
                 changeOptionColors(questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.CORRECT_ANSWER)
                 val destination = if (args.questionToBeAsked > 14) {
-                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
-                        true,
-                        "Rs. 10 Crore"
-                    )
+                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, "Rs. 10 Crore")
                 } else {
                     QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
                 }
@@ -300,30 +284,21 @@ class QuestionFragment : BaseFragment() {
                     correctOptionNumber to R.drawable.background_metallic_green
                 )
                 playMusic(MusicToPlay.WRONG_ANSWER)
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
-                    false,
-                    questionViewModel.getLastSafeZone()
-                )
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getLastSafeZone())
                 navigateWithDelay(destination, 7000)
             }
 
             ResultType.TIMER_UP -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.WRONG_ANSWER)
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
-                    false,
-                    questionViewModel.getLastSafeZone()
-                )
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getLastSafeZone())
                 navigateWithDelay(destination)
             }
 
             ResultType.QUIT -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.WRONG_ANSWER)
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
-                    false,
-                    questionViewModel.getMoneyWonTillNow()
-                )
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getMoneyWonTillNow())
                 navigateWithDelay(destination)
             }
 
@@ -342,10 +317,6 @@ class QuestionFragment : BaseFragment() {
             stopMusic()
             findNavController().navigate(destination)
         }, delayDuration)
-    }
-
-    companion object {
-        private const val MAX_RANDOM_PERCENTAGE = 15
     }
 
     enum class ResultType {
