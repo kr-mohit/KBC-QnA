@@ -2,6 +2,7 @@ package com.pramoh.kbcqna.presentation
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -313,7 +314,7 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun navigateWithDelay(destination: NavDirections, delayDuration: Long = 5000) {
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             stopMusic()
             findNavController().navigate(destination)
         }, delayDuration)
