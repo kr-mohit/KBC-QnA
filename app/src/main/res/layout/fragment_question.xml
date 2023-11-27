@@ -147,10 +147,10 @@
             android:gravity="center"
             android:background="@drawable/timer_background"
             android:padding="26dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_prize_amount"
-            app:layout_constraintBottom_toTopOf="@id/tv_question" />
+            app:layout_constraintTop_toBottomOf="@id/tv_prize_amount" />
 
         <TextView
             android:id="@+id/tv_question"
@@ -163,9 +163,10 @@
             android:gravity="center"
             android:layout_marginBottom="26dp"
             android:padding="5dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_option_1" />
+            app:layout_constraintTop_toBottomOf="@id/tv_timer"/>
 
         <TextView
             android:id="@+id/tv_option_1"
@@ -176,11 +177,11 @@
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@drawable/background_metallic_blue"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="20dp"
             android:padding="5dp"
-            app:layout_constraintStart_toStartOf="@id/tv_option_3"
-            app:layout_constraintEnd_toEndOf="@id/tv_option_3"
-            app:layout_constraintBottom_toTopOf="@id/tv_option_3" />
+            app:layout_constraintStart_toStartOf="@id/tv_question"
+            app:layout_constraintEnd_toEndOf="@id/tv_question"
+            app:layout_constraintTop_toBottomOf="@id/tv_question"/>
 
         <TextView
             android:id="@+id/tv_option_2"
@@ -192,9 +193,10 @@
             android:background="@drawable/background_metallic_blue"
             android:gravity="center"
             android:padding="5dp"
-            app:layout_constraintStart_toStartOf="@id/tv_option_4"
-            app:layout_constraintEnd_toEndOf="@id/tv_option_4"
-            app:layout_constraintBottom_toBottomOf="@id/tv_option_1" />
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@id/tv_option_1"
+            app:layout_constraintEnd_toEndOf="@id/tv_option_1"
+            app:layout_constraintTop_toBottomOf="@id/tv_option_1"/>
 
         <TextView
             android:id="@+id/tv_option_3"
@@ -205,11 +207,11 @@
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@drawable/background_metallic_blue"
-            android:layout_marginBottom="26sp"
+            android:layout_marginTop="10dp"
             android:padding="5dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_option_4"
-            app:layout_constraintBottom_toTopOf="@id/btn_lock" />
+            app:layout_constraintStart_toStartOf="@id/tv_option_2"
+            app:layout_constraintEnd_toEndOf="@id/tv_option_2"
+            app:layout_constraintTop_toBottomOf="@id/tv_option_2"/>
 
         <TextView
             android:id="@+id/tv_option_4"
@@ -220,11 +222,11 @@
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@drawable/background_metallic_blue"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
             android:padding="5dp"
-            app:layout_constraintStart_toEndOf="@id/tv_option_3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/tv_option_3" />
+            app:layout_constraintStart_toStartOf="@id/tv_option_3"
+            app:layout_constraintEnd_toEndOf="@id/tv_option_3"
+            app:layout_constraintTop_toBottomOf="@id/tv_option_3"/>
 
 
         <Button
