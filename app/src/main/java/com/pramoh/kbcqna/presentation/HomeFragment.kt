@@ -39,17 +39,11 @@ class HomeFragment: BaseFragment() {
     }
 
     private fun fetchSavedData() {
-        homeViewModel.getWonLostData()
         exoplayerViewModel.getMusicSharedPref()
         exoplayerViewModel.getSfxAudioSharedPref()
     }
 
     private fun setObservers() {
-        homeViewModel.wonLostData.observe(viewLifecycleOwner) {
-            binding.tvWonCount.text = getString(R.string.wins, it.wins.toString())
-            binding.tvLostCount.text = getString(R.string.lost, it.loses.toString())
-        }
-
         questionViewModel.questionsLiveData.observe(viewLifecycleOwner) { response ->
             when(response) {
                 is Response.Loading -> {

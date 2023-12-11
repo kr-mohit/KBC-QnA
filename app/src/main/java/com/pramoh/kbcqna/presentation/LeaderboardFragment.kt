@@ -5,15 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentLeaderboardBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LeaderboardFragment : Fragment() {
+class LeaderboardFragment : BaseFragment() {
 
     private lateinit var binding: FragmentLeaderboardBinding
+    private val leaderboardViewModel: LeaderboardViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_leaderboard, container, false)
@@ -24,9 +25,25 @@ class LeaderboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         fetchLeaderboardData()
+        setObservers()
+        setOnClickListeners()
     }
 
     private fun fetchLeaderboardData() {
+        leaderboardViewModel.getWonLostData()
+    }
 
+    private fun setObservers() {
+        leaderboardViewModel.wonLostData.observe(viewLifecycleOwner) {
+            binding.tvWonCount.text = getString(R.string.wins, it.wins.toString())
+            binding.tvLostCount.text = getString(R.string.lost, it.loses.toString())
+        }
+    }
+
+    private fun setOnClickListeners() {
+        binding.btnBack.setOnClickListener {
+            playSfxAudio()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
     }
 }
