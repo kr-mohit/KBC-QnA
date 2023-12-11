@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_homeFragment_to_prizeListFragment"
             app:destination="@id/prizeListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_leaderboardFragment"
+            app:destination="@id/leaderboardFragment" />
     </fragment>
     <fragment
         android:id="@+id/prizeListFragment"
@@ -80,4 +83,8 @@
             android:name="prizeMoney"
             app:argType="string" />
     </dialog>
+    <fragment
+        android:id="@+id/leaderboardFragment"
+        android:name="com.pramoh.kbcqna.presentation.LeaderboardFragment"
+        android:label="LeaderboardFragment" />
 </navigation>

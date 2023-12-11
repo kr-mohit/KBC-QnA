@@ -94,5 +94,10 @@ class HomeFragment: BaseFragment() {
             playSfxAudio()
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
         }
+
+        binding.ivOption.setOnClickListener {
+            playSfxAudio()
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLeaderboardFragment())
+        }
     }
 }
