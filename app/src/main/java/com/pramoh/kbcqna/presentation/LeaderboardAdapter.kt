@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pramoh.kbcqna.R
-import com.pramoh.kbcqna.domain.model.LeaderboardData
+import com.pramoh.kbcqna.domain.model.PlayerData
 
-class LeaderboardAdapter(private val list: List<LeaderboardData>)
+class LeaderboardAdapter(private val list: List<PlayerData>)
     : RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeaderboardViewHolder {
@@ -22,7 +22,7 @@ class LeaderboardAdapter(private val list: List<LeaderboardData>)
 
     override fun onBindViewHolder(holder: LeaderboardViewHolder, position: Int) {
         holder.tvPlayerName.text = list[position].playerName
-        holder.tvMoney.text = list[position].moneyWon
+        holder.tvMoney.text = "Rs.  ${list[position].moneyWon}"
     }
 
     class LeaderboardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -8,6 +8,6 @@ class ClearLeaderboardDataUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke() {
-        return repository.deleteLeaderboardData()
+        return repository.deleteAllPlayersInDB()
     }
 }

@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class LeaderboardData(
+data class PlayerData(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val playerName: String,
-    val moneyWon: String
+    val moneyWon: Int
 )
