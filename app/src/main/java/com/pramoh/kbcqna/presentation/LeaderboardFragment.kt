@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentLeaderboardBinding
+import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,12 +32,27 @@ class LeaderboardFragment : BaseFragment() {
 
     private fun fetchLeaderboardData() {
         leaderboardViewModel.getWonLostData()
+        leaderboardViewModel.getLeaderboardTable()
     }
 
     private fun setObservers() {
         leaderboardViewModel.wonLostData.observe(viewLifecycleOwner) {
             binding.tvWonCount.text = getString(R.string.wins, it.wins.toString())
             binding.tvLostCount.text = getString(R.string.lost, it.loses.toString())
+        }
+
+        leaderboardViewModel.leaderboardList.observe(viewLifecycleOwner) {
+            when (it) {
+                is Response.Error -> {
+                    // TODO:
+                }
+                is Response.Loading -> {
+                    // TODO:
+                }
+                is Response.Success -> {
+                    // TODO:
+                }
+            }
         }
     }
 
