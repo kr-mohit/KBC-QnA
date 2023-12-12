@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
+import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,7 +49,7 @@ class QuestionFragment : BaseFragment() {
         questionViewModel.currentQuestion.observe(viewLifecycleOwner) { question ->
             with(binding) {
                 setTimer()
-                tvPrizeAmount.text = question.prizeAmount
+                tvPrizeAmount.text = MoneyTypeConversionUtil.convertToString(question.prizeAmount)
                 tvQuestion.text = question.question
                 tvOption1.text = question.option1
                 tvOption2.text = question.option2
@@ -271,7 +272,7 @@ class QuestionFragment : BaseFragment() {
                 changeOptionColors(questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.CORRECT_ANSWER)
                 val destination = if (args.questionToBeAsked > 14) {
-                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, "Rs. 10 Crore")
+                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, 100000000)
                 } else {
                     QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
                 }

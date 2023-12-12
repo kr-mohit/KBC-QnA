@@ -16,8 +16,8 @@ class QuestionViewModel @Inject constructor(
     private val getQuestionListUseCase: GetQuestionListUseCase
 ) :ViewModel() {
 
-    private lateinit var moneyWonTillNow: String
-    private lateinit var lastSafeZone: String
+    private var moneyWonTillNow: Int = 0
+    private var lastSafeZone: Int = 0
     private var currentSelectedOption: Int = 0
 
     private val _questionsLiveData = MutableLiveData<Response<List<Question>>>()
@@ -63,7 +63,7 @@ class QuestionViewModel @Inject constructor(
 
     private fun setMoneyWonTillNow(quesNumber: Int) {
         moneyWonTillNow = if (quesNumber < 2) {
-            "Rs. 0"
+            0
         } else {
             questionsLiveData.value!!.data!![quesNumber-2].prizeAmount // TODO: do something about this, can't set here
         }
@@ -71,11 +71,11 @@ class QuestionViewModel @Inject constructor(
 
     private fun setLastSafeZone(quesNumber: Int) {
         lastSafeZone = if (quesNumber >= 10) {
-            "Rs. 6, 40, 000"
+            640000
         } else if (quesNumber >= 7) {
-            "Rs. 80, 000"
+            80000
         } else {
-            "Rs. 0"
+            0
         }
     }
 
@@ -83,11 +83,11 @@ class QuestionViewModel @Inject constructor(
         return currentSelectedOption
     }
 
-    fun getMoneyWonTillNow(): String {
+    fun getMoneyWonTillNow(): Int {
         return moneyWonTillNow
     }
 
-    fun getLastSafeZone(): String {
+    fun getLastSafeZone(): Int {
         return lastSafeZone
     }
 }

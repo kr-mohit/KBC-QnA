@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentHomeBinding
@@ -21,7 +20,7 @@ class HomeFragment: BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val questionViewModel: QuestionViewModel by activityViewModels()
-    private val homeViewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by activityViewModels()
     private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -41,9 +40,14 @@ class HomeFragment: BaseFragment() {
     private fun fetchSavedData() {
         exoplayerViewModel.getMusicSharedPref()
         exoplayerViewModel.getSfxAudioSharedPref()
+        homeViewModel.getPlayerNameSharedPref()
     }
 
     private fun setObservers() {
+        homeViewModel.playerNameSharedPref.observe(viewLifecycleOwner) {
+            binding.etPlayerName.setText(if (it == "") "Player" else it)
+        }
+
         questionViewModel.questionsLiveData.observe(viewLifecycleOwner) { response ->
             when(response) {
                 is Response.Loading -> {
@@ -77,8 +81,14 @@ class HomeFragment: BaseFragment() {
             binding.btnSettings.isClickable = false
             playSfxAudio()
             if (NetworkUtils.isOnline(requireContext())) {
-                homeViewModel.setOnStartClicked(true)
-                questionViewModel.fetchQuestions(Constants.FULL_URL)
+                if (binding.etPlayerName.text.isBlank()) {
+                    Toast.makeText(context, "Enter Player Name", Toast.LENGTH_SHORT).show()
+                } else {
+                    homeViewModel.setOnStartClicked(true)
+                    homeViewModel.setPlayerNameSharedPref(binding.etPlayerName.text.toString())
+                    homeViewModel.setCurrentPlayerName(binding.etPlayerName.text.toString()) // TODO: Did this for getting player name at the result screen; check if this can be done without using activityViewModels()
+                    questionViewModel.fetchQuestions(Constants.FULL_URL)
+                }
             } else {
                 Toast.makeText(context, "Check internet connection", Toast.LENGTH_SHORT).show()
             }

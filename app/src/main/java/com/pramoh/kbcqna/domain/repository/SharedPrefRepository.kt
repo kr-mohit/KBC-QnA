@@ -21,4 +21,8 @@ interface SharedPrefRepository {
 
     fun getSelectedRegion(): String
 
+    fun setPlayerName(value: String)
+
+    fun getPlayerName(): String
+
 }

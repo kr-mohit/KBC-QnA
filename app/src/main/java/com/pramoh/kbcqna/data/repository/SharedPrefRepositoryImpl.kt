@@ -47,6 +47,14 @@ class SharedPrefRepositoryImpl(val context: Context): SharedPrefRepository {
         return Constants.PREF_REGION_SELECTED.getString()
     }
 
+    override fun setPlayerName(value: String) {
+        Constants.PREF_PLAYER_NAME.put(value)
+    }
+
+    override fun getPlayerName(): String {
+        return Constants.PREF_PLAYER_NAME.getString()
+    }
+
     private fun String.put(int: Int) {
         editor.putInt(this, int)
         editor.commit()
