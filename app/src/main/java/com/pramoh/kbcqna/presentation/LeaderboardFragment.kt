@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentLeaderboardBinding
 import com.pramoh.kbcqna.utils.Response
@@ -50,7 +51,8 @@ class LeaderboardFragment : BaseFragment() {
                     // TODO:
                 }
                 is Response.Success -> {
-                    // TODO:
+                    binding.rvLeaderboard.adapter = it.data?.let { it1 -> LeaderboardAdapter(it1) }
+                    binding.rvLeaderboard.layoutManager = LinearLayoutManager(context)
                 }
             }
         }
