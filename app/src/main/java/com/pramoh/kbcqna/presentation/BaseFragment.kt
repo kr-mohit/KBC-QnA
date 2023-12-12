@@ -137,4 +137,12 @@ open class BaseFragment: Fragment() {
         WRONG_ANSWER(R.raw.audio_wrong_answer),
         RESULT_SCREEN(R.raw.audio_result_screen)
     }
+
+    fun View.hide() {
+        visibility = View.GONE
+    }
+
+    fun View.show() {
+        visibility = View.VISIBLE
+    }
 }

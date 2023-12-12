@@ -47,17 +47,17 @@ class HomeFragment: BaseFragment() {
         questionViewModel.questionsLiveData.observe(viewLifecycleOwner) { response ->
             when(response) {
                 is Response.Loading -> {
-                    binding.homeProgressBar.visibility = View.VISIBLE
+                    binding.homeProgressBar.show()
                 }
                 is Response.Success -> {
-                    binding.homeProgressBar.visibility = View.GONE
+                    binding.homeProgressBar.hide()
                     if (homeViewModel.getOnStartClicked()) {
                         stopMusic()
                         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPrizeListFragment(1))
                     }
                 }
                 is Response.Error -> {
-                    binding.homeProgressBar.visibility = View.GONE
+                    binding.homeProgressBar.hide()
                     Toast.makeText(context, response.error, Toast.LENGTH_SHORT).show()
                 }
             }

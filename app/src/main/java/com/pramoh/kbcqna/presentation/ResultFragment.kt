@@ -36,11 +36,11 @@ class ResultFragment: BaseFragment() {
     private fun setUI() {
         binding.tvPrizeAmount.text = args.prizeMoney
         if (args.didUserWin) {
-            binding.tvBetterLuck.visibility = View.GONE
-            binding.tvNextTime.visibility = View.GONE
+            binding.tvBetterLuck.hide()
+            binding.tvNextTime.hide()
         } else {
-            binding.tvBetterLuck.visibility = View.VISIBLE
-            binding.tvNextTime.visibility = View.VISIBLE
+            binding.tvBetterLuck.show()
+            binding.tvNextTime.show()
         }
     }
 

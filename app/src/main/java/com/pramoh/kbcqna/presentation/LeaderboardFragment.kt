@@ -46,14 +46,31 @@ class LeaderboardFragment : BaseFragment() {
         leaderboardViewModel.leaderboardList.observe(viewLifecycleOwner) {
             when (it) {
                 is Response.Error -> {
-                    // TODO:
+                    binding.tvEmptyList.text = it.error
+                    binding.rvLeaderboard.hide()
+                    binding.ivEmptyList.show()
+                    binding.tvEmptyList.show()
                 }
                 is Response.Loading -> {
-                    // TODO:
+                    binding.tvEmptyList.text = "Loading..."
+                    binding.rvLeaderboard.hide()
+                    binding.ivEmptyList.visibility = View.INVISIBLE
+                    binding.tvEmptyList.show()
                 }
                 is Response.Success -> {
-                    binding.rvLeaderboard.adapter = it.data?.let { it1 -> LeaderboardAdapter(it1) }
-                    binding.rvLeaderboard.layoutManager = LinearLayoutManager(context)
+                    it.data?.let { list ->
+                        if (list.isEmpty()) {
+                            binding.rvLeaderboard.hide()
+                            binding.tvEmptyList.show()
+                            binding.ivEmptyList.show()
+                        } else {
+                            binding.rvLeaderboard.adapter = LeaderboardAdapter(list)
+                            binding.rvLeaderboard.layoutManager = LinearLayoutManager(context)
+                            binding.rvLeaderboard.show()
+                            binding.ivEmptyList.hide()
+                            binding.tvEmptyList.hide()
+                        }
+                    }
                 }
             }
         }

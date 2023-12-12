@@ -238,9 +238,9 @@ class QuestionFragment : BaseFragment() {
 
     private fun setTimer() {
         if (args.questionToBeAsked >= 10) {
-            binding.tvTimer.visibility = View.GONE
+            binding.tvTimer.hide()
         } else {
-            binding.tvTimer.visibility = View.VISIBLE
+            binding.tvTimer.show()
             timerViewModel.startTimer(15)
         }
     }
