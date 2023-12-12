@@ -12,4 +12,6 @@ interface MainRepository {
 
     suspend fun addScoreToLeaderBoardDatabase(score: LeaderboardData): Boolean
 
+    suspend fun deleteLeaderboardData()
+
 }

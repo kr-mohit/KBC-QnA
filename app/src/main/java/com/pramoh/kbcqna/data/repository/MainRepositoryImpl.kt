@@ -38,4 +38,8 @@ class MainRepositoryImpl(
         leaderboardDB.getLeaderboardDAO().addScore(score)
         return true
     }
+
+    override suspend fun deleteLeaderboardData() {
+        leaderboardDB.getLeaderboardDAO().deleteAll()
+    }
 }

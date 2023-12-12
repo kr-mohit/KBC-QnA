@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pramoh.kbcqna.domain.model.LeaderboardData
 import com.pramoh.kbcqna.domain.model.WonLostData
+import com.pramoh.kbcqna.domain.usecases.ClearLeaderboardDataUseCase
 import com.pramoh.kbcqna.domain.usecases.GetLeaderboardDataUseCase
 import com.pramoh.kbcqna.domain.usecases.GetWonLostDataUseCase
 import com.pramoh.kbcqna.domain.usecases.SetScoreToLeaderboardUseCase
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class LeaderboardViewModel @Inject constructor(
     private val getWonLostDataUseCase: GetWonLostDataUseCase,
     private val getLeaderboardDataUseCase: GetLeaderboardDataUseCase,
-    private val setScoreToLeaderboardUseCase: SetScoreToLeaderboardUseCase
+    private val setScoreToLeaderboardUseCase: SetScoreToLeaderboardUseCase,
+    private val clearLeaderboardDataUseCase: ClearLeaderboardDataUseCase
 ): ViewModel(){
 
     private val _wonLostData = MutableLiveData<WonLostData>()
@@ -42,6 +44,14 @@ class LeaderboardViewModel @Inject constructor(
     fun addScoreToDB(score: LeaderboardData) {
         viewModelScope.launch {
             setScoreToLeaderboardUseCase.invoke(score)
+            getLeaderboardTable()
+        }
+    }
+
+    fun clearAllData() {
+        viewModelScope.launch {
+            clearLeaderboardDataUseCase.invoke()
+            getLeaderboardTable()
         }
     }
 }

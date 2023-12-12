@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class LeaderboardData(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val playerName: String,
-    val moneyWon: Int
+    val moneyWon: String
 )

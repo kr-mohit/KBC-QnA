@@ -22,7 +22,7 @@ class LeaderboardAdapter(private val list: List<LeaderboardData>)
 
     override fun onBindViewHolder(holder: LeaderboardViewHolder, position: Int) {
         holder.tvPlayerName.text = list[position].playerName
-        holder.tvMoney.text = list[position].moneyWon.toString()
+        holder.tvMoney.text = list[position].moneyWon
     }
 
     class LeaderboardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

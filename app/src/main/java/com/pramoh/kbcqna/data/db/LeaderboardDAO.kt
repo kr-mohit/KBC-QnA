@@ -13,4 +13,7 @@ interface LeaderboardDAO {
 
     @Query("SELECT * FROM LeaderboardData")
     suspend fun getScores() : List<LeaderboardData>
+
+    @Query("DELETE FROM LeaderboardData")
+    suspend fun deleteAll()
 }

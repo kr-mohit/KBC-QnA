@@ -10,5 +10,6 @@ class SetScoreToLeaderboardUseCase @Inject constructor(
 
     suspend operator fun invoke(score: LeaderboardData) {
         repository.addScoreToLeaderBoardDatabase(score)
+        // TODO: Add the score to db, and sort the leaderboard
     }
 }

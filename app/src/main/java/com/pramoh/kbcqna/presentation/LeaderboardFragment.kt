@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentLeaderboardBinding
+import com.pramoh.kbcqna.domain.model.LeaderboardData
 import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -62,6 +63,17 @@ class LeaderboardFragment : BaseFragment() {
         binding.btnBack.setOnClickListener {
             playSfxAudio()
             requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        binding.btnReset.setOnClickListener {
+            playSfxAudio()
+            leaderboardViewModel.clearAllData()
+        }
+
+        binding.btnAdd.setOnClickListener {
+            playSfxAudio()
+            val newEntry = LeaderboardData(0, "Player ${(0..10).random()}", "Rs. ${(1..50).random()*10000}")
+            leaderboardViewModel.addScoreToDB(newEntry)
         }
     }
 }
