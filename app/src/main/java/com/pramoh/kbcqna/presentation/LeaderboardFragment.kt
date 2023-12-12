@@ -19,6 +19,8 @@ class LeaderboardFragment : BaseFragment() {
     private lateinit var binding: FragmentLeaderboardBinding
     private val leaderboardViewModel: LeaderboardViewModel by viewModels()
 
+    private var playerNumber: Int = 1 // TODO: For testing only
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_leaderboard, container, false)
         return binding.root
@@ -89,7 +91,24 @@ class LeaderboardFragment : BaseFragment() {
 
         binding.btnAdd.setOnClickListener {
             playSfxAudio()
-            val newEntry = PlayerData(0, "Player ${(0..10).random()}", (1..50).random()*10000)
+            val moneyList = listOf(
+                100000000,
+                30000000,
+                10000000,
+                5000000,
+                2500000,
+                1250000,
+                640000,
+                320000,
+                160000,
+                80000,
+                40000,
+                20000,
+                10000,
+                5000,
+                1000
+            )
+            val newEntry = PlayerData(0, "Player ${playerNumber++}", moneyList.random())
             leaderboardViewModel.insertPlayerToDB(newEntry)
         }
     }

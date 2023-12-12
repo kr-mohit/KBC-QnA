@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.domain.model.PlayerData
+import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
 
 class LeaderboardAdapter(private val list: List<PlayerData>)
     : RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder>() {
@@ -22,7 +23,7 @@ class LeaderboardAdapter(private val list: List<PlayerData>)
 
     override fun onBindViewHolder(holder: LeaderboardViewHolder, position: Int) {
         holder.tvPlayerName.text = list[position].playerName
-        holder.tvMoney.text = "Rs.  ${list[position].moneyWon}"
+        holder.tvMoney.text = MoneyTypeConversionUtil.convertToString(list[position].moneyWon)
     }
 
     class LeaderboardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
