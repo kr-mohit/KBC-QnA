@@ -78,11 +78,13 @@ class HomeFragment: BaseFragment() {
 
     private fun setOnClickListeners() {
         binding.btnStart.setOnClickListenerWithSfxAudio {
-            binding.btnSettings.isClickable = false
             if (NetworkUtils.isOnline(requireContext())) {
                 if (binding.etPlayerName.text.isBlank()) {
                     Toast.makeText(context, "Enter Player Name", Toast.LENGTH_SHORT).show()
                 } else {
+                    binding.btnSettings.isClickable = false
+                    binding.etPlayerName.isEnabled = false
+                    binding.ivOption.isClickable = false
                     homeViewModel.setOnStartClicked(true)
                     homeViewModel.setPlayerNameSharedPref(binding.etPlayerName.text.toString())
                     homeViewModel.setCurrentPlayerName(binding.etPlayerName.text.toString()) // TODO: Did this for getting player name at the result screen; check if this can be done without using activityViewModels()
