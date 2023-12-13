@@ -80,7 +80,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             tools:listitem="@layout/item_leaderboard_score"
-            android:visibility="gone"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -96,13 +95,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_heading"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tv_empty_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nothing to show..."
+            android:text="@string/nothing_to_show"
             android:textSize="26sp"
             android:textColor="@color/white"
             android:visibility="gone"

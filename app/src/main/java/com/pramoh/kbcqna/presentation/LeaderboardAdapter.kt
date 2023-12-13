@@ -22,12 +22,19 @@ class LeaderboardAdapter(private val list: List<PlayerData>)
     }
 
     override fun onBindViewHolder(holder: LeaderboardViewHolder, position: Int) {
+        holder.tvPosition.text = "${position+1}. "
         holder.tvPlayerName.text = list[position].playerName
         holder.tvMoney.text = MoneyTypeConversionUtil.convertToString(list[position].moneyWon)
+
+        if (position == list.size-1) {
+            holder.viewLine.visibility = View.GONE
+        }
     }
 
     class LeaderboardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvPosition: TextView = itemView.findViewById(R.id.tv_position)
         val tvPlayerName: TextView = itemView.findViewById(R.id.tv_player_name)
         val tvMoney: TextView = itemView.findViewById(R.id.tv_money)
+        val viewLine: View = itemView.findViewById(R.id.view_line)
     }
 }
