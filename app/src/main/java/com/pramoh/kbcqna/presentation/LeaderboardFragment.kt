@@ -58,7 +58,7 @@ class LeaderboardFragment : BaseFragment() {
                             binding.tvEmptyList.show()
                             binding.ivEmptyList.show()
                         } else {
-                            binding.rvLeaderboard.adapter = LeaderboardAdapter(list)
+                            binding.rvLeaderboard.adapter = LeaderboardAdapter(requireContext(), list)
                             binding.rvLeaderboard.layoutManager = LinearLayoutManager(context)
                             binding.rvLeaderboard.show()
                             binding.ivEmptyList.hide()
@@ -71,7 +71,8 @@ class LeaderboardFragment : BaseFragment() {
     }
 
     private fun setOnClickListeners() {
-        binding.btnBack.setOnClickListenerWithSfxAudio {
+        binding.btnBack.setOnClickListener { // TODO: app getting crashed when changing to setOnClickListenerWithSfxAudio
+            playSfxAudio()
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 

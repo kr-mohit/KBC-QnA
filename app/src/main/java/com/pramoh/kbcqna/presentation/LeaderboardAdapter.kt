@@ -1,5 +1,6 @@
 package com.pramoh.kbcqna.presentation
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,10 @@ import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
 
-class LeaderboardAdapter(private val list: List<PlayerData>)
+class LeaderboardAdapter(
+    private val context: Context,
+    private val list: List<PlayerData>
+)
     : RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeaderboardViewHolder {
@@ -22,7 +26,7 @@ class LeaderboardAdapter(private val list: List<PlayerData>)
     }
 
     override fun onBindViewHolder(holder: LeaderboardViewHolder, position: Int) {
-        holder.tvPosition.text = "${position+1}. "
+        holder.tvPosition.text = context.getString(R.string.position_string, position + 1)
         holder.tvPlayerName.text = list[position].playerName
         holder.tvMoney.text = MoneyTypeConversionUtil.convertToString(list[position].moneyWon)
 
