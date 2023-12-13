@@ -67,15 +67,15 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.48.1")
 
     // Activity, Fragment ktx for viewmodel
-    implementation ("androidx.activity:activity-ktx:1.8.0")
-    implementation ("androidx.fragment:fragment-ktx:1.6.1")
+    implementation ("androidx.activity:activity-ktx:1.8.1")
+    implementation ("androidx.fragment:fragment-ktx:1.6.2")
 
     // Hilt viewmodel (For activityViewModels())
     kapt("androidx.hilt:hilt-compiler:1.1.0")
 
     // Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
 
     // Card View for popup window
     implementation ("androidx.cardview:cardview:1.0.0")

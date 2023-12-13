@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.domain.usecases.ClearLeaderboardDataUseCase
 import com.pramoh.kbcqna.domain.usecases.GetTopPlayersFromDBUseCase
-import com.pramoh.kbcqna.domain.usecases.InsertPlayerToDBUseCase
 import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,7 +15,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LeaderboardViewModel @Inject constructor(
     private val getTopPlayersFromDBUseCase: GetTopPlayersFromDBUseCase,
-    private val insertPlayerToDBUseCase: InsertPlayerToDBUseCase,
     private val clearLeaderboardDataUseCase: ClearLeaderboardDataUseCase
 ): ViewModel(){
 
@@ -27,13 +25,6 @@ class LeaderboardViewModel @Inject constructor(
     fun getLeaderboardData() {
         viewModelScope.launch {
             _leaderboardList.postValue(getTopPlayersFromDBUseCase.invoke())
-        }
-    }
-
-    fun insertPlayerToDB(player: PlayerData) {
-        viewModelScope.launch {
-            insertPlayerToDBUseCase.invoke(player)
-            getLeaderboardData()
         }
     }
 

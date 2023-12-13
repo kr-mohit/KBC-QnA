@@ -41,12 +41,14 @@ class SharedPrefRepositoryImpl(val context: Context): SharedPrefRepository {
         return Constants.PREF_PLAYER_NAME.getString()
     }
 
+    /*
     private fun String.put(int: Int) {
         editor.putInt(this, int)
         editor.commit()
     }
 
     private fun String.getInt() = pref.getInt(this, 0)
+    */
 
     private fun String.put(string: String) {
         editor.putString(this, string)
