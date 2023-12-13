@@ -40,29 +40,6 @@
             app:layout_constraintTop_toTopOf="@id/btn_back" />
 
         <TextView
-            android:id="@+id/tv_won_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Won: 0"
-            android:textSize="26sp"
-            android:textColor="@color/white"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_lost_count"
-            app:layout_constraintTop_toBottomOf="@id/btn_back"/>
-
-        <TextView
-            android:id="@+id/tv_lost_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Lost: 0"
-            android:textSize="26sp"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@id/tv_won_count"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_won_count"/>
-
-        <TextView
             android:id="@+id/tv_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,7 +50,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_lost_count" />
+            app:layout_constraintTop_toBottomOf="@id/btn_back" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_leaderboard"

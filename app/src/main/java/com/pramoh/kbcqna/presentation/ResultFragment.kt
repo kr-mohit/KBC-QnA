@@ -72,12 +72,7 @@ class ResultFragment: BaseFragment() {
     }
 
     private fun saveData() {
-        saveWonLostData(args.didUserWin)
         addPlayerToLeaderboard(homeViewModel.getCurrentPlayerName(), args.prizeMoney)
-    }
-
-    private fun saveWonLostData(didUserWin: Boolean) {
-        resultViewModel.saveWonLostData(didUserWin)
     }
 
     private fun addPlayerToLeaderboard(playerName: String, moneyWon: Int) {

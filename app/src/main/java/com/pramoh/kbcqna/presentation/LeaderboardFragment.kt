@@ -35,15 +35,10 @@ class LeaderboardFragment : BaseFragment() {
     }
 
     private fun fetchLeaderboardData() {
-        leaderboardViewModel.getWonLostData()
         leaderboardViewModel.getLeaderboardData()
     }
 
     private fun setObservers() {
-        leaderboardViewModel.wonLostData.observe(viewLifecycleOwner) {
-            binding.tvWonCount.text = getString(R.string.wins, it.wins.toString())
-            binding.tvLostCount.text = getString(R.string.lost, it.loses.toString())
-        }
 
         leaderboardViewModel.leaderboardList.observe(viewLifecycleOwner) {
             when (it) {
