@@ -19,8 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment: BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private val questionViewModel: QuestionViewModel by activityViewModels()
-    private val homeViewModel: HomeViewModel by activityViewModels()
+    private val questionViewModel: QuestionViewModel by activityViewModels() // TODO: See if you can remove this, and get the currentPlayerName by something else
+    private val homeViewModel: HomeViewModel by activityViewModels() // TODO: See if you can remove this, and get the currentPlayerName by something else
     private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
