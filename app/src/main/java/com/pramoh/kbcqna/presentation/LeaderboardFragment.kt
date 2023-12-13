@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentLeaderboardBinding
-import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,8 +17,6 @@ class LeaderboardFragment : BaseFragment() {
 
     private lateinit var binding: FragmentLeaderboardBinding
     private val leaderboardViewModel: LeaderboardViewModel by viewModels()
-
-    private var playerNumber: Int = 1 // TODO: For testing only
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_leaderboard, container, false)
@@ -49,7 +46,7 @@ class LeaderboardFragment : BaseFragment() {
                     binding.tvEmptyList.show()
                 }
                 is Response.Loading -> {
-                    binding.tvEmptyList.text = "Loading..."
+                    binding.tvEmptyList.text = getString(R.string.loading)
                     binding.rvLeaderboard.hide()
                     binding.ivEmptyList.visibility = View.INVISIBLE
                     binding.tvEmptyList.show()
@@ -80,28 +77,6 @@ class LeaderboardFragment : BaseFragment() {
 
         binding.btnReset.setOnClickListenerWithSfxAudio {
             leaderboardViewModel.clearAllData()
-        }
-
-        binding.btnAdd.setOnClickListenerWithSfxAudio {
-            val moneyList = listOf(
-                100000000,
-                30000000,
-                10000000,
-                5000000,
-                2500000,
-                1250000,
-                640000,
-                320000,
-                160000,
-                80000,
-                40000,
-                20000,
-                10000,
-                5000,
-                1000
-            )
-            val newEntry = PlayerData(0, "Player ${playerNumber++}", moneyList.random())
-            leaderboardViewModel.insertPlayerToDB(newEntry)
         }
     }
 }
