@@ -89,4 +89,9 @@ dependencies {
     // Exoplayer
     implementation ("com.google.android.exoplayer:exoplayer:2.19.1")
     implementation ("com.google.android.exoplayer:exoplayer-ui:2.19.1")
+
+    //Room Database
+    implementation ("androidx.room:room-runtime:2.6.1")
+    implementation ("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 }

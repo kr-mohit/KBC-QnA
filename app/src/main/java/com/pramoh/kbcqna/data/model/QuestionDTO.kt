@@ -9,7 +9,7 @@ data class QuestionDTO(
     val option3: String?,
     val option4: String?,
     val correctOptionNumber: Int?,
-    val prizeAmount: String?,
+    val prizeAmount: Int?,
     val region: String?
 )
 
@@ -21,7 +21,7 @@ fun QuestionDTO.toDomainQuestion(): Question {
         option3 = this.option3 ?: "",
         option4 = this.option4 ?: "",
         correctOptionNumber = this.correctOptionNumber ?: 0,
-        prizeAmount = this.prizeAmount ?: "",
+        prizeAmount = this.prizeAmount ?: 0,
         region = this.region ?: ""
     )
 }
