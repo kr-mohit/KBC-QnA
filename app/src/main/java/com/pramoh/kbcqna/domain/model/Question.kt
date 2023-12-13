@@ -7,6 +7,6 @@ data class Question(
     val option3: String,
     val option4: String,
     val correctOptionNumber: Int,
-    val prizeAmount: String,
+    val prizeAmount: Int,
     val region: String
 )

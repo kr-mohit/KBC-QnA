@@ -20,28 +20,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_won_count"
+        <Button
+            android:id="@+id/btn_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Won: 0"
-            android:textSize="26sp"
-            android:textColor="@color/white"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_lost_count"
-            app:layout_constraintTop_toBottomOf="@id/btn_back"/>
+            android:text="@string/add"
+            android:background="@drawable/background_metallic_blue"
+            app:layout_constraintStart_toEndOf="@id/btn_back"
+            app:layout_constraintEnd_toStartOf="@id/btn_reset"
+            app:layout_constraintTop_toTopOf="@id/btn_back"/>
 
-        <TextView
-            android:id="@+id/tv_lost_count"
+        <Button
+            android:id="@+id/btn_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Lost: 0"
-            android:textSize="26sp"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@id/tv_won_count"
+            android:text="@string/reset"
+            android:background="@drawable/background_metallic_blue"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_won_count"/>
+            app:layout_constraintTop_toTopOf="@id/btn_back" />
 
         <TextView
             android:id="@+id/tv_heading"
@@ -54,7 +50,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_lost_count" />
+            app:layout_constraintTop_toBottomOf="@id/btn_back" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_leaderboard"
@@ -66,6 +62,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_heading"
             app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_empty_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_empty_list"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_heading"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tv_empty_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nothing_to_show"
+            android:textSize="26sp"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_empty_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

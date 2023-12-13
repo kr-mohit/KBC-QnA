@@ -60,7 +60,7 @@
             app:argType="boolean" />
         <argument
             android:name="prizeMoney"
-            app:argType="string" />
+            app:argType="integer" />
     </fragment>
     <dialog
         android:id="@+id/popUpWindowFragment3"

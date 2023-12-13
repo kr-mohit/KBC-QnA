@@ -1,7 +1,6 @@
 package com.pramoh.kbcqna.presentation
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +13,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
+import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class QuestionFragment : BaseFragment() {
 
     private lateinit var binding: FragmentQuestionBinding
-    private val questionViewModel: QuestionViewModel by activityViewModels()
+    private val questionViewModel: QuestionViewModel by activityViewModels() // TODO: See if you can remove this, and get the currentPlayerName by something else
     private val timerViewModel: TimerViewModel by viewModels()
     private val args: PrizeListFragmentArgs by navArgs()
 
@@ -48,7 +52,7 @@ class QuestionFragment : BaseFragment() {
         questionViewModel.currentQuestion.observe(viewLifecycleOwner) { question ->
             with(binding) {
                 setTimer()
-                tvPrizeAmount.text = question.prizeAmount
+                tvPrizeAmount.text = MoneyTypeConversionUtil.convertToString(question.prizeAmount)
                 tvQuestion.text = question.question
                 tvOption1.text = question.option1
                 tvOption2.text = question.option2
@@ -238,9 +242,9 @@ class QuestionFragment : BaseFragment() {
 
     private fun setTimer() {
         if (args.questionToBeAsked >= 10) {
-            binding.tvTimer.visibility = View.GONE
+            binding.tvTimer.hide()
         } else {
-            binding.tvTimer.visibility = View.VISIBLE
+            binding.tvTimer.show()
             timerViewModel.startTimer(15)
         }
     }
@@ -271,7 +275,7 @@ class QuestionFragment : BaseFragment() {
                 changeOptionColors(questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.CORRECT_ANSWER)
                 val destination = if (args.questionToBeAsked > 14) {
-                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, "Rs. 10 Crore")
+                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, 100000000)
                 } else {
                     QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
                 }
@@ -313,10 +317,12 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun navigateWithDelay(destination: NavDirections, delayDuration: Long = 5000) {
-        Handler().postDelayed({
+
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(delayDuration)
             stopMusic()
             findNavController().navigate(destination)
-        }, delayDuration)
+        }
     }
 
     enum class ResultType {

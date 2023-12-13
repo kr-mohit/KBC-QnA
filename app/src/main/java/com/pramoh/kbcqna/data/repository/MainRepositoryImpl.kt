@@ -3,7 +3,7 @@ package com.pramoh.kbcqna.data.repository
 import com.pramoh.kbcqna.data.db.LeaderboardDB
 import com.pramoh.kbcqna.data.model.toDomainQuestion
 import com.pramoh.kbcqna.data.remote.QuestionsAPI
-import com.pramoh.kbcqna.domain.model.LeaderboardData
+import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.domain.model.Question
 import com.pramoh.kbcqna.domain.repository.MainRepository
 import com.pramoh.kbcqna.utils.Response
@@ -25,17 +25,31 @@ class MainRepositoryImpl(
         }
     }
 
-    override suspend fun getLeaderboardDataFromDatabase(): Response<List<LeaderboardData>> {
+    override suspend fun getTopPlayersFromDB(): Response<List<PlayerData>> {
         return try {
-            val response = leaderboardDB.getLeaderboardDAO().getScores()
+            val response = leaderboardDB.getLeaderboardDAO().getTopPlayers()
             Response.Success(response)
         } catch (e: Exception) {
             Response.Error(e.localizedMessage ?: "Unknown Error")
         }
     }
 
-    override suspend fun addScoreToLeaderBoardDatabase(score: LeaderboardData): Boolean {
-        leaderboardDB.getLeaderboardDAO().addScore(score)
-        return true
+    override suspend fun insertPlayerToDB(player: PlayerData) {
+        val currentTopPlayers = leaderboardDB.getLeaderboardDAO().getTopPlayers()
+
+        if (currentTopPlayers.size < 10) {
+            leaderboardDB.getLeaderboardDAO().insertPlayer(player)
+        } else {
+            val lowestTopPlayer = currentTopPlayers.minByOrNull { it.moneyWon }
+
+            if (lowestTopPlayer != null && player.moneyWon > lowestTopPlayer.moneyWon) {
+                leaderboardDB.getLeaderboardDAO().insertPlayer(player)
+                leaderboardDB.getLeaderboardDAO().deletePlayer(lowestTopPlayer)
+            }
+        }
+    }
+
+    override suspend fun deleteAllPlayersInDB() {
+        leaderboardDB.getLeaderboardDAO().deleteAllPlayers()
     }
 }

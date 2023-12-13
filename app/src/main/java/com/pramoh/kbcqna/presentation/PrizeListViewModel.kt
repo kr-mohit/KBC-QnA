@@ -3,8 +3,9 @@ package com.pramoh.kbcqna.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
 
-class PrizeListViewModel: ViewModel() {
+class PrizeListViewModel : ViewModel() {
 
     private val _listOfPrizes = MutableLiveData<List<String>>()
     val listOfPrizes: LiveData<List<String>>
@@ -13,22 +14,24 @@ class PrizeListViewModel: ViewModel() {
     private val list = mutableListOf<String>()
 
     init {
-        list.add("Rs. 10,00,00,000")
-        list.add("Rs. 3,00,00,000")
-        list.add("Rs. 1,00,00,000")
-        list.add("Rs. 50,00,000")
-        list.add("Rs. 25,00,000")
-        list.add("Rs. 12,50,000")
-        list.add("Rs. 6,40,000")
-        list.add("Rs. 3,20,000")
-        list.add("Rs. 1,60,000")
-        list.add("Rs. 80,000")
-        list.add("Rs. 40,000")
-        list.add("Rs. 20,000")
-        list.add("Rs. 10,000")
-        list.add("Rs. 5,000")
-        list.add("Rs. 1,000")
-
+        val moneyList = listOf(
+            100000000,
+            30000000,
+            10000000,
+            5000000,
+            2500000,
+            1250000,
+            640000,
+            320000,
+            160000,
+            80000,
+            40000,
+            20000,
+            10000,
+            5000,
+            1000
+        ) // TODO: Get this from API, or something else; can't set like this
+        moneyList.forEach { list.add(MoneyTypeConversionUtil.convertToString(it)) }
         _listOfPrizes.postValue(list)
     }
 }
