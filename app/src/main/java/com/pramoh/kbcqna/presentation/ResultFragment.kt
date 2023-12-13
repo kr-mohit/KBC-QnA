@@ -49,23 +49,19 @@ class ResultFragment: BaseFragment() {
     }
 
     private fun setOnClickListeners() {
-        binding.btnShareCheque.setOnClickListener {
-            playSfxAudio()
+        binding.btnShareCheque.setOnClickListenerWithSfxAudio {
             showComingSoonToast()
         }
 
-        binding.btnShareGame.setOnClickListener {
-            playSfxAudio()
+        binding.btnShareGame.setOnClickListenerWithSfxAudio {
             showComingSoonToast()
         }
 
-        binding.btnMoreGames.setOnClickListener {
-            playSfxAudio()
+        binding.btnMoreGames.setOnClickListenerWithSfxAudio {
             showComingSoonToast()
         }
 
-        binding.btnStartAgain.setOnClickListener {
-            playSfxAudio()
+        binding.btnStartAgain.setOnClickListenerWithSfxAudio {
             stopMusic()
             findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHomeFragment())
         }

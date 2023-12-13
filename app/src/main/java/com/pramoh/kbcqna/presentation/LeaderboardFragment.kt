@@ -74,18 +74,15 @@ class LeaderboardFragment : BaseFragment() {
     }
 
     private fun setOnClickListeners() {
-        binding.btnBack.setOnClickListener {
-            playSfxAudio()
+        binding.btnBack.setOnClickListenerWithSfxAudio {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        binding.btnReset.setOnClickListener {
-            playSfxAudio()
+        binding.btnReset.setOnClickListenerWithSfxAudio {
             leaderboardViewModel.clearAllData()
         }
 
-        binding.btnAdd.setOnClickListener {
-            playSfxAudio()
+        binding.btnAdd.setOnClickListenerWithSfxAudio {
             val moneyList = listOf(
                 100000000,
                 30000000,

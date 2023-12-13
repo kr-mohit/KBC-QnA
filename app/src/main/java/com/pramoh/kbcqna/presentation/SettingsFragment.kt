@@ -70,8 +70,7 @@ class SettingsFragment : BaseFragment() {
 
     private fun setOnClickListeners() {
 
-        binding.btnMusic.setOnClickListener {
-            playSfxAudio()
+        binding.btnMusic.setOnClickListenerWithSfxAudio {
             exoplayerViewModel.setMusicOnOff()
         }
 
@@ -79,14 +78,12 @@ class SettingsFragment : BaseFragment() {
             exoplayerViewModel.setSfxAudioOnOff()
         }
 
-        binding.btnRegion.setOnClickListener {
-            playSfxAudio()
+        binding.btnRegion.setOnClickListenerWithSfxAudio {
             showComingSoonToast()
 //            settingViewModel.onRegionClicked()
         }
 
-        binding.btnBack.setOnClickListener {
-            playSfxAudio()
+        binding.btnBack.setOnClickListenerWithSfxAudio {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }

@@ -77,9 +77,8 @@ class HomeFragment: BaseFragment() {
     }
 
     private fun setOnClickListeners() {
-        binding.btnStart.setOnClickListener {
+        binding.btnStart.setOnClickListenerWithSfxAudio {
             binding.btnSettings.isClickable = false
-            playSfxAudio()
             if (NetworkUtils.isOnline(requireContext())) {
                 if (binding.etPlayerName.text.isBlank()) {
                     Toast.makeText(context, "Enter Player Name", Toast.LENGTH_SHORT).show()
@@ -94,13 +93,11 @@ class HomeFragment: BaseFragment() {
             }
         }
 
-        binding.btnSettings.setOnClickListener {
-            playSfxAudio()
+        binding.btnSettings.setOnClickListenerWithSfxAudio {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
         }
 
-        binding.ivOption.setOnClickListener {
-            playSfxAudio()
+        binding.ivOption.setOnClickListenerWithSfxAudio {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLeaderboardFragment())
         }
     }

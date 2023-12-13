@@ -145,4 +145,11 @@ open class BaseFragment: Fragment() {
     fun View.show() {
         visibility = View.VISIBLE
     }
+
+    fun View.setOnClickListenerWithSfxAudio(onClickAction: () -> Unit) {
+        setOnClickListener {
+            onClickAction.invoke()
+            playSfxAudio()
+        }
+    }
 }

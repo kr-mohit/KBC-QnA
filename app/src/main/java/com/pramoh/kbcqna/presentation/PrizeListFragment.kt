@@ -41,8 +41,7 @@ class PrizeListFragment : BaseFragment() {
     }
 
     private fun setOnClickListeners() {
-        binding.btnNext.setOnClickListener {
-            playSfxAudio()
+        binding.btnNext.setOnClickListenerWithSfxAudio {
             stopMusic()
             findNavController().navigate(PrizeListFragmentDirections.actionPrizeListFragmentToQuestionFragment(args.questionToBeAsked))
         }

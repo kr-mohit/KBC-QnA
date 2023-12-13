@@ -91,18 +91,17 @@ class QuestionFragment : BaseFragment() {
 
         with(binding) {
 
-            tvOption1.setOnClickListener { handleOptionClick(1) }
-            tvOption2.setOnClickListener { handleOptionClick(2) }
-            tvOption3.setOnClickListener { handleOptionClick(3) }
-            tvOption4.setOnClickListener { handleOptionClick(4) }
+            tvOption1.setOnClickListenerWithSfxAudio { handleOptionClick(1) }
+            tvOption2.setOnClickListenerWithSfxAudio { handleOptionClick(2) }
+            tvOption3.setOnClickListenerWithSfxAudio { handleOptionClick(3) }
+            tvOption4.setOnClickListenerWithSfxAudio { handleOptionClick(4) }
 
-            ivLifeline1.setOnClickListener { handleLifelineClick(Lifeline.AUDIENCE_POLL, false) }
-            ivLifeline2.setOnClickListener { handleLifelineClick(Lifeline.PHONE_A_FRIEND, false) }
-            ivLifeline3.setOnClickListener { handleLifelineClick(Lifeline.FIFTY_FIFTY, true) }
-            ivLifeline4.setOnClickListener { handleLifelineClick(Lifeline.SKIP_QUESTION, true) }
+            ivLifeline1.setOnClickListenerWithSfxAudio { handleLifelineClick(Lifeline.AUDIENCE_POLL, false) }
+            ivLifeline2.setOnClickListenerWithSfxAudio { handleLifelineClick(Lifeline.PHONE_A_FRIEND, false) }
+            ivLifeline3.setOnClickListenerWithSfxAudio { handleLifelineClick(Lifeline.FIFTY_FIFTY, true) }
+            ivLifeline4.setOnClickListenerWithSfxAudio { handleLifelineClick(Lifeline.SKIP_QUESTION, true) }
 
-            tvQuit.setOnClickListener {
-                playSfxAudio()
+            tvQuit.setOnClickListenerWithSfxAudio {
                 showDialog(
                     requireContext(),
                     "Do you want to Quit?\nYou will be getting ${questionViewModel.getMoneyWonTillNow()}",
@@ -118,8 +117,7 @@ class QuestionFragment : BaseFragment() {
                 )
             }
 
-            btnLock.setOnClickListener {
-                playSfxAudio()
+            btnLock.setOnClickListenerWithSfxAudio {
                 timerViewModel.cancelTimer()
                 disableAllButtonsClick()
                 questionViewModel.currentQuestion.value?.let {
@@ -134,7 +132,6 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun handleOptionClick(option: Int) {
-        playSfxAudio()
         changeOptionColors(option to R.drawable.background_metallic_gold)
         binding.btnLock.setBackgroundColor(requireContext().getColor(R.color.metallic_green))
         binding.btnLock.isEnabled = true
@@ -142,7 +139,6 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun handleLifelineClick(lifeline: Lifeline, positiveButtonNeeded: Boolean) {
-        playSfxAudio()
         if (questionViewModel.lifelines.value?.get(lifeline.num-1) != false) {
             if (!positiveButtonNeeded) questionViewModel.onLifelineClick(lifeline.num)
             showDialog(
