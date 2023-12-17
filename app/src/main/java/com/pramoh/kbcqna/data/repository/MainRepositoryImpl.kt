@@ -1,8 +1,10 @@
 package com.pramoh.kbcqna.data.repository
 
 import com.pramoh.kbcqna.data.db.LeaderboardDB
+import com.pramoh.kbcqna.data.db.OfflineQuestionsDB
 import com.pramoh.kbcqna.data.model.toDomainQuestion
 import com.pramoh.kbcqna.data.remote.QuestionsAPI
+import com.pramoh.kbcqna.domain.model.OfflineQuestion
 import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.domain.model.Question
 import com.pramoh.kbcqna.domain.repository.MainRepository
@@ -11,7 +13,8 @@ import java.io.IOException
 
 class MainRepositoryImpl(
     private val questionsAPI: QuestionsAPI,
-    private val leaderboardDB: LeaderboardDB
+    private val leaderboardDB: LeaderboardDB,
+    private val offlineQuestionsDB: OfflineQuestionsDB
 ): MainRepository {
 
     override suspend fun getQuestionsFromRemote(url: String): Response<List<Question>> {
@@ -51,5 +54,14 @@ class MainRepositoryImpl(
 
     override suspend fun deleteAllPlayersInDB() {
         leaderboardDB.getLeaderboardDAO().deleteAllPlayers()
+    }
+
+    override suspend fun getQuestionsFromDB(level: Int): Response<List<OfflineQuestion>> {
+        return try {
+            val response = offlineQuestionsDB.getOfflineQuestionsDAO().getQuestionsForLevel(level)
+            Response.Success(response)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Unknown Error")
+        }
     }
 }

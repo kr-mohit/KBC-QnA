@@ -3,6 +3,7 @@ package com.pramoh.kbcqna.hilt
 import android.content.Context
 import androidx.room.Room
 import com.pramoh.kbcqna.data.db.LeaderboardDB
+import com.pramoh.kbcqna.data.db.OfflineQuestionsDB
 import com.pramoh.kbcqna.data.remote.LoggingInterceptor
 import com.pramoh.kbcqna.data.remote.QuestionsAPI
 import com.pramoh.kbcqna.data.repository.MainRepositoryImpl
@@ -52,7 +53,15 @@ object HiltModules {
     }
 
     @Provides
-    fun provideMainRepository(questionsAPI: QuestionsAPI, leaderboardDB: LeaderboardDB): MainRepository {
-        return MainRepositoryImpl(questionsAPI, leaderboardDB)
+    @Singleton
+    fun provideOfflineQuestionsDB(@ApplicationContext appContext: Context): OfflineQuestionsDB {
+        return Room.databaseBuilder(appContext, OfflineQuestionsDB::class.java, "offline_question")
+            .createFromAsset("prepopulatedData.db")
+            .build()
+    }
+
+    @Provides
+    fun provideMainRepository(questionsAPI: QuestionsAPI, leaderboardDB: LeaderboardDB, offlineQuestionsDB: OfflineQuestionsDB): MainRepository {
+        return MainRepositoryImpl(questionsAPI, leaderboardDB, offlineQuestionsDB)
     }
 }

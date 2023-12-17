@@ -95,6 +95,10 @@ class HomeFragment: BaseFragment() {
             }
         }
 
+        binding.btnPlayOffline.setOnClickListenerWithSfxAudio {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLevelsFragment())
+        }
+
         binding.btnSettings.setOnClickListenerWithSfxAudio {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
         }
