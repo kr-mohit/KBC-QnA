@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentHomeBinding
@@ -16,8 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment: BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
-//    private val questionViewModel: QuestionViewModel by activityViewModels() // TODO: See if you can remove this, and get the currentPlayerName by something else
-    private val homeViewModel: HomeViewModel by activityViewModels() // TODO: See if you can remove this, and get the currentPlayerName by something else
+    private val homeViewModel: HomeViewModel by viewModels()
     private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -31,7 +31,6 @@ class HomeFragment: BaseFragment() {
         fetchSharedPref()
         setObservers()
         setOnClickListeners()
-        homeViewModel.setOnStartClicked(false)
     }
 
     private fun fetchSharedPref() {
@@ -85,7 +84,6 @@ class HomeFragment: BaseFragment() {
 //                    binding.ivOption.isClickable = false
 //                    homeViewModel.setOnStartClicked(true)
 //                    homeViewModel.setPlayerNameSharedPref(binding.etPlayerName.text.toString())
-//                    homeViewModel.setCurrentPlayerName(binding.etPlayerName.text.toString()) // TODO: Did this for getting player name at the result screen; check if this can be done without using activityViewModels()
 //                    questionViewModel.fetchQuestions(Constants.FULL_URL)
 //                }
 //            } else {
@@ -97,7 +95,7 @@ class HomeFragment: BaseFragment() {
             if (binding.etPlayerName.text.isBlank()) {
                 Toast.makeText(context, "Enter Player Name", Toast.LENGTH_SHORT).show()
             } else {
-                savePlayerName(binding.etPlayerName.text.toString())
+                homeViewModel.setPlayerNameSharedPref(binding.etPlayerName.text.toString())
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLevelsFragment())
             }
         }
@@ -109,10 +107,5 @@ class HomeFragment: BaseFragment() {
         binding.ivOption.setOnClickListenerWithSfxAudio {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLeaderboardFragment())
         }
-    }
-
-    private fun savePlayerName(playerName: String) {
-        homeViewModel.setPlayerNameSharedPref(playerName)
-        homeViewModel.setCurrentPlayerName(playerName)
     }
 }

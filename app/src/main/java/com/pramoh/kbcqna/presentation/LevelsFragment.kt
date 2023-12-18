@@ -47,7 +47,8 @@ class LevelsFragment : BaseFragment() {
             btnLevelSeven.setOnClickListenerWithSfxAudio { handleLevelClick(7) }
             btnLevelEight.setOnClickListenerWithSfxAudio { handleLevelClick(8) }
 
-            btnBack.setOnClickListenerWithSfxAudio {
+            btnBack.setOnClickListener { // TODO: Not working with setOnClickListenerWithSfxAudio,,,
+                playSfxAudio()
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }

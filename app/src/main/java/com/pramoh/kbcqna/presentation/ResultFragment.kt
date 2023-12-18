@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -20,7 +19,6 @@ class ResultFragment: BaseFragment() {
 
     private lateinit var binding: FragmentResultBinding
     private val resultViewModel: ResultViewModel by viewModels()
-    private val homeViewModel: HomeViewModel by activityViewModels() // TODO: See if you can remove this, and get the currentPlayerName by something else
     private val args: ResultFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -32,9 +30,10 @@ class ResultFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUI()
+        setObserver()
         setOnClickListeners()
-        saveData()
         playMusic(MusicToPlay.RESULT_SCREEN)
+        resultViewModel.getPlayerNameSharedPref()
     }
 
     private fun setUI() {
@@ -45,6 +44,12 @@ class ResultFragment: BaseFragment() {
         } else {
             binding.tvBetterLuck.show()
             binding.tvNextTime.show()
+        }
+    }
+
+    private fun setObserver() {
+        resultViewModel.playerNameSharedPref.observe(viewLifecycleOwner) {
+            addPlayerToLeaderboard(it, args.prizeMoney)
         }
     }
 
@@ -65,10 +70,6 @@ class ResultFragment: BaseFragment() {
             stopMusic()
             findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHomeFragment())
         }
-    }
-
-    private fun saveData() {
-        addPlayerToLeaderboard(homeViewModel.getCurrentPlayerName(), args.prizeMoney)
     }
 
     private fun addPlayerToLeaderboard(playerName: String, moneyWon: Int) {
