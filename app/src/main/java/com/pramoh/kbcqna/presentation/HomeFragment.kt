@@ -96,6 +96,8 @@ class HomeFragment: BaseFragment() {
         }
 
         binding.btnPlayOffline.setOnClickListenerWithSfxAudio {
+            homeViewModel.setPlayerNameSharedPref(binding.etPlayerName.text.toString())
+            homeViewModel.setCurrentPlayerName(binding.etPlayerName.text.toString())
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLevelsFragment())
         }
 

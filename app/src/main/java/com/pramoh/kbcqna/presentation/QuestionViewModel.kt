@@ -40,6 +40,10 @@ class QuestionViewModel @Inject constructor(
         }
     }
 
+    fun setQuestionsLiveDataUsingList(list: List<Question>) {
+        _questionsLiveData.postValue(Response.Success(list))
+    }
+
     fun setCurrentQuestion(quesNumber: Int) {
         val currentQuestion = questionsLiveData.value!!.data!![quesNumber-1]
         _currentQuestion.postValue(currentQuestion)

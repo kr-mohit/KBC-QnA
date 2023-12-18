@@ -72,5 +72,9 @@
     <fragment
         android:id="@+id/levelsFragment"
         android:name="com.pramoh.kbcqna.presentation.LevelsFragment"
-        android:label="LevelsFragment" />
+        android:label="LevelsFragment" >
+        <action
+            android:id="@+id/action_levelsFragment_to_prizeListFragment"
+            app:destination="@id/prizeListFragment" />
+    </fragment>
 </navigation>

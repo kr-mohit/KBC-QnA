@@ -39,3 +39,37 @@ data class OfflineQuestion(
     val questionLevelId: Int?
 
 )
+
+fun OfflineQuestion.toQuestion(): Question { // TODO: Remove this, have to do it the other way. This is messy. Or set the data type of both the questions as same.
+    return Question(
+        question = this.questionText ?: "",
+        option1 = this.optionA ?: "",
+        option2 = this.optionA ?: "",
+        option3 = this.optionA ?: "",
+        option4 = this.optionA ?: "",
+        correctOptionNumber = this.correctOptionNumber ?: 0,
+        prizeAmount = getPrizeAmountFromDifficultyLevel(this.difficultyLevel),
+        region = this.region ?: "",
+    )
+}
+
+private fun getPrizeAmountFromDifficultyLevel(level: Int?): Int {
+    return when (level) {
+        1 -> 1000
+        2 -> 5000
+        3 -> 10000
+        4 -> 20000
+        5 -> 40000
+        6 -> 80000
+        7 -> 160000
+        8 -> 320000
+        9 -> 640000
+        10 -> 1250000
+        11 -> 2500000
+        12 -> 5000000
+        13 -> 10000000
+        14 -> 30000000
+        15 -> 100000000
+        else -> 0
+    }
+}

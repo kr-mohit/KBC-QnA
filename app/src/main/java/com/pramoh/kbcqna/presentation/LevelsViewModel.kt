@@ -16,6 +16,8 @@ class LevelsViewModel @Inject constructor(
     private val getQuestionsFromDBUseCase: GetQuestionsFromDBUseCase
 ): ViewModel(){
 
+    private var onStartClicked: Boolean = false // TODO: Check if this can be removed
+
     private val _questionsFromDB = MutableLiveData<Response<List<OfflineQuestion>>>()
     val questionsFromDB: LiveData<Response<List<OfflineQuestion>>>
         get() = _questionsFromDB
@@ -24,5 +26,13 @@ class LevelsViewModel @Inject constructor(
         viewModelScope.launch {
             _questionsFromDB.postValue(getQuestionsFromDBUseCase.invoke(level))
         }
+    }
+
+    fun setOnStartClicked(value: Boolean) {
+        onStartClicked = value
+    }
+
+    fun getOnStartClicked(): Boolean {
+        return onStartClicked
     }
 }
