@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pramoh.kbcqna.domain.model.OfflineQuestion
+import com.pramoh.kbcqna.domain.model.Question
 import com.pramoh.kbcqna.domain.usecases.GetQuestionsFromDBUseCase
 import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +18,8 @@ class LevelsViewModel @Inject constructor(
 
     private var onStartClicked: Boolean = false // TODO: Check if this can be removed
 
-    private val _questionsFromDB = MutableLiveData<Response<List<OfflineQuestion>>>()
-    val questionsFromDB: LiveData<Response<List<OfflineQuestion>>>
+    private val _questionsFromDB = MutableLiveData<Response<List<Question>>>()
+    val questionsFromDB: LiveData<Response<List<Question>>>
         get() = _questionsFromDB
 
     fun getQuestionsForLevel(level: Int) {

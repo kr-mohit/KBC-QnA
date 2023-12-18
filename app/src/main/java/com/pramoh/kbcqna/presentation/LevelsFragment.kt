@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentLevelsBinding
-import com.pramoh.kbcqna.domain.model.toQuestion
 import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,7 +63,7 @@ class LevelsFragment : BaseFragment() {
                 is Response.Success -> {
                     response.data?.let { list ->
                         if (levelsViewModel.getOnStartClicked()) {
-                            questionViewModel.setListOfQuestions(list.map { it.toQuestion() })
+                            questionViewModel.setListOfQuestions(list)
                             findNavController().navigate(LevelsFragmentDirections.actionLevelsFragmentToQuestionFragment())
                         }
                     }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.domain.usecases.GetPlayerNameSharedPrefUseCase
 import com.pramoh.kbcqna.domain.usecases.InsertPlayerToDBUseCase
+import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,9 +22,13 @@ class ResultViewModel @Inject constructor(
     val playerNameSharedPref: LiveData<String>
         get() = _playerNameSharedPref
 
+    private val _didPlayerInsert = MutableLiveData<Response<Boolean>>()
+    val didPlayerInsert: LiveData<Response<Boolean>>
+        get() = _didPlayerInsert
+
     fun insertPlayerToDB(player: PlayerData) {
         viewModelScope.launch {
-            insertPlayerToDBUseCase.invoke(player)
+            _didPlayerInsert.postValue(insertPlayerToDBUseCase.invoke(player))
         }
     }
 

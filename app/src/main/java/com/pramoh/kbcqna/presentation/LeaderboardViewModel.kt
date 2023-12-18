@@ -22,16 +22,20 @@ class LeaderboardViewModel @Inject constructor(
     val leaderboardList: LiveData<Response<List<PlayerData>>>
     get() = _leaderboardList
 
+    private val _didLeaderboardClear = MutableLiveData<Response<Boolean>>()
+    val didLeaderboardClear: LiveData<Response<Boolean>>
+        get() = _didLeaderboardClear
+
     fun getLeaderboardData() {
         viewModelScope.launch {
             _leaderboardList.postValue(getTopPlayersFromDBUseCase.invoke())
         }
     }
 
-    fun clearAllData() {
+    fun clearLeaderboard() {
         viewModelScope.launch {
-            clearLeaderboardDataUseCase.invoke()
-            getLeaderboardData()
+            _didLeaderboardClear.postValue(clearLeaderboardDataUseCase.invoke())
+            getLeaderboardData() // TODO: remove this and use livedata with Room database
         }
     }
 }

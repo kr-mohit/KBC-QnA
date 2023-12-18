@@ -2,9 +2,9 @@ package com.pramoh.kbcqna.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.pramoh.kbcqna.domain.model.PlayerData
+import com.pramoh.kbcqna.data.model.PlayerDataDTO
 
-@Database(entities = [PlayerData::class], version = 1)
+@Database(entities = [PlayerDataDTO::class], version = 1)
 abstract class LeaderboardDB: RoomDatabase() {
 
     abstract fun getLeaderboardDAO(): LeaderboardDAO

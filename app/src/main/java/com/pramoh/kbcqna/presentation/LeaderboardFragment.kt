@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,6 +69,14 @@ class LeaderboardFragment : BaseFragment() {
                 }
             }
         }
+
+        leaderboardViewModel.didLeaderboardClear.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Response.Error -> Toast.makeText(context, response.error, Toast.LENGTH_SHORT).show()
+                is Response.Loading -> {}
+                is Response.Success -> response.data?.let { if (it) Toast.makeText(context, "Leaderboard cleared successfully!", Toast.LENGTH_SHORT).show() }
+            }
+        }
     }
 
     private fun setOnClickListeners() {
@@ -77,7 +86,7 @@ class LeaderboardFragment : BaseFragment() {
         }
 
         binding.btnReset.setOnClickListenerWithSfxAudio {
-            leaderboardViewModel.clearAllData()
+            leaderboardViewModel.clearLeaderboard()
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.pramoh.kbcqna.domain.repository
 
-import com.pramoh.kbcqna.domain.model.OfflineQuestion
 import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.domain.model.Question
 import com.pramoh.kbcqna.utils.Response
@@ -11,10 +10,10 @@ interface MainRepository {
 
     suspend fun getTopPlayersFromDB(): Response<List<PlayerData>>
 
-    suspend fun insertPlayerToDB(player: PlayerData)
+    suspend fun insertPlayerToDB(player: PlayerData): Response<Boolean>
 
-    suspend fun deleteAllPlayersInDB()
+    suspend fun deleteAllPlayersInDB(): Response<Boolean>
 
-    suspend fun getQuestionsFromDB(level: Int): Response<List<OfflineQuestion>>
+    suspend fun getQuestionsFromDB(level: Int): Response<List<Question>>
 
 }

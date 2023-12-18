@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -50,6 +51,10 @@ class ResultFragment: BaseFragment() {
     private fun setObserver() {
         resultViewModel.playerNameSharedPref.observe(viewLifecycleOwner) {
             addPlayerToLeaderboard(it, args.prizeMoney)
+        }
+
+        resultViewModel.didPlayerInsert.observe(viewLifecycleOwner) {
+            Toast.makeText(context, "Game saved successfully!", Toast.LENGTH_SHORT).show()
         }
     }
 
