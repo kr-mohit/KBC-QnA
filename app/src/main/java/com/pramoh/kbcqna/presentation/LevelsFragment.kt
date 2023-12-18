@@ -67,8 +67,8 @@ class LevelsFragment : BaseFragment() {
                     response.data?.let { list ->
                         if (levelsViewModel.getOnStartClicked()) {
                             Toast.makeText(context, "Level: ${list[0].questionLevelId}, Questions: ${list.size}", Toast.LENGTH_SHORT).show()
-                            questionViewModel.setQuestionsLiveDataUsingList(list.map { it.toQuestion() })
-                            findNavController().navigate(LevelsFragmentDirections.actionLevelsFragmentToPrizeListFragment(1))
+                            questionViewModel.setListOfQuestions(list.map { it.toQuestion() })
+                            findNavController().navigate(LevelsFragmentDirections.actionLevelsFragmentToQuestionFragment())
                         }
                     }
                 }

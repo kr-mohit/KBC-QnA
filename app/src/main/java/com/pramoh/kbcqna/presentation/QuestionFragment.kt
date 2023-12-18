@@ -10,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
 import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
@@ -26,13 +25,8 @@ class QuestionFragment : BaseFragment() {
     private lateinit var binding: FragmentQuestionBinding
     private val questionViewModel: QuestionViewModel by activityViewModels() // TODO: See if you can remove this, and get the currentPlayerName by something else
     private val timerViewModel: TimerViewModel by viewModels()
-    private val args: PrizeListFragmentArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_question, container, false)
         return binding.root
     }
@@ -43,7 +37,6 @@ class QuestionFragment : BaseFragment() {
         setObservers()
         setOnClickListeners()
         setQuestion()
-        setLifelines()
         setMusic()
     }
 
@@ -237,7 +230,7 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun setTimer() {
-        if (args.questionToBeAsked >= 10) {
+        if (questionViewModel.getQuestionToBeAsked() >= 10) {
             binding.tvTimer.hide()
         } else {
             binding.tvTimer.show()
@@ -246,21 +239,16 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun setQuestion() {
-        if (args.questionToBeAsked !in 1..15) {
-            Toast.makeText(context, "Question Number out of bounds", Toast.LENGTH_SHORT).show()
-        } else {
-            questionViewModel.setCurrentQuestion(args.questionToBeAsked)
-        }
-    }
-
-    private fun setLifelines() {
-        if (args.questionToBeAsked == 1) {
-            questionViewModel.setLifelines()
+        questionViewModel.getQuestionToBeAsked().let {
+            if (it !in 1..15)
+                Toast.makeText(context, "Question Number out of bounds", Toast.LENGTH_SHORT).show()
+            else
+                questionViewModel.setCurrentQuestion(it)
         }
     }
 
     private fun setMusic() {
-        playMusic(MusicToPlay.QUESTIONNAIRE, args.questionToBeAsked < 10)
+        playMusic(MusicToPlay.QUESTIONNAIRE, questionViewModel.getQuestionToBeAsked() < 10)
     }
 
     private fun showResult(result: ResultType, correctOptionNumber: Int = 0) {
@@ -270,12 +258,15 @@ class QuestionFragment : BaseFragment() {
             ResultType.RIGHT_ANSWER -> {
                 changeOptionColors(questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.CORRECT_ANSWER)
-                val destination = if (args.questionToBeAsked > 14) {
-                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, 100000000)
-                } else {
-                    QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
+                questionViewModel.getQuestionToBeAsked().let {
+                    questionViewModel.setQuestionToBeAsked(it + 1)
+                    val destination = if (it > 14) {
+                        QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, 100000000)
+                    } else {
+                        QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(it + 1)
+                    }
+                    navigateWithDelay(destination)
                 }
-                navigateWithDelay(destination)
             }
 
             ResultType.WRONG_ANSWER -> {
@@ -305,7 +296,8 @@ class QuestionFragment : BaseFragment() {
             ResultType.SKIP_QUESTION -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.CORRECT_ANSWER)
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
+                questionViewModel.setQuestionToBeAsked(questionViewModel.getQuestionToBeAsked() + 1)
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(questionViewModel.getQuestionToBeAsked() + 1)
                 navigateWithDelay(destination)
             }
         }

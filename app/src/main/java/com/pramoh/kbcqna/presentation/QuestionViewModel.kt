@@ -3,22 +3,20 @@ package com.pramoh.kbcqna.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.pramoh.kbcqna.domain.model.Question
-import com.pramoh.kbcqna.domain.usecases.GetQuestionListUseCase
 import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class QuestionViewModel @Inject constructor(
-    private val getQuestionListUseCase: GetQuestionListUseCase
+//    private val getQuestionListUseCase: GetQuestionListUseCase
 ) :ViewModel() {
 
     private var moneyWonTillNow: Int = 0
     private var lastSafeZone: Int = 0
     private var currentSelectedOption: Int = 0
+    private var questionToBeAsked: Int = 0
 
     private val _questionsLiveData = MutableLiveData<Response<List<Question>>>()
     val questionsLiveData: LiveData<Response<List<Question>>>
@@ -32,16 +30,18 @@ class QuestionViewModel @Inject constructor(
     val lifelines: LiveData<List<Boolean>>
         get() = _lifelines
 
-    fun fetchQuestions(url: String) {
-        viewModelScope.launch {
-            _questionsLiveData.postValue(Response.Loading())
-            val response = getQuestionListUseCase.invoke(url)
-            _questionsLiveData.postValue(response)
-        }
-    }
+//    fun fetchQuestions(url: String) {
+//        viewModelScope.launch {
+//            _questionsLiveData.postValue(Response.Loading())
+//            val response = getQuestionListUseCase.invoke(url)
+//            _questionsLiveData.postValue(response)
+//        }
+//    }
 
-    fun setQuestionsLiveDataUsingList(list: List<Question>) {
+    fun setListOfQuestions(list: List<Question>) {
         _questionsLiveData.postValue(Response.Success(list))
+        setQuestionToBeAsked(1)
+        setLifelines()
     }
 
     fun setCurrentQuestion(quesNumber: Int) {
@@ -51,7 +51,7 @@ class QuestionViewModel @Inject constructor(
         setLastSafeZone(quesNumber)
     }
 
-    fun setLifelines() {
+    private fun setLifelines() {
         _lifelines.postValue(listOf(true, true, true, true))
     }
 
@@ -66,21 +66,15 @@ class QuestionViewModel @Inject constructor(
     }
 
     private fun setMoneyWonTillNow(quesNumber: Int) {
-        moneyWonTillNow = if (quesNumber < 2) {
-            0
-        } else {
-            questionsLiveData.value!!.data!![quesNumber-2].prizeAmount // TODO: do something about this, can't set here
-        }
+        moneyWonTillNow = (if (quesNumber < 2) 0 else questionsLiveData.value!!.data!![quesNumber-2].prizeAmount) // TODO: do something about this, can't set here
     }
 
     private fun setLastSafeZone(quesNumber: Int) {
-        lastSafeZone = if (quesNumber >= 10) {
-            640000
-        } else if (quesNumber >= 7) {
-            80000
-        } else {
-            0
-        }
+        lastSafeZone = if (quesNumber >= 10) 640000 else if (quesNumber >= 7) 80000 else 0
+    }
+
+    fun setQuestionToBeAsked(number: Int) {
+        questionToBeAsked = number
     }
 
     fun getCurrentSelectedOption(): Int {
@@ -93,5 +87,9 @@ class QuestionViewModel @Inject constructor(
 
     fun getLastSafeZone(): Int {
         return lastSafeZone
+    }
+
+    fun getQuestionToBeAsked(): Int {
+        return questionToBeAsked
     }
 }

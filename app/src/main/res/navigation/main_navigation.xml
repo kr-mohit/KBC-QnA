@@ -12,9 +12,6 @@
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_prizeListFragment"
-            app:destination="@id/prizeListFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_leaderboardFragment"
             app:destination="@id/leaderboardFragment" />
         <action
@@ -25,11 +22,8 @@
         android:id="@+id/prizeListFragment"
         android:name="com.pramoh.kbcqna.presentation.PrizeListFragment"
         android:label="PrizeListFragment" >
-        <action
-            android:id="@+id/action_prizeListFragment_to_questionFragment"
-            app:destination="@id/questionFragment" />
         <argument
-            android:name="questionToBeAsked"
+            android:name="questionToMark"
             app:argType="integer" />
     </fragment>
     <fragment
@@ -42,10 +36,6 @@
         <action
             android:id="@+id/action_questionFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
-        <argument
-            android:name="questionToBeAsked"
-            app:argType="integer"
-            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -74,7 +64,7 @@
         android:name="com.pramoh.kbcqna.presentation.LevelsFragment"
         android:label="LevelsFragment" >
         <action
-            android:id="@+id/action_levelsFragment_to_prizeListFragment"
-            app:destination="@id/prizeListFragment" />
+            android:id="@+id/action_levelsFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
     </fragment>
 </navigation>

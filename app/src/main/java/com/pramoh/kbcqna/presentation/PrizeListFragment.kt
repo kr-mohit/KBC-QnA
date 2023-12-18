@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pramoh.kbcqna.R
@@ -35,7 +34,7 @@ class PrizeListFragment : BaseFragment() {
 
     private fun setObservers() {
         prizeListViewModel.listOfPrizes.observe(viewLifecycleOwner) {
-            binding.listView.adapter = PrizeListAdapter(it, args.questionToBeAsked)
+            binding.listView.adapter = PrizeListAdapter(it, args.questionToMark)
             binding.listView.layoutManager = LinearLayoutManager(context)
         }
     }
@@ -43,7 +42,7 @@ class PrizeListFragment : BaseFragment() {
     private fun setOnClickListeners() {
         binding.btnNext.setOnClickListenerWithSfxAudio {
             stopMusic()
-            findNavController().navigate(PrizeListFragmentDirections.actionPrizeListFragmentToQuestionFragment(args.questionToBeAsked))
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 }
