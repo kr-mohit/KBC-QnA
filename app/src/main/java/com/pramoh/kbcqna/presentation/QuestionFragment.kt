@@ -84,10 +84,10 @@ class QuestionFragment : BaseFragment() {
 
         with(binding) {
 
-            tvOption1.setOnClickListenerWithSfxAudio { handleOptionClick(1) }
-            tvOption2.setOnClickListenerWithSfxAudio { handleOptionClick(2) }
-            tvOption3.setOnClickListenerWithSfxAudio { handleOptionClick(3) }
-            tvOption4.setOnClickListenerWithSfxAudio { handleOptionClick(4) }
+            val optionButtons = listOf(tvOption1, tvOption2, tvOption3, tvOption4)
+            optionButtons.forEachIndexed { index, option ->
+                option.setOnClickListenerWithSfxAudio { handleOptionClick(index + 1) }
+            }
 
             ivLifeline1.setOnClickListenerWithSfxAudio { handleLifelineClick(Lifeline.AUDIENCE_POLL, false) }
             ivLifeline2.setOnClickListenerWithSfxAudio { handleLifelineClick(Lifeline.PHONE_A_FRIEND, false) }
@@ -196,18 +196,7 @@ class QuestionFragment : BaseFragment() {
 
     private fun disableAllButtonsClick() {
         with(binding) {
-            val allButtonList = listOf(
-                ivLifeline1,
-                ivLifeline2,
-                ivLifeline3,
-                ivLifeline4,
-                tvQuit,
-                tvOption1,
-                tvOption2,
-                tvOption3,
-                tvOption4,
-                btnLock
-            )
+            val allButtonList = listOf(ivLifeline1, ivLifeline2, ivLifeline3, ivLifeline4, tvQuit, tvOption1, tvOption2, tvOption3, tvOption4, btnLock)
             allButtonList.forEach { it.isClickable = false }
         }
     }

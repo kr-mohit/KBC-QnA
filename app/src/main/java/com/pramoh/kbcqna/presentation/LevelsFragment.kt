@@ -38,14 +38,11 @@ class LevelsFragment : BaseFragment() {
     private fun setonClickListeners() {
 
         with(binding) {
-            btnLevelOne.setOnClickListenerWithSfxAudio { handleLevelClick(1) }
-            btnLevelTwo.setOnClickListenerWithSfxAudio { handleLevelClick(2) }
-            btnLevelThree.setOnClickListenerWithSfxAudio { handleLevelClick(3) }
-            btnLevelFour.setOnClickListenerWithSfxAudio { handleLevelClick(4) }
-            btnLevelFive.setOnClickListenerWithSfxAudio { handleLevelClick(5) }
-            btnLevelSix.setOnClickListenerWithSfxAudio { handleLevelClick(6) }
-            btnLevelSeven.setOnClickListenerWithSfxAudio { handleLevelClick(7) }
-            btnLevelEight.setOnClickListenerWithSfxAudio { handleLevelClick(8) }
+
+            val levelButtons = listOf(btnLevelOne, btnLevelTwo, btnLevelThree, btnLevelFour, btnLevelFive, btnLevelSix, btnLevelSeven, btnLevelEight)
+            levelButtons.forEachIndexed { index, button ->
+                button.setOnClickListenerWithSfxAudio { handleLevelClick(index + 1) }
+            }
 
             btnBack.setOnClickListener { // TODO: Not working with setOnClickListenerWithSfxAudio,,,
                 playSfxAudio()
@@ -55,7 +52,7 @@ class LevelsFragment : BaseFragment() {
     }
 
     private fun handleLevelClick(level: Int) {
-        levelsViewModel.setOnStartClicked(true)
+        levelsViewModel.setOnStartClicked(true) // TODO: Have to remove this
         levelsViewModel.getQuestionsForLevel(level)
     }
 
@@ -67,7 +64,6 @@ class LevelsFragment : BaseFragment() {
                 is Response.Success -> {
                     response.data?.let { list ->
                         if (levelsViewModel.getOnStartClicked()) {
-                            Toast.makeText(context, "Level: ${list[0].questionLevelId}, Questions: ${list.size}", Toast.LENGTH_SHORT).show()
                             questionViewModel.setListOfQuestions(list.map { it.toQuestion() })
                             findNavController().navigate(LevelsFragmentDirections.actionLevelsFragmentToQuestionFragment())
                         }
