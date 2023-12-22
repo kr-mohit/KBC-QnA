@@ -1,11 +1,13 @@
 package com.pramoh.kbcqna.presentation
 
 import android.content.Context
+import androidx.annotation.OptIn
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.RawResourceDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import com.pramoh.kbcqna.domain.usecases.GetMusicPreferenceUseCase
@@ -71,6 +73,7 @@ class ExoplayerViewModel @Inject constructor(
         }
     }
 
+    @OptIn(UnstableApi::class)
     fun initializeSfxAudioPlayer(audioRedId: Int) {
         val mediaItem = MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(audioRedId))
         sfxAudioPlayer.let {
@@ -79,6 +82,7 @@ class ExoplayerViewModel @Inject constructor(
         }
     }
 
+    @OptIn(UnstableApi::class)
     fun playMusic(audioRedId: Int, repeat: Boolean) {
         val mediaItem = MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(audioRedId))
         musicPlayer.let {

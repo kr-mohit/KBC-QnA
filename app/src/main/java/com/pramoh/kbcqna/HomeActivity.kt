@@ -4,11 +4,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
+import androidx.media3.common.util.UnstableApi
 import com.pramoh.kbcqna.databinding.ActivityHomeBinding
 import com.pramoh.kbcqna.presentation.ExoplayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,6 +55,7 @@ class HomeActivity : AppCompatActivity() {
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
     }
 
+    @OptIn(UnstableApi::class)
     private fun attachExoPlayer() {
         binding.exoplayerMusic.player = exoplayerViewModel.musicPlayer
         binding.exoplayerSfxAudio.player = exoplayerViewModel.sfxAudioPlayer

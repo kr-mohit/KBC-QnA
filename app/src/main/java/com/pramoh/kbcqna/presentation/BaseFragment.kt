@@ -10,11 +10,13 @@ import android.view.WindowInsetsController
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.RawResourceDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import com.pramoh.kbcqna.R
@@ -80,6 +82,7 @@ open class BaseFragment: Fragment() {
         }
     }
 
+    @OptIn(UnstableApi::class)
     fun playMusic(musicToPlay: MusicToPlay, ticktock: Boolean = true) {
         if (exoplayerViewModel.isMusicOn.value == true) {
             when(musicToPlay) {
