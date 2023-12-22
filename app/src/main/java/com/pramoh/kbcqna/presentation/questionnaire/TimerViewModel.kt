@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.presentation
+package com.pramoh.kbcqna.presentation.questionnaire
 
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData

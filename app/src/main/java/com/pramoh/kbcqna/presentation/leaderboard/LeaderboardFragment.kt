@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.presentation
+package com.pramoh.kbcqna.presentation.leaderboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentLeaderboardBinding
+import com.pramoh.kbcqna.presentation.BaseFragment
 import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.AndroidEntryPoint
 

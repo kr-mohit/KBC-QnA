@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:padding="20dp"
         android:background="@color/metallic_violet"
-        tools:context=".presentation.HomeFragment">
+        tools:context=".presentation.home.HomeFragment">
 
         <Button
             android:id="@+id/btn_back"

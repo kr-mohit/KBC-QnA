@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.presentation
+package com.pramoh.kbcqna.presentation.prizelist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentPrizeListBinding
+import com.pramoh.kbcqna.presentation.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

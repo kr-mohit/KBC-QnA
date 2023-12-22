@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.presentation
+package com.pramoh.kbcqna.presentation.prizelist
 
 import android.view.LayoutInflater
 import android.view.View

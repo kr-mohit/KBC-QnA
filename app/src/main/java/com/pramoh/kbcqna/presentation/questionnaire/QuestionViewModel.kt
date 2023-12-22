@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.presentation
+package com.pramoh.kbcqna.presentation.questionnaire
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

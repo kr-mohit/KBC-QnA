@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.presentation
+package com.pramoh.kbcqna.presentation.leaderboard
 
 import android.content.Context
 import android.view.LayoutInflater

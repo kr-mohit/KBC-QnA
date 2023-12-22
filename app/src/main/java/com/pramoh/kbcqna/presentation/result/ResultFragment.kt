@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.presentation
+package com.pramoh.kbcqna.presentation.result
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,8 @@ import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentResultBinding
 import com.pramoh.kbcqna.domain.model.PlayerData
+import com.pramoh.kbcqna.presentation.BaseFragment
+import com.pramoh.kbcqna.presentation.home.HomeViewModel
 import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
 import dagger.hilt.android.AndroidEntryPoint
 

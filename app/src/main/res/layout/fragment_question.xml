@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:padding="16dp"
         android:background="@color/metallic_violet"
-        tools:context=".presentation.QuestionFragment">
+        tools:context=".presentation.questionnaire.QuestionFragment">
 
         <ImageView
             android:id="@+id/iv_lifeline_1"

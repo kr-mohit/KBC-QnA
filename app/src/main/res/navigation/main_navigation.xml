@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.pramoh.kbcqna.presentation.HomeFragment"
+        android:name="com.pramoh.kbcqna.presentation.home.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/prizeListFragment"
-        android:name="com.pramoh.kbcqna.presentation.PrizeListFragment"
+        android:name="com.pramoh.kbcqna.presentation.prizelist.PrizeListFragment"
         android:label="PrizeListFragment" >
         <action
             android:id="@+id/action_prizeListFragment_to_questionFragment"
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/questionFragment"
-        android:name="com.pramoh.kbcqna.presentation.QuestionFragment"
+        android:name="com.pramoh.kbcqna.presentation.questionnaire.QuestionFragment"
         android:label="QuestionFragment" >
         <action
             android:id="@+id/action_questionFragment_to_prizeListFragment"
@@ -46,11 +46,11 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.pramoh.kbcqna.presentation.SettingsFragment"
+        android:name="com.pramoh.kbcqna.presentation.settings.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/resultFragment"
-        android:name="com.pramoh.kbcqna.presentation.ResultFragment"
+        android:name="com.pramoh.kbcqna.presentation.result.ResultFragment"
         android:label="ResultFragment" >
         <action
             android:id="@+id/action_resultFragment_to_homeFragment"
@@ -64,6 +64,6 @@
     </fragment>
     <fragment
         android:id="@+id/leaderboardFragment"
-        android:name="com.pramoh.kbcqna.presentation.LeaderboardFragment"
+        android:name="com.pramoh.kbcqna.presentation.leaderboard.LeaderboardFragment"
         android:label="LeaderboardFragment" />
 </navigation>

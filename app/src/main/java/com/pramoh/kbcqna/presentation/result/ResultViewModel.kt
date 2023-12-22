@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.presentation
+package com.pramoh.kbcqna.presentation.result
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

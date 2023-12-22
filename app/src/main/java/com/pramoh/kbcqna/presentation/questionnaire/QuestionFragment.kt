@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.presentation
+package com.pramoh.kbcqna.presentation.questionnaire
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentQuestionBinding
+import com.pramoh.kbcqna.presentation.BaseFragment
 import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +27,7 @@ class QuestionFragment : BaseFragment() {
     private lateinit var binding: FragmentQuestionBinding
     private val questionViewModel: QuestionViewModel by activityViewModels() // TODO: See if you can remove this, and get the currentPlayerName by something else
     private val timerViewModel: TimerViewModel by viewModels()
-    private val args: PrizeListFragmentArgs by navArgs()
+    private val args: QuestionFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,

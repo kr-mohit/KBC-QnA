@@ -1,4 +1,4 @@
-package com.pramoh.kbcqna.presentation
+package com.pramoh.kbcqna.presentation.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentSettingsBinding
+import com.pramoh.kbcqna.presentation.BaseFragment
+import com.pramoh.kbcqna.presentation.ExoplayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
