@@ -55,15 +55,18 @@ class HomeFragment: BaseFragment() {
             when(response) {
                 is Response.Loading -> {
                     binding.homeProgressBar.show()
+                    binding.tvLoadingText.show()
                 }
                 is Response.Success -> {
                     binding.homeProgressBar.hide()
+                    binding.tvLoadingText.hide()
                     if (homeViewModel.getOnStartClicked()) {
                         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPrizeListFragment(1))
                     }
                 }
                 is Response.Error -> {
                     binding.homeProgressBar.hide()
+                    binding.tvLoadingText.hide()
                     Toast.makeText(context, response.error, Toast.LENGTH_SHORT).show()
                 }
             }
