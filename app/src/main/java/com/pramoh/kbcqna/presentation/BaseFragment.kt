@@ -13,10 +13,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.upstream.RawResourceDataSource
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.datasource.RawResourceDataSource
+import androidx.media3.exoplayer.ExoPlayer
 import com.pramoh.kbcqna.R
 
 open class BaseFragment: Fragment() {
@@ -85,7 +85,7 @@ open class BaseFragment: Fragment() {
             when(musicToPlay) {
                 MusicToPlay.HOME_SCREEN -> {
                     val mediaItem = MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(musicToPlay.source))
-                    if (exoplayerViewModel.getMusicPlayer()?.currentMediaItem != mediaItem) {
+                    if (exoplayerViewModel.musicPlayer.currentMediaItem != mediaItem) {
                         exoplayerViewModel.playMusic(musicToPlay.source, true)
                     }
                 }
@@ -107,20 +107,15 @@ open class BaseFragment: Fragment() {
 
     fun playSfxAudio() {
         if (exoplayerViewModel.isSfxAudioOn.value == true) {
-            exoplayerViewModel.playSfxAudio(R.raw.audio_button_click)
+            exoplayerViewModel.playSfxAudio()
         }
     }
 
-    fun stopSfxAudio() {
-        exoplayerViewModel.stopSfxAudio()
-    }
-
     private fun setQuestionnaireTransition(musicToPlay: MusicToPlay) {
-        exoplayerViewModel.getMusicPlayer()?.addListener(object : Player.Listener {
+        exoplayerViewModel.musicPlayer.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 super.onPlaybackStateChanged(playbackState)
                 if (playbackState == ExoPlayer.STATE_ENDED) {
-                    stopMusic()
                     playMusic(musicToPlay)
                 }
             }

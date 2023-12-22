@@ -264,7 +264,6 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun showResult(result: ResultType, correctOptionNumber: Int = 0) {
-        stopMusic()
         when (result) {
 
             ResultType.RIGHT_ANSWER -> {
@@ -316,7 +315,6 @@ class QuestionFragment : BaseFragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             delay(delayDuration)
-            stopMusic()
             findNavController().navigate(destination)
         }
     }

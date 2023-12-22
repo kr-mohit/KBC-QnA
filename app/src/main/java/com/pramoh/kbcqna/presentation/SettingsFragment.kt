@@ -55,7 +55,6 @@ class SettingsFragment : BaseFragment() {
                 playSfxAudio()
             } else {
                 binding.btnSfxAudio.text = getString(R.string.off)
-                stopSfxAudio()
             }
         }
 

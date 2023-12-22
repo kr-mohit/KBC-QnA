@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         tools:context=".HomeActivity">
 
-        <com.google.android.exoplayer2.ui.PlayerView
+        <androidx.media3.ui.PlayerControlView
             android:id="@+id/exoplayer_music"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -16,7 +16,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <com.google.android.exoplayer2.ui.StyledPlayerView
+        <androidx.media3.ui.PlayerControlView
             android:id="@+id/exoplayer_sfx_audio"
             android:layout_width="0dp"
             android:layout_height="0dp"

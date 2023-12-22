@@ -62,7 +62,6 @@ class ResultFragment: BaseFragment() {
         }
 
         binding.btnStartAgain.setOnClickListenerWithSfxAudio {
-            stopMusic()
             findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHomeFragment())
         }
     }

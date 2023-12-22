@@ -56,7 +56,6 @@ class HomeFragment: BaseFragment() {
                 is Response.Success -> {
                     binding.homeProgressBar.hide()
                     if (homeViewModel.getOnStartClicked()) {
-                        stopMusic()
                         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPrizeListFragment(1))
                     }
                 }
@@ -70,8 +69,6 @@ class HomeFragment: BaseFragment() {
         exoplayerViewModel.isMusicOn.observe(viewLifecycleOwner) {
             if (it) {
                 playMusic(MusicToPlay.HOME_SCREEN)
-            } else {
-                stopMusic()
             }
         }
     }

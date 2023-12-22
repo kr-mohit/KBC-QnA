@@ -54,7 +54,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun attachExoPlayer() {
-        binding.exoplayerMusic.player = exoplayerViewModel.getMusicPlayer()
-        binding.exoplayerSfxAudio.player = exoplayerViewModel.getSfxAudioPlayer()
+        binding.exoplayerMusic.player = exoplayerViewModel.musicPlayer
+        binding.exoplayerSfxAudio.player = exoplayerViewModel.sfxAudioPlayer
+        exoplayerViewModel.initializeSfxAudioPlayer(R.raw.audio_button_click)
     }
 }
