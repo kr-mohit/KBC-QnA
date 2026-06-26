@@ -8,6 +8,8 @@ interface MainRepository {
 
     suspend fun getQuestionsFromRemote(url: String): Response<List<Question>>
 
+    suspend fun getQuestionsFromLocal(): Response<List<Question>>
+
     suspend fun getTopPlayersFromDB(): Response<List<PlayerData>>
 
     suspend fun insertPlayerToDB(player: PlayerData)

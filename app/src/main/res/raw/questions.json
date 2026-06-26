@@ -1,0 +1,604 @@
+{
+  "data": [
+    {
+      "question": "How many days are there in a normal calendar year?",
+      "option1": "360",
+      "option2": "365",
+      "option3": "366",
+      "option4": "350",
+      "correctOptionNumber": 2,
+      "prizeAmount": 1000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "What is the capital of India?",
+      "option1": "Mumbai",
+      "option2": "Kolkata",
+      "option3": "New Delhi",
+      "option4": "Chennai",
+      "correctOptionNumber": 3,
+      "prizeAmount": 1000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which of these animals is commonly called the 'Ship of the Desert'?",
+      "option1": "Horse",
+      "option2": "Camel",
+      "option3": "Elephant",
+      "option4": "Lion",
+      "correctOptionNumber": 2,
+      "prizeAmount": 1000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "How many letters are there in the English alphabet?",
+      "option1": "24",
+      "option2": "25",
+      "option3": "26",
+      "option4": "27",
+      "correctOptionNumber": 3,
+      "prizeAmount": 1000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which is the largest planet in our solar system?",
+      "option1": "Earth",
+      "option2": "Jupiter",
+      "option3": "Saturn",
+      "option4": "Mars",
+      "correctOptionNumber": 2,
+      "prizeAmount": 5000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which fruit is known as the 'King of Fruits' in India?",
+      "option1": "Apple",
+      "option2": "Mango",
+      "option3": "Banana",
+      "option4": "Orange",
+      "correctOptionNumber": 2,
+      "prizeAmount": 5000,
+      "region": "INDIA"
+    },
+    {
+      "question": "How many players are in a standard cricket team on the field?",
+      "option1": "9",
+      "option2": "10",
+      "option3": "11",
+      "option4": "12",
+      "correctOptionNumber": 3,
+      "prizeAmount": 5000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which is the smallest state of India by land area?",
+      "option1": "Goa",
+      "option2": "Sikkim",
+      "option3": "Tripura",
+      "option4": "Mizoram",
+      "correctOptionNumber": 1,
+      "prizeAmount": 5000,
+      "region": "INDIA"
+    },
+    {
+      "question": "What is the boiling point of water at standard sea level?",
+      "option1": "90 degrees C",
+      "option2": "100 degrees C",
+      "option3": "110 degrees C",
+      "option4": "120 degrees C",
+      "correctOptionNumber": 2,
+      "prizeAmount": 10000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who was the first Prime Minister of independent India?",
+      "option1": "Mahatma Gandhi",
+      "option2": "Jawaharlal Nehru",
+      "option3": "Lal Bahadur Shastri",
+      "option4": "Indira Gandhi",
+      "correctOptionNumber": 2,
+      "prizeAmount": 10000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which gas do plants absorb from the atmosphere for photosynthesis?",
+      "option1": "Oxygen",
+      "option2": "Nitrogen",
+      "option3": "Carbon Dioxide",
+      "option4": "Hydrogen",
+      "correctOptionNumber": 3,
+      "prizeAmount": 10000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which is the largest ocean on Earth?",
+      "option1": "Atlantic Ocean",
+      "option2": "Indian Ocean",
+      "option3": "Pacific Ocean",
+      "option4": "Arctic Ocean",
+      "correctOptionNumber": 3,
+      "prizeAmount": 10000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "In which year did India win its first Men's Cricket World Cup?",
+      "option1": "1975",
+      "option2": "1979",
+      "option3": "1983",
+      "option4": "1987",
+      "correctOptionNumber": 3,
+      "prizeAmount": 20000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who is known as the 'Father of the Indian Constitution'?",
+      "option1": "Dr. B. R. Ambedkar",
+      "option2": "Mahatma Gandhi",
+      "option3": "Dr. Rajendra Prasad",
+      "option4": "Sardar Vallabhbhai Patel",
+      "correctOptionNumber": 1,
+      "prizeAmount": 20000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which is the longest river in the world?",
+      "option1": "Amazon River",
+      "option2": "Nile River",
+      "option3": "Yangtze River",
+      "option4": "Mississippi River",
+      "correctOptionNumber": 2,
+      "prizeAmount": 20000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "What is the national animal of India?",
+      "option1": "Lion",
+      "option2": "Royal Bengal Tiger",
+      "option3": "Elephant",
+      "option4": "Peacock",
+      "correctOptionNumber": 2,
+      "prizeAmount": 20000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which organ of the human body filters waste from the blood?",
+      "option1": "Heart",
+      "option2": "Lungs",
+      "option3": "Kidneys",
+      "option4": "Liver",
+      "correctOptionNumber": 3,
+      "prizeAmount": 40000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who composed the national anthem of India, 'Jana Gana Mana'?",
+      "option1": "Bankim Chandra Chattopadhyay",
+      "option2": "Rabindranath Tagore",
+      "option3": "Swami Vivekananda",
+      "option4": "Sarojini Naidu",
+      "correctOptionNumber": 2,
+      "prizeAmount": 40000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which planet is known as the 'Red Planet'?",
+      "option1": "Venus",
+      "option2": "Saturn",
+      "option3": "Jupiter",
+      "option4": "Mars",
+      "correctOptionNumber": 4,
+      "prizeAmount": 40000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "What is the chemical symbol for Gold?",
+      "option1": "Ag",
+      "option2": "Au",
+      "option3": "Fe",
+      "option4": "Gd",
+      "correctOptionNumber": 2,
+      "prizeAmount": 40000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who painted the famous masterpiece 'Mona Lisa'?",
+      "option1": "Vincent van Gogh",
+      "option2": "Pablo Picasso",
+      "option3": "Leonardo da Vinci",
+      "option4": "Michelangelo",
+      "correctOptionNumber": 3,
+      "prizeAmount": 80000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which country is known as the 'Land of the Rising Sun'?",
+      "option1": "China",
+      "option2": "South Korea",
+      "option3": "Japan",
+      "option4": "Thailand",
+      "correctOptionNumber": 3,
+      "prizeAmount": 80000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who was the first person to set foot on the Moon?",
+      "option1": "Yuri Gagarin",
+      "option2": "Neil Armstrong",
+      "option3": "Buzz Aldrin",
+      "option4": "Michael Collins",
+      "correctOptionNumber": 2,
+      "prizeAmount": 80000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which monument in India was built by Emperor Shah Jahan in memory of his wife?",
+      "option1": "Qutub Minar",
+      "option2": "Taj Mahal",
+      "option3": "Red Fort",
+      "option4": "Hawa Mahal",
+      "correctOptionNumber": 2,
+      "prizeAmount": 80000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which is the tallest waterfall in the world?",
+      "option1": "Niagara Falls",
+      "option2": "Victoria Falls",
+      "option3": "Angel Falls",
+      "option4": "Iguazu Falls",
+      "correctOptionNumber": 3,
+      "prizeAmount": 160000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who discovered Penicillin in 1928?",
+      "option1": "Louis Pasteur",
+      "option2": "Alexander Fleming",
+      "option3": "Marie Curie",
+      "option4": "Gregor Mendel",
+      "correctOptionNumber": 2,
+      "prizeAmount": 160000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "In the epic Ramayana, what was the name of Ravana's kingdom?",
+      "option1": "Ayodhya",
+      "option2": "Kishkindha",
+      "option3": "Lanka",
+      "option4": "Mithila",
+      "correctOptionNumber": 3,
+      "prizeAmount": 160000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which classical dance form originated in the state of Kerala?",
+      "option1": "Kathak",
+      "option2": "Kathakali",
+      "option3": "Bharatanatyam",
+      "option4": "Odissi",
+      "correctOptionNumber": 2,
+      "prizeAmount": 160000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which element has the lowest atomic number on the periodic table?",
+      "option1": "Helium",
+      "option2": "Hydrogen",
+      "option3": "Lithium",
+      "option4": "Beryllium",
+      "correctOptionNumber": 2,
+      "prizeAmount": 320000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "In which year did the Titanic passenger ship sink in the North Atlantic?",
+      "option1": "1908",
+      "option2": "1912",
+      "option3": "1916",
+      "option4": "1920",
+      "correctOptionNumber": 2,
+      "prizeAmount": 320000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who was the first woman President of India?",
+      "option1": "Pratibha Patil",
+      "option2": "Draupadi Murmu",
+      "option3": "Indira Gandhi",
+      "option4": "Sarojini Naidu",
+      "correctOptionNumber": 1,
+      "prizeAmount": 320000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which is the largest desert in the world (including polar regions)?",
+      "option1": "Sahara Desert",
+      "option2": "Gobi Desert",
+      "option3": "Arabian Desert",
+      "option4": "Antarctic Desert",
+      "correctOptionNumber": 4,
+      "prizeAmount": 320000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who wrote the famous English play 'Romeo and Juliet'?",
+      "option1": "Geoffrey Chaucer",
+      "option2": "William Shakespeare",
+      "option3": "John Milton",
+      "option4": "Charles Dickens",
+      "correctOptionNumber": 2,
+      "prizeAmount": 640000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which metal is the best conductor of electricity at room temperature?",
+      "option1": "Copper",
+      "option2": "Silver",
+      "option3": "Gold",
+      "option4": "Aluminum",
+      "correctOptionNumber": 2,
+      "prizeAmount": 640000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "What is the capital city of Australia?",
+      "option1": "Sydney",
+      "option2": "Melbourne",
+      "option3": "Canberra",
+      "option4": "Brisbane",
+      "correctOptionNumber": 3,
+      "prizeAmount": 640000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "In which state of India is the famous Sun Temple of Konark located?",
+      "option1": "West Bengal",
+      "option2": "Odisha",
+      "option3": "Andhra Pradesh",
+      "option4": "Tamil Nadu",
+      "correctOptionNumber": 2,
+      "prizeAmount": 640000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which layer of the Earth's atmosphere contains the ozone layer?",
+      "option1": "Troposphere",
+      "option2": "Stratosphere",
+      "option3": "Mesosphere",
+      "option4": "Thermosphere",
+      "correctOptionNumber": 2,
+      "prizeAmount": 1250000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who is the author of the English epic poem 'Paradise Lost'?",
+      "option1": "John Milton",
+      "option2": "Dante Alighieri",
+      "option3": "Homer",
+      "option4": "Virgil",
+      "correctOptionNumber": 1,
+      "prizeAmount": 1250000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which is the largest freshwater lake in the world by surface area?",
+      "option1": "Lake Victoria",
+      "option2": "Lake Superior",
+      "option3": "Caspian Sea",
+      "option4": "Lake Huron",
+      "correctOptionNumber": 2,
+      "prizeAmount": 1250000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "In the epic Mahabharata, who was the father of Bhishma?",
+      "option1": "Shantanu",
+      "option2": "Pandu",
+      "option3": "Dhritarashtra",
+      "option4": "Vyasa",
+      "correctOptionNumber": 1,
+      "prizeAmount": 1250000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which scientist formulated the theory of General Relativity?",
+      "option1": "Isaac Newton",
+      "option2": "Albert Einstein",
+      "option3": "Niels Bohr",
+      "option4": "Galileo Galilei",
+      "correctOptionNumber": 2,
+      "prizeAmount": 2500000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "What is the main component gas found in the atmosphere of Venus?",
+      "option1": "Nitrogen",
+      "option2": "Oxygen",
+      "option3": "Carbon Dioxide",
+      "option4": "Methane",
+      "correctOptionNumber": 3,
+      "prizeAmount": 2500000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which battle in 1526 marked the beginning of the Mughal Empire in India?",
+      "option1": "First Battle of Panipat",
+      "option2": "Battle of Khanwa",
+      "option3": "Battle of Chausa",
+      "option4": "Battle of Ghaghra",
+      "correctOptionNumber": 1,
+      "prizeAmount": 2500000,
+      "region": "INDIA"
+    },
+    {
+      "question": "In which country were the first modern Olympic Games held in 1896?",
+      "option1": "France",
+      "option2": "United Kingdom",
+      "option3": "Greece",
+      "option4": "Italy",
+      "correctOptionNumber": 3,
+      "prizeAmount": 2500000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "What is the name of the first artificial satellite launched into space in 1957?",
+      "option1": "Apollo 11",
+      "option2": "Explorer 1",
+      "option3": "Sputnik 1",
+      "option4": "Vostok 1",
+      "correctOptionNumber": 3,
+      "prizeAmount": 5000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which organelle is known as the powerhouse of the eukaryotic cell?",
+      "option1": "Nucleus",
+      "option2": "Ribosome",
+      "option3": "Mitochondria",
+      "option4": "Golgi Apparatus",
+      "correctOptionNumber": 3,
+      "prizeAmount": 5000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who was the British Prime Minister during most of World War II?",
+      "option1": "Neville Chamberlain",
+      "option2": "Winston Churchill",
+      "option3": "Clement Attlee",
+      "option4": "Margaret Thatcher",
+      "correctOptionNumber": 2,
+      "prizeAmount": 5000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which Indian state shares the longest international border?",
+      "option1": "Rajasthan",
+      "option2": "Jammu and Kashmir",
+      "option3": "West Bengal",
+      "option4": "Arunachal Pradesh",
+      "correctOptionNumber": 3,
+      "prizeAmount": 5000000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which Nobel Prize-winning scientist first isolated the element Radium?",
+      "option1": "Marie Curie",
+      "option2": "Ernest Rutherford",
+      "option3": "Max Planck",
+      "option4": "Albert Einstein",
+      "correctOptionNumber": 1,
+      "prizeAmount": 10000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "What is the SI unit of electrical resistance?",
+      "option1": "Volt",
+      "option2": "Ampere",
+      "option3": "Ohm",
+      "option4": "Watt",
+      "correctOptionNumber": 3,
+      "prizeAmount": 10000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who was the founder of the Maurya Empire in ancient India?",
+      "option1": "Ashoka the Great",
+      "option2": "Chandragupta Maurya",
+      "option3": "Bindusara",
+      "option4": "Samudragupta",
+      "correctOptionNumber": 2,
+      "prizeAmount": 10000000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which deep ocean trench is considered the deepest point on Earth?",
+      "option1": "Java Trench",
+      "option2": "Puerto Rico Trench",
+      "option3": "Mariana Trench",
+      "option4": "Tonga Trench",
+      "correctOptionNumber": 3,
+      "prizeAmount": 10000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who was the first American astronaut in space in 1961?",
+      "option1": "John Glenn",
+      "option2": "Alan Shepard",
+      "option3": "Neil Armstrong",
+      "option4": "Yuri Gagarin",
+      "correctOptionNumber": 2,
+      "prizeAmount": 30000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which two major elements make up the bronze alloy?",
+      "option1": "Copper and Zinc",
+      "option2": "Copper and Tin",
+      "option3": "Copper and Nickel",
+      "option4": "Copper and Lead",
+      "correctOptionNumber": 2,
+      "prizeAmount": 30000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "What is the name of the oldest known epic poem in world literature?",
+      "option1": "Epic of Gilgamesh",
+      "option2": "Odyssey",
+      "option3": "Iliad",
+      "option4": "Ramayana",
+      "correctOptionNumber": 1,
+      "prizeAmount": 30000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "In which year did the French Revolution begin with the storming of the Bastille?",
+      "option1": "1776",
+      "option2": "1789",
+      "option3": "1799",
+      "option4": "1804",
+      "correctOptionNumber": 2,
+      "prizeAmount": 30000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "What is the speed of light in a vacuum to the nearest million meters per second?",
+      "option1": "150 million m/s",
+      "option2": "225 million m/s",
+      "option3": "300 million m/s",
+      "option4": "350 million m/s",
+      "correctOptionNumber": 3,
+      "prizeAmount": 100000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Who was the last Viceroy of India, overseeing the transition to independence?",
+      "option1": "Lord Linlithgow",
+      "option2": "Lord Wavell",
+      "option3": "Lord Mountbatten",
+      "option4": "C. Rajagopalachari",
+      "correctOptionNumber": 3,
+      "prizeAmount": 100000000,
+      "region": "INDIA"
+    },
+    {
+      "question": "Which planet in our solar system has the highest number of moons as of 2024?",
+      "option1": "Jupiter",
+      "option2": "Saturn",
+      "option3": "Uranus",
+      "option4": "Neptune",
+      "correctOptionNumber": 2,
+      "prizeAmount": 100000000,
+      "region": "GLOBAL"
+    },
+    {
+      "question": "Which is the largest animal to have ever lived on Earth?",
+      "option1": "African Elephant",
+      "option2": "Blue Whale",
+      "option3": "Argentinosaurus",
+      "option4": "Colossal Squid",
+      "correctOptionNumber": 2,
+      "prizeAmount": 100000000,
+      "region": "GLOBAL"
+    }
+  ]
+}

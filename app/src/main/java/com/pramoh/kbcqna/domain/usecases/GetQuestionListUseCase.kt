@@ -12,4 +12,8 @@ class GetQuestionListUseCase @Inject constructor(
     suspend operator fun invoke(url: String): Response<List<Question>> {
         return repository.getQuestionsFromRemote(url)
     }
+
+    suspend fun invokeLocal(): Response<List<Question>> {
+        return repository.getQuestionsFromLocal()
+    }
 }

@@ -14,7 +14,6 @@ import com.pramoh.kbcqna.presentation.BaseFragment
 import com.pramoh.kbcqna.presentation.ExoplayerViewModel
 import com.pramoh.kbcqna.presentation.questionnaire.QuestionViewModel
 import com.pramoh.kbcqna.utils.Constants
-import com.pramoh.kbcqna.utils.NetworkUtils
 import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,6 +45,8 @@ class HomeFragment: BaseFragment() {
         homeViewModel.getPlayerNameSharedPref()
     }
 
+    private var isOnlinePlayAttempted = false
+
     private fun setObservers() {
         homeViewModel.playerNameSharedPref.observe(viewLifecycleOwner) {
             binding.etPlayerName.setText(if (it == "") "Player" else it)
@@ -67,7 +68,25 @@ class HomeFragment: BaseFragment() {
                 is Response.Error -> {
                     binding.homeProgressBar.hide()
                     binding.tvLoadingText.hide()
-                    Toast.makeText(context, response.error, Toast.LENGTH_SHORT).show()
+                    enableAllButtonsClick()
+                    if (isOnlinePlayAttempted) {
+                        isOnlinePlayAttempted = false
+                        showDialog(
+                            requireContext(),
+                            "Failed to fetch online questions. Would you like to play offline instead?",
+                            "No",
+                            "Yes",
+                            positiveButtonAction = {
+                                if (binding.etPlayerName.text.isNotBlank()) {
+                                    disableAllButtonsClick()
+                                    homeViewModel.setOnStartClicked(true)
+                                    questionViewModel.fetchQuestionsOffline()
+                                }
+                            }
+                        )
+                    } else {
+                        Toast.makeText(context, response.error, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -80,21 +99,29 @@ class HomeFragment: BaseFragment() {
     }
 
     private fun setOnClickListeners() {
-        binding.btnStart.setOnClickListenerWithSfxAudio {
-            if (NetworkUtils.isOnline(requireContext())) {
-                if (binding.etPlayerName.text.isBlank()) {
-                    Toast.makeText(context, "Enter Player Name", Toast.LENGTH_SHORT).show()
-                } else {
-                    binding.btnSettings.isClickable = false
-                    binding.etPlayerName.isEnabled = false
-                    binding.ivOption.isClickable = false
-                    homeViewModel.setOnStartClicked(true)
-                    homeViewModel.setPlayerNameSharedPref(binding.etPlayerName.text.toString())
-                    homeViewModel.setCurrentPlayerName(binding.etPlayerName.text.toString()) // TODO: Did this for getting player name at the result screen; check if this can be done without using activityViewModels()
-                    questionViewModel.fetchQuestions(Constants.FULL_URL)
-                }
+        binding.btnPlayOnline.setOnClickListenerWithSfxAudio {
+            if (binding.etPlayerName.text.isBlank()) {
+                Toast.makeText(context, "Enter Player Name", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(context, "Check internet connection", Toast.LENGTH_SHORT).show()
+                disableAllButtonsClick()
+                isOnlinePlayAttempted = true
+                homeViewModel.setOnStartClicked(true)
+                homeViewModel.setPlayerNameSharedPref(binding.etPlayerName.text.toString())
+                homeViewModel.setCurrentPlayerName(binding.etPlayerName.text.toString())
+                questionViewModel.fetchQuestions(Constants.FULL_URL)
+            }
+        }
+
+        binding.btnPlayOffline.setOnClickListenerWithSfxAudio {
+            if (binding.etPlayerName.text.isBlank()) {
+                Toast.makeText(context, "Enter Player Name", Toast.LENGTH_SHORT).show()
+            } else {
+                disableAllButtonsClick()
+                isOnlinePlayAttempted = false
+                homeViewModel.setOnStartClicked(true)
+                homeViewModel.setPlayerNameSharedPref(binding.etPlayerName.text.toString())
+                homeViewModel.setCurrentPlayerName(binding.etPlayerName.text.toString())
+                questionViewModel.fetchQuestionsOffline()
             }
         }
 
@@ -105,5 +132,21 @@ class HomeFragment: BaseFragment() {
         binding.ivOption.setOnClickListenerWithSfxAudio {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLeaderboardFragment())
         }
+    }
+
+    private fun disableAllButtonsClick() {
+        binding.btnPlayOnline.isClickable = false
+        binding.btnPlayOffline.isClickable = false
+        binding.btnSettings.isClickable = false
+        binding.etPlayerName.isEnabled = false
+        binding.ivOption.isClickable = false
+    }
+
+    private fun enableAllButtonsClick() {
+        binding.btnPlayOnline.isClickable = true
+        binding.btnPlayOffline.isClickable = true
+        binding.btnSettings.isClickable = true
+        binding.etPlayerName.isEnabled = true
+        binding.ivOption.isClickable = true
     }
 }

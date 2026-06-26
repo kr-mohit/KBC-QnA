@@ -40,6 +40,14 @@ class QuestionViewModel @Inject constructor(
         }
     }
 
+    fun fetchQuestionsOffline() {
+        viewModelScope.launch {
+            _questionsLiveData.postValue(Response.Loading())
+            val response = getQuestionListUseCase.invokeLocal()
+            _questionsLiveData.postValue(response)
+        }
+    }
+
     fun setCurrentQuestion(quesNumber: Int) {
         val currentQuestion = questionsLiveData.value!!.data!![quesNumber-1]
         _currentQuestion.postValue(currentQuestion)

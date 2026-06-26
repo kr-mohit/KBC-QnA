@@ -52,7 +52,11 @@ object HiltModules {
     }
 
     @Provides
-    fun provideMainRepository(questionsAPI: QuestionsAPI, leaderboardDB: LeaderboardDB): MainRepository {
-        return MainRepositoryImpl(questionsAPI, leaderboardDB)
+    fun provideMainRepository(
+        @ApplicationContext appContext: Context,
+        questionsAPI: QuestionsAPI,
+        leaderboardDB: LeaderboardDB
+    ): MainRepository {
+        return MainRepositoryImpl(appContext, questionsAPI, leaderboardDB)
     }
 }
