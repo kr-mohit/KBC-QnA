@@ -1,14 +1,9 @@
 package com.pramoh.kbcqna
 
-import android.os.Build
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.media3.common.util.UnstableApi
 import com.pramoh.kbcqna.databinding.ActivityHomeBinding
@@ -45,14 +40,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun hideSystemBars() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
-        }
-        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        window.navigationBarColor = getColor(R.color.metallic_violet)
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+        window.navigationBarColor = android.graphics.Color.TRANSPARENT
     }
 
     @OptIn(UnstableApi::class)

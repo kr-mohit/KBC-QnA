@@ -21,6 +21,7 @@
     <string name="congratulations">CONGRATULATIONS!!</string>
     <string name="quit">QUIT</string>
     <string name="start_again">START AGAIN</string>
+    <string name="home">HOME</string>
     <string name="sfx_sound">SFX Sound</string>
     <string name="music">Music</string>
     <string name="leaderboard">LEADERBOARD</string>
@@ -30,4 +31,10 @@
     <string name="position_string">"%d. "</string>
     <string name="player">Player :</string>
     <string name="loading_text">Getting questions\n This may take a while…</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="clear_leaderboard_confirm">Are you sure you want to clear the leaderboard?</string>
+    <string name="kaun_banega">KAUN BANEGA</string>
+    <string name="crorepati">CROREPATI</string>
+    <string name="enter_name">Enter Name</string>
 </resources>

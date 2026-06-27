@@ -6,178 +6,211 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:background="@color/metallic_violet"
+        android:padding="20dp"
+        android:background="@drawable/screen_background_gradient"
         tools:context=".presentation.questionnaire.QuestionFragment">
 
-        <ImageView
-            android:id="@+id/iv_lifeline_1"
-            android:layout_width="0dp"
+        <!-- Lifelines Header Card -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintDimensionRatio="1"
-            android:src="@drawable/ic_audience_poll"
-            android:layout_marginTop="42dp"
-            android:layout_marginStart="16dp"
-            android:padding="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/iv_lifeline_2"
+            android:padding="8dp"
+            android:background="@drawable/card_glass_dark"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/iv_lifeline_1_cross"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/ic_cross_red"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="@id/iv_lifeline_1"
-            app:layout_constraintEnd_toEndOf="@id/iv_lifeline_1"
-            app:layout_constraintTop_toTopOf="@id/iv_lifeline_1"
-            app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_1"
-            tools:ignore="ContentDescription" />
+            <!-- Lifeline 1 -->
+            <ImageView
+                android:id="@+id/iv_lifeline_1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_audience_poll"
+                android:padding="6dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_lifeline_2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/iv_lifeline_2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintDimensionRatio="1"
-            android:src="@drawable/ic_phone_a_friend"
-            android:padding="16dp"
-            app:layout_constraintEnd_toStartOf="@id/iv_lifeline_3"
-            app:layout_constraintStart_toEndOf="@id/iv_lifeline_1"
-            app:layout_constraintTop_toTopOf="@+id/iv_lifeline_1"
-            tools:ignore="ContentDescription" />
+            <ImageView
+                android:id="@+id/iv_lifeline_1_cross"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_cross_red"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/iv_lifeline_1"
+                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_1"
+                app:layout_constraintTop_toTopOf="@id/iv_lifeline_1"
+                app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_1"
+                tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/iv_lifeline_2_cross"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/ic_cross_red"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="@id/iv_lifeline_2"
-            app:layout_constraintEnd_toEndOf="@id/iv_lifeline_2"
-            app:layout_constraintTop_toTopOf="@id/iv_lifeline_2"
-            app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_2"
-            tools:ignore="ContentDescription" />
+            <!-- Lifeline 2 -->
+            <ImageView
+                android:id="@+id/iv_lifeline_2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_phone_a_friend"
+                android:padding="6dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                app:layout_constraintStart_toEndOf="@id/iv_lifeline_1"
+                app:layout_constraintEnd_toStartOf="@id/iv_lifeline_3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/iv_lifeline_3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintDimensionRatio="1"
-            android:src="@drawable/ic_50_50"
-            android:padding="16dp"
-            app:layout_constraintStart_toEndOf="@id/iv_lifeline_2"
-            app:layout_constraintEnd_toStartOf="@id/iv_lifeline_4"
-            app:layout_constraintTop_toTopOf="@id/iv_lifeline_1"
-            tools:ignore="ContentDescription" />
+            <ImageView
+                android:id="@+id/iv_lifeline_2_cross"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_cross_red"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/iv_lifeline_2"
+                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_2"
+                app:layout_constraintTop_toTopOf="@id/iv_lifeline_2"
+                app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_2"
+                tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/iv_lifeline_3_cross"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/ic_cross_red"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="@id/iv_lifeline_3"
-            app:layout_constraintEnd_toEndOf="@id/iv_lifeline_3"
-            app:layout_constraintTop_toTopOf="@id/iv_lifeline_3"
-            app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_3"
-            tools:ignore="ContentDescription" />
+            <!-- Lifeline 3 -->
+            <ImageView
+                android:id="@+id/iv_lifeline_3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_50_50"
+                android:padding="6dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                app:layout_constraintStart_toEndOf="@id/iv_lifeline_2"
+                app:layout_constraintEnd_toStartOf="@id/iv_lifeline_4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/iv_lifeline_4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintDimensionRatio="1"
-            android:src="@drawable/ic_skip_question"
-            android:padding="16dp"
-            app:layout_constraintStart_toEndOf="@id/iv_lifeline_3"
-            app:layout_constraintEnd_toStartOf="@id/tv_quit"
-            app:layout_constraintTop_toTopOf="@id/iv_lifeline_1"
-            tools:ignore="ContentDescription" />
+            <ImageView
+                android:id="@+id/iv_lifeline_3_cross"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_cross_red"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/iv_lifeline_3"
+                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_3"
+                app:layout_constraintTop_toTopOf="@id/iv_lifeline_3"
+                app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_3"
+                tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/iv_lifeline_4_cross"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/ic_cross_red"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="@id/iv_lifeline_4"
-            app:layout_constraintEnd_toEndOf="@id/iv_lifeline_4"
-            app:layout_constraintTop_toTopOf="@id/iv_lifeline_4"
-            app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_4"
-            tools:ignore="ContentDescription" />
+            <!-- Lifeline 4 -->
+            <ImageView
+                android:id="@+id/iv_lifeline_4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_skip_question"
+                android:padding="6dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                app:layout_constraintStart_toEndOf="@id/iv_lifeline_3"
+                app:layout_constraintEnd_toStartOf="@id/tv_quit"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="ContentDescription" />
 
-        <TextView
-            android:id="@+id/tv_quit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/quit"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:background="@drawable/background_metallic_red"
-            android:layout_marginEnd="16dp"
-            android:padding="16dp"
-            app:layout_constraintStart_toEndOf="@id/iv_lifeline_4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_lifeline_1"
-            app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_1"
-            tools:ignore="ContentDescription" />
+            <ImageView
+                android:id="@+id/iv_lifeline_4_cross"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_cross_red"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/iv_lifeline_4"
+                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_4"
+                app:layout_constraintTop_toTopOf="@id/iv_lifeline_4"
+                app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_4"
+                tools:ignore="ContentDescription" />
 
+            <!-- Quit Button inside header -->
+            <TextView
+                android:id="@+id/tv_quit"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="@string/quit"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@drawable/background_metallic_red"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                app:layout_constraintStart_toEndOf="@id/iv_lifeline_4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Prize Amount Display -->
         <TextView
             android:id="@+id/tv_prize_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Rs. 25,000"
-            android:textSize="48sp"
-            android:textColor="@color/white"
+            android:textSize="36sp"
+            android:textColor="@color/accent_gold"
+            android:textStyle="bold"
+            android:shadowColor="@color/black"
+            android:shadowRadius="8"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_lifeline_1"
-            app:layout_constraintBottom_toTopOf="@id/tv_timer" />
+            app:layout_constraintTop_toBottomOf="@id/layout_header" />
 
+        <!-- Timer Circle -->
         <TextView
             android:id="@+id/tv_timer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintDimensionRatio="1"
-            tools:text="50"
-            android:textSize="48sp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            tools:text="15"
+            android:textSize="26sp"
+            android:textStyle="bold"
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@drawable/timer_background"
-            android:padding="26dp"
+            android:layout_marginTop="12dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_prize_amount"
-            app:layout_constraintBottom_toTopOf="@id/tv_question" />
+            app:layout_constraintTop_toBottomOf="@id/tv_prize_amount" />
 
+        <!-- Question Card -->
         <TextView
             android:id="@+id/tv_question"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="Question"
-            android:textSize="36sp"
+            tools:text="Which is the longest river in the world?"
+            android:textSize="20sp"
             android:textColor="@color/white"
-            android:background="@drawable/background_metallic_blue"
+            android:background="@drawable/card_glass_dark"
             android:gravity="center"
-            android:layout_marginBottom="26dp"
-            android:padding="5dp"
+            android:padding="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_option_1" />
+            app:layout_constraintTop_toBottomOf="@id/tv_timer"
+            app:layout_constraintBottom_toTopOf="@id/tv_option_1"
+            app:layout_constraintVertical_bias="0.5" />
 
+        <!-- Options (2x2 Grid) -->
         <TextView
             android:id="@+id/tv_option_1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="Option 1"
-            android:textSize="26sp"
+            android:textSize="16sp"
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@drawable/background_metallic_blue"
-            android:layout_marginBottom="16dp"
-            android:padding="5dp"
+            android:layout_marginBottom="12dp"
+            android:padding="14dp"
             app:layout_constraintStart_toStartOf="@id/tv_option_3"
             app:layout_constraintEnd_toEndOf="@id/tv_option_3"
             app:layout_constraintBottom_toTopOf="@id/tv_option_3" />
@@ -187,11 +220,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="Option 2"
-            android:textSize="26sp"
+            android:textSize="16sp"
             android:textColor="@color/white"
             android:background="@drawable/background_metallic_blue"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="14dp"
             app:layout_constraintStart_toStartOf="@id/tv_option_4"
             app:layout_constraintEnd_toEndOf="@id/tv_option_4"
             app:layout_constraintBottom_toBottomOf="@id/tv_option_1" />
@@ -201,12 +234,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="Option 3"
-            android:textSize="26sp"
+            android:textSize="16sp"
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@drawable/background_metallic_blue"
-            android:layout_marginBottom="26sp"
-            android:padding="5dp"
+            android:layout_marginBottom="16dp"
+            android:padding="14dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_option_4"
             app:layout_constraintBottom_toTopOf="@id/btn_lock" />
@@ -216,22 +249,25 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="Option 4"
-            android:textSize="26sp"
+            android:textSize="16sp"
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@drawable/background_metallic_blue"
-            android:layout_marginStart="16dp"
-            android:padding="5dp"
+            android:layout_marginStart="12dp"
+            android:padding="14dp"
             app:layout_constraintStart_toEndOf="@id/tv_option_3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/tv_option_3" />
 
-
+        <!-- Lock Button -->
         <Button
             android:id="@+id/btn_lock"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
             android:text="@string/lock"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
             android:enabled="false"
             android:backgroundTint="@color/metallic_grey"
             app:layout_constraintStart_toStartOf="parent"

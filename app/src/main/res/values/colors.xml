@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white">#FFFFFFFF</color>
-    <color name="metallic_violet">#5B0A91</color>
-    <color name="metallic_blue">#32527b</color>
+    <color name="black">#FF000000</color>
+    <color name="metallic_violet">#1A0C36</color>
+    <color name="metallic_blue">#1B3E6C</color>
     <color name="metallic_gold">#D4AF37</color>
     <color name="metallic_red">#A62C2B</color>
     <color name="metallic_green">#24855B</color>
     <color name="metallic_yellow">#FDCC0D</color>
-    <color name="metallic_grey">#A0A1A1</color>
+    <color name="metallic_grey">#8A95A5</color>
+
+    <!-- Serious Quiz Solid Theme Colors -->
+    <color name="solid_bg">#0A1128</color>
+    
+    <color name="glass_white">#121E36</color>
+    <color name="glass_white_selected">#203152</color>
+    <color name="glass_border">#223554</color>
+    
+    <!-- Solid Button Colors -->
+    <color name="solid_blue">#132237</color>
+    <color name="solid_blue_border">#2A4463</color>
+
+    <color name="solid_gold">#B8860B</color>
+    <color name="solid_gold_border">#D4AF37</color>
+
+    <color name="solid_green">#0B5345</color>
+    <color name="solid_green_border">#117A65</color>
+
+    <color name="solid_red">#78281F</color>
+    <color name="solid_red_border">#943126</color>
+
+    <!-- Accent text colors -->
+    <color name="accent_gold">#D4AF37</color>
+    <color name="accent_cyan">#A5C9EB</color>
 </resources>

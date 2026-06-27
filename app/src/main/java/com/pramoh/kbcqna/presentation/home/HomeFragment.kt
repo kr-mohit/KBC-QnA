@@ -2,8 +2,10 @@ package com.pramoh.kbcqna.presentation.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -49,7 +51,11 @@ class HomeFragment: BaseFragment() {
 
     private fun setObservers() {
         homeViewModel.playerNameSharedPref.observe(viewLifecycleOwner) {
-            binding.etPlayerName.setText(if (it == "") "Player" else it)
+            if (!it.isNullOrEmpty()) {
+                binding.etPlayerName.setText(it)
+            } else {
+                binding.etPlayerName.setText("")
+            }
         }
 
         questionViewModel.questionsLiveData.observe(viewLifecycleOwner) { response ->
@@ -100,44 +106,61 @@ class HomeFragment: BaseFragment() {
 
     private fun setOnClickListeners() {
         binding.btnPlayOnline.setOnClickListenerWithSfxAudio {
-            if (binding.etPlayerName.text.isBlank()) {
-                Toast.makeText(context, "Enter Player Name", Toast.LENGTH_SHORT).show()
+            val name = binding.etPlayerName.text.toString().trim()
+            if (name.isEmpty()) {
+                binding.etPlayerName.error = "Name is required to play!"
+                binding.etPlayerName.requestFocus()
+                Toast.makeText(context, "Please enter your name first", Toast.LENGTH_SHORT).show()
             } else {
                 disableAllButtonsClick()
                 isOnlinePlayAttempted = true
                 homeViewModel.setOnStartClicked(true)
-                homeViewModel.setPlayerNameSharedPref(binding.etPlayerName.text.toString())
-                homeViewModel.setCurrentPlayerName(binding.etPlayerName.text.toString())
+                homeViewModel.setPlayerNameSharedPref(name)
+                homeViewModel.setCurrentPlayerName(name)
                 questionViewModel.fetchQuestions(Constants.FULL_URL)
             }
         }
 
         binding.btnPlayOffline.setOnClickListenerWithSfxAudio {
-            if (binding.etPlayerName.text.isBlank()) {
-                Toast.makeText(context, "Enter Player Name", Toast.LENGTH_SHORT).show()
+            val name = binding.etPlayerName.text.toString().trim()
+            if (name.isEmpty()) {
+                binding.etPlayerName.error = "Name is required to play!"
+                binding.etPlayerName.requestFocus()
+                Toast.makeText(context, "Please enter your name first", Toast.LENGTH_SHORT).show()
             } else {
                 disableAllButtonsClick()
                 isOnlinePlayAttempted = false
                 homeViewModel.setOnStartClicked(true)
-                homeViewModel.setPlayerNameSharedPref(binding.etPlayerName.text.toString())
-                homeViewModel.setCurrentPlayerName(binding.etPlayerName.text.toString())
+                homeViewModel.setPlayerNameSharedPref(name)
+                homeViewModel.setCurrentPlayerName(name)
                 questionViewModel.fetchQuestionsOffline()
             }
         }
 
-        binding.btnSettings.setOnClickListenerWithSfxAudio {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
-        }
-
         binding.ivOption.setOnClickListenerWithSfxAudio {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLeaderboardFragment())
+            val popup = PopupMenu(requireContext(), binding.ivOption)
+            popup.menu.add(Menu.NONE, 1, Menu.NONE, "Leaderboard")
+            popup.menu.add(Menu.NONE, 2, Menu.NONE, "Settings")
+            popup.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    1 -> {
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLeaderboardFragment())
+                        true
+                    }
+                    2 -> {
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
         }
     }
 
     private fun disableAllButtonsClick() {
         binding.btnPlayOnline.isClickable = false
         binding.btnPlayOffline.isClickable = false
-        binding.btnSettings.isClickable = false
         binding.etPlayerName.isEnabled = false
         binding.ivOption.isClickable = false
     }
@@ -145,7 +168,6 @@ class HomeFragment: BaseFragment() {
     private fun enableAllButtonsClick() {
         binding.btnPlayOnline.isClickable = true
         binding.btnPlayOffline.isClickable = true
-        binding.btnSettings.isClickable = true
         binding.etPlayerName.isEnabled = true
         binding.ivOption.isClickable = true
     }

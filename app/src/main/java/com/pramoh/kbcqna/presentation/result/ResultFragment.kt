@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -32,6 +33,13 @@ class ResultFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHomeFragment())
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         setUI()
         setOnClickListeners()
@@ -64,6 +72,10 @@ class ResultFragment: BaseFragment() {
         }
 
         binding.btnStartAgain.setOnClickListenerWithSfxAudio {
+            findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHomeFragment())
+        }
+
+        binding.btnHome.setOnClickListenerWithSfxAudio {
             findNavController().navigate(ResultFragmentDirections.actionResultFragmentToHomeFragment())
         }
     }

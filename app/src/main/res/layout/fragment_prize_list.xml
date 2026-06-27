@@ -6,15 +6,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="28dp"
-        android:background="@color/metallic_violet"
+        android:padding="24dp"
+        android:background="@drawable/screen_background_gradient"
         tools:context=".presentation.prizelist.PrizeListFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="26dp"
             android:id="@+id/list_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
             tools:listitem="@layout/item_prize_list"
             tools:itemCount="15"
             app:layout_constraintTop_toTopOf="parent"
@@ -23,8 +23,11 @@
         <Button
             android:id="@+id/btn_next"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:text="@string/next_question"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-medium"
             android:background="@drawable/background_metallic_blue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -35,9 +35,15 @@ class PrizeListFragment : BaseFragment() {
     }
 
     private fun setObservers() {
-        prizeListViewModel.listOfPrizes.observe(viewLifecycleOwner) {
-            binding.listView.adapter = PrizeListAdapter(it, args.questionToBeAsked)
+        prizeListViewModel.listOfPrizes.observe(viewLifecycleOwner) { list ->
+            binding.listView.adapter = PrizeListAdapter(list, args.questionToBeAsked)
             binding.listView.layoutManager = LinearLayoutManager(context)
+            binding.listView.post {
+                val activePosition = list.size - args.questionToBeAsked
+                if (activePosition in list.indices) {
+                    binding.listView.scrollToPosition(activePosition)
+                }
+            }
         }
     }
 

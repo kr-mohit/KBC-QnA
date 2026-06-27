@@ -78,7 +78,15 @@ class LeaderboardFragment : BaseFragment() {
         }
 
         binding.btnReset.setOnClickListenerWithSfxAudio {
-            leaderboardViewModel.clearAllData()
+            showDialog(
+                requireContext(),
+                getString(R.string.clear_leaderboard_confirm),
+                getString(R.string.no),
+                getString(R.string.yes),
+                positiveButtonAction = {
+                    leaderboardViewModel.clearAllData()
+                }
+            )
         }
     }
 }

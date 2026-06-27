@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -20,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 @AndroidEntryPoint
 class QuestionFragment : BaseFragment() {
@@ -40,6 +42,13 @@ class QuestionFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showQuitDialog()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         setObservers()
         setOnClickListeners()
@@ -103,19 +112,7 @@ class QuestionFragment : BaseFragment() {
             ivLifeline4.setOnClickListenerWithSfxAudio { handleLifelineClick(Lifeline.SKIP_QUESTION, true) }
 
             tvQuit.setOnClickListenerWithSfxAudio {
-                showDialog(
-                    requireContext(),
-                    "Do you want to Quit?\nYou will be getting ${questionViewModel.getMoneyWonTillNow()}",
-                    "No",
-                    "Yes",
-                    positiveButtonAction = {
-                        timerViewModel.cancelTimer()
-                        disableAllButtonsClick()
-                        questionViewModel.currentQuestion.value?.correctOptionNumber?.let {
-                            showResult(ResultType.QUIT, it)
-                        }
-                    }
-                )
+                showQuitDialog()
             }
 
             btnLock.setOnClickListenerWithSfxAudio {
@@ -130,6 +127,22 @@ class QuestionFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    private fun showQuitDialog() {
+        showDialog(
+            requireContext(),
+            "Do you want to Quit?\nYou will be getting ${MoneyTypeConversionUtil.convertToString(questionViewModel.getMoneyWonTillNow())}",
+            "No",
+            "Yes",
+            positiveButtonAction = {
+                timerViewModel.cancelTimer()
+                disableAllButtonsClick()
+                questionViewModel.currentQuestion.value?.correctOptionNumber?.let {
+                    showResult(ResultType.QUIT, it)
+                }
+            }
+        )
     }
 
     private fun handleOptionClick(option: Int) {
@@ -315,7 +328,7 @@ class QuestionFragment : BaseFragment() {
     private fun navigateWithDelay(destination: NavDirections, delayDuration: Long = 5000) {
 
         CoroutineScope(Dispatchers.Main).launch {
-            delay(delayDuration)
+            delay(delayDuration.milliseconds)
             findNavController().navigate(destination)
         }
     }
