@@ -32,6 +32,17 @@
                 android:fontFamily="sans-serif-medium" />
 
             <TextView
+                android:id="@+id/tv_player_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"
+                tools:text="Player Name"
+                android:fontFamily="sans-serif-medium" />
+
+            <TextView
                 android:id="@+id/tv_you_won"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,52 +115,21 @@
                 android:fontFamily="sans-serif" />
         </LinearLayout>
 
-        <!-- Sharing Buttons in a Horizontal Chain -->
+        <!-- Share Score Button -->
         <Button
-            android:id="@+id/btn_share_cheque"
-            android:layout_width="0dp"
+            android:id="@+id/btn_share_score"
+            android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:text="@string/share_cheque"
-            android:textSize="12sp"
+            android:text="@string/share_score"
+            android:textSize="16sp"
+            android:textStyle="bold"
             android:textColor="@color/white"
             android:gravity="center"
             android:background="@drawable/background_metallic_blue"
-            android:layout_marginEnd="6dp"
             android:layout_marginBottom="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_share_game"
-            app:layout_constraintBottom_toTopOf="@id/btn_start_again"
-            app:layout_constraintTop_toTopOf="@id/btn_share_game" />
-
-        <Button
-            android:id="@+id/btn_share_game"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:text="@string/share_game"
-            android:textSize="12sp"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@drawable/background_metallic_blue"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintStart_toEndOf="@id/btn_share_cheque"
-            app:layout_constraintEnd_toStartOf="@id/btn_more_games"
-            app:layout_constraintBottom_toTopOf="@id/btn_start_again" />
-
-        <Button
-            android:id="@+id/btn_more_games"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:text="@string/more_games"
-            android:textSize="12sp"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@drawable/background_metallic_blue"
-            android:layout_marginStart="6dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintStart_toEndOf="@id/btn_share_game"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/btn_start_again"
-            app:layout_constraintTop_toTopOf="@id/btn_share_game" />
+            app:layout_constraintBottom_toTopOf="@id/btn_start_again" />
 
         <!-- Bottom Action Buttons Chain -->
         <Button

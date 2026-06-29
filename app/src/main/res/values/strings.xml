@@ -37,4 +37,10 @@
     <string name="kaun_banega">KAUN BANEGA</string>
     <string name="crorepati">CROREPATI</string>
     <string name="enter_name">Enter Name</string>
+    <string name="checking_username">Checking username…</string>
+    <string name="loading_questions">Loading questions…</string>
+    <string name="share_score">Share Score</string>
+    <string name="admin_panel">Admin Panel</string>
+    <string name="secret_admin_options">Secret Admin Options</string>
+    <string name="app_version">App version - %1$s %2$s</string>
 </resources>

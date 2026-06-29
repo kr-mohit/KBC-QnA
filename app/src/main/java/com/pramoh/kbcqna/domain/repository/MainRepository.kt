@@ -1,12 +1,13 @@
 package com.pramoh.kbcqna.domain.repository
 
+import com.pramoh.kbcqna.domain.model.AppUpdateInfo
 import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.domain.model.Question
 import com.pramoh.kbcqna.utils.Response
 
 interface MainRepository {
 
-    suspend fun getQuestionsFromRemote(url: String): Response<List<Question>>
+    suspend fun getQuestionsFromRemote(url: String, questionCount: Int? = null): Response<List<Question>>
 
     suspend fun getQuestionsFromLocal(): Response<List<Question>>
 
@@ -17,4 +18,6 @@ interface MainRepository {
     suspend fun deleteAllPlayers()
 
     suspend fun checkPlayerNameExists(name: String): Response<Boolean>
+
+    suspend fun checkForAppUpdate(): Response<AppUpdateInfo>
 }

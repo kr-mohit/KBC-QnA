@@ -7,6 +7,7 @@ import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.data.db.LeaderboardDB
 import com.pramoh.kbcqna.data.model.ApiDataDTO
 import com.pramoh.kbcqna.data.model.toDomainQuestion
+import com.pramoh.kbcqna.domain.model.AppUpdateInfo
 import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.domain.model.Question
 import com.pramoh.kbcqna.domain.model.toEntity
@@ -44,11 +45,32 @@ class MainRepositoryImpl(
         }
     }
 
-    override suspend fun getQuestionsFromRemote(url: String): Response<List<Question>> {
+    override suspend fun getQuestionsFromRemote(url: String, questionCount: Int?): Response<List<Question>> {
         return try {
 
             val db = FirebaseFirestore.getInstance()
 
+            val configSnapshot = db.collection("config")
+                .document("game_config")
+                .get()
+                .await()
+
+            var prizeAmounts = if (configSnapshot.exists()) {
+                val list = configSnapshot.get("prizeAmounts") as? List<*>
+                list?.mapNotNull { (it as? Number)?.toInt() }
+            } else {
+                null
+            } ?: listOf(
+                1000, 5000, 10000, 20000, 40000, 80000, 160000, 320000, 640000,
+                1250000, 2500000, 5000000, 10000000, 30000000, 100000000
+            )
+
+            // If a specific questionCount is requested by the client, slice the prize list to match that size
+            if (questionCount != null && questionCount > 0 && questionCount <= prizeAmounts.size) {
+                prizeAmounts = prizeAmounts.take(questionCount)
+            }
+
+            // 2. Fetch all questions
             val snapshot = db.collection("questions")
                 .get()
                 .await()
@@ -69,7 +91,18 @@ class MainRepositoryImpl(
             leaderboardDB.getQuestionDAO().deleteAllQuestions()
             leaderboardDB.getQuestionDAO().insertAll(questionsWithIds.map { (id, question) -> question.toEntity(id) })
 
-            Response.Success(questionsWithIds.map { it.second })
+            val allQuestions = questionsWithIds.map { it.second }
+
+            // 3. Select one random question per configured prize level
+            val selectedQuestions = prizeAmounts.mapNotNull { prize ->
+                allQuestions.filter { it.prizeAmount == prize }.randomOrNull()
+            }
+
+            if (selectedQuestions.size == prizeAmounts.size) {
+                Response.Success(selectedQuestions)
+            } else {
+                Response.Error("Insufficient remote questions. Expected ${prizeAmounts.size} matching prize levels, but only got ${selectedQuestions.size}")
+            }
 
         } catch (e: Exception) {
             Response.Error(e.localizedMessage ?: "Firestore sync failed")
@@ -159,6 +192,27 @@ class MainRepositoryImpl(
             Response.Success(!snapshot.isEmpty)
         } catch (e: Exception) {
             Response.Error(e.localizedMessage ?: "Failed to check if player name exists")
+        }
+    }
+
+    override suspend fun checkForAppUpdate(): Response<AppUpdateInfo> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val snapshot = db.collection("config")
+                .document("app_update")
+                .get()
+                .await()
+
+            if (snapshot.exists()) {
+                val newVersion = snapshot.getString("newVersion") ?: "1.0"
+                val dialogType = snapshot.getString("dialogType") ?: "none"
+                val updateMessage = snapshot.getString("updateMessage") ?: ""
+                Response.Success(AppUpdateInfo(newVersion, dialogType, updateMessage))
+            } else {
+                Response.Success(AppUpdateInfo("1.0", "none", ""))
+            }
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to check for app update")
         }
     }
 }

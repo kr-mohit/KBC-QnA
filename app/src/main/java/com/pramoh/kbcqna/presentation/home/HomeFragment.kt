@@ -173,18 +173,12 @@ class HomeFragment: BaseFragment() {
                 binding.etPlayerName.requestFocus()
                 Toast.makeText(context, "Please enter your name first", Toast.LENGTH_SHORT).show()
             } else {
-                if (NetworkUtils.isOnline(requireContext())) {
-                    isOnlinePlayAttempted = false
-                    nameToCheck = name
-                    homeViewModel.checkPlayerNameExists(name)
-                } else {
-                    disableAllButtonsClick()
-                    isOnlinePlayAttempted = false
-                    homeViewModel.setOnStartClicked(true)
-                    homeViewModel.setPlayerNameSharedPref(name)
-                    homeViewModel.setCurrentPlayerName(name)
-                    questionViewModel.fetchQuestionsOffline()
-                }
+                disableAllButtonsClick()
+                isOnlinePlayAttempted = false
+                homeViewModel.setOnStartClicked(true)
+                homeViewModel.setPlayerNameSharedPref(name)
+                homeViewModel.setCurrentPlayerName(name)
+                questionViewModel.fetchQuestionsOffline()
             }
         }
 

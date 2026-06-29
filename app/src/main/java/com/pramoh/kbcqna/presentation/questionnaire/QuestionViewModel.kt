@@ -11,6 +11,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
+
 @HiltViewModel
 class QuestionViewModel @Inject constructor(
     private val getQuestionListUseCase: GetQuestionListUseCase
@@ -19,6 +21,7 @@ class QuestionViewModel @Inject constructor(
     private var moneyWonTillNow: Int = 0
     private var lastSafeZone: Int = 0
     private var currentSelectedOption: Int = 0
+    private var isOnlineGame: Boolean = false
 
     private val _questionsLiveData = MutableLiveData<Response<List<Question>>>()
     val questionsLiveData: LiveData<Response<List<Question>>>
@@ -32,20 +35,26 @@ class QuestionViewModel @Inject constructor(
     val lifelines: LiveData<List<Boolean>>
         get() = _lifelines
 
-    fun fetchQuestions(url: String) {
+    fun fetchQuestions(url: String, questionCount: Int? = null) {
+        isOnlineGame = true
         viewModelScope.launch {
             _questionsLiveData.postValue(Response.Loading())
-            val response = getQuestionListUseCase.invoke(url)
+            val response = getQuestionListUseCase.invoke(url, questionCount)
             _questionsLiveData.postValue(response)
         }
     }
 
     fun fetchQuestionsOffline() {
+        isOnlineGame = false
         viewModelScope.launch {
             _questionsLiveData.postValue(Response.Loading())
             val response = getQuestionListUseCase.invokeLocal()
             _questionsLiveData.postValue(response)
         }
+    }
+
+    fun isOnlineGame(): Boolean {
+        return isOnlineGame
     }
 
     fun setCurrentQuestion(quesNumber: Int) {
@@ -73,15 +82,27 @@ class QuestionViewModel @Inject constructor(
         moneyWonTillNow = if (quesNumber < 2) {
             0
         } else {
-            questionsLiveData.value!!.data!![quesNumber-2].prizeAmount // TODO: do something about this, can't set here
+            questionsLiveData.value!!.data!![quesNumber-2].prizeAmount
         }
     }
 
     private fun setLastSafeZone(quesNumber: Int) {
-        lastSafeZone = if (quesNumber >= 10) {
-            640000
-        } else if (quesNumber >= 7) {
-            80000
+        val questions = questionsLiveData.value?.data ?: emptyList()
+        val total = questions.size
+
+        lastSafeZone = if (total >= 3) {
+            // Scale safe zones to 1/3 and 2/3 of the total questions length (simulating Q5 and Q10 milestones)
+            val safeZone1Index = (total * 6) / 15 - 1
+            val safeZone2Index = (total * 9) / 15 - 1
+
+            val currentZeroBasedIndex = quesNumber - 1
+            if (currentZeroBasedIndex > safeZone2Index && safeZone2Index in questions.indices) {
+                questions[safeZone2Index].prizeAmount
+            } else if (currentZeroBasedIndex > safeZone1Index && safeZone1Index in questions.indices) {
+                questions[safeZone1Index].prizeAmount
+            } else {
+                0
+            }
         } else {
             0
         }
@@ -97,5 +118,19 @@ class QuestionViewModel @Inject constructor(
 
     fun getLastSafeZone(): Int {
         return lastSafeZone
+    }
+
+    fun getQuestionsCount(): Int {
+        return questionsLiveData.value?.data?.size ?: 15
+    }
+
+    fun getFinalPrizeAmount(): Int {
+        val questions = questionsLiveData.value?.data ?: emptyList()
+        return if (questions.isNotEmpty()) questions.last().prizeAmount else 100000000
+    }
+
+    fun getListOfPrizes(): List<String> {
+        val questions = questionsLiveData.value?.data ?: emptyList()
+        return questions.map { it.prizeAmount }.sortedDescending().map { MoneyTypeConversionUtil.convertToString(it) }
     }
 }

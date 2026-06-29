@@ -76,17 +76,5 @@ class LeaderboardFragment : BaseFragment() {
             playSfxAudio()
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-
-        binding.btnReset.setOnClickListenerWithSfxAudio {
-            showDialog(
-                requireContext(),
-                getString(R.string.clear_leaderboard_confirm),
-                getString(R.string.no),
-                getString(R.string.yes),
-                positiveButtonAction = {
-                    leaderboardViewModel.clearAllData()
-                }
-            )
-        }
     }
 }

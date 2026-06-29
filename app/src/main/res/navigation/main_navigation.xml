@@ -47,7 +47,11 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.pramoh.kbcqna.presentation.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_adminFragment"
+            app:destination="@id/adminFragment" />
+    </fragment>
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.pramoh.kbcqna.presentation.result.ResultFragment"
@@ -66,4 +70,9 @@
         android:id="@+id/leaderboardFragment"
         android:name="com.pramoh.kbcqna.presentation.leaderboard.LeaderboardFragment"
         android:label="LeaderboardFragment" />
+
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.pramoh.kbcqna.presentation.admin.AdminFragment"
+        android:label="AdminFragment" />
 </navigation>

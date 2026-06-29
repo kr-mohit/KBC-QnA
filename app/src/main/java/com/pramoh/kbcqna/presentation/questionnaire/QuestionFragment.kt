@@ -251,7 +251,8 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun setTimer() {
-        if (args.questionToBeAsked >= 10) {
+        val totalQuestions = questionViewModel.getQuestionsCount()
+        if (args.questionToBeAsked > totalQuestions - 6) {
             binding.tvTimer.hide()
         } else {
             binding.tvTimer.show()
@@ -260,7 +261,8 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun setQuestion() {
-        if (args.questionToBeAsked !in 1..15) {
+        val totalQuestions = questionViewModel.getQuestionsCount()
+        if (args.questionToBeAsked !in 1..totalQuestions) {
             Toast.makeText(context, "Question Number out of bounds", Toast.LENGTH_SHORT).show()
         } else {
             questionViewModel.setCurrentQuestion(args.questionToBeAsked)
@@ -274,17 +276,19 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun setMusic() {
-        playMusic(MusicToPlay.QUESTIONNAIRE, args.questionToBeAsked < 10)
+        val totalQuestions = questionViewModel.getQuestionsCount()
+        playMusic(MusicToPlay.QUESTIONNAIRE, args.questionToBeAsked <= totalQuestions - 6)
     }
 
     private fun showResult(result: ResultType, correctOptionNumber: Int = 0) {
+        val totalQuestions = questionViewModel.getQuestionsCount()
         when (result) {
 
             ResultType.RIGHT_ANSWER -> {
                 changeOptionColors(questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.CORRECT_ANSWER)
-                val destination = if (args.questionToBeAsked > 14) {
-                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, 100000000)
+                val destination = if (args.questionToBeAsked >= totalQuestions) {
+                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, questionViewModel.getFinalPrizeAmount())
                 } else {
                     QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
                 }

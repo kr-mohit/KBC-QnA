@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pramoh.kbcqna.domain.model.AppUpdateInfo
+import com.pramoh.kbcqna.domain.usecases.CheckForAppUpdateUseCase
 import com.pramoh.kbcqna.domain.usecases.CheckPlayerNameExistsUseCase
 import com.pramoh.kbcqna.domain.usecases.GetPlayerNameSharedPrefUseCase
 import com.pramoh.kbcqna.domain.usecases.SetPlayerNameSharedPrefUseCase
@@ -16,11 +18,24 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getPlayerNameSharedPrefUseCase: GetPlayerNameSharedPrefUseCase,
     private val setPlayerNameSharedPrefUseCase: SetPlayerNameSharedPrefUseCase,
-    private val checkPlayerNameExistsUseCase: CheckPlayerNameExistsUseCase
+    private val checkPlayerNameExistsUseCase: CheckPlayerNameExistsUseCase,
+    private val checkForAppUpdateUseCase: CheckForAppUpdateUseCase
 ): ViewModel() {
 
     private var onStartClicked: Boolean = false // TODO: Check if this can be removed
     private lateinit var currentPlayerName: String // TODO: Check if this should be passed in activities or used like this by two fragments
+
+    private val _appUpdateInfo = MutableLiveData<Response<AppUpdateInfo>>()
+    val appUpdateInfo: LiveData<Response<AppUpdateInfo>>
+        get() = _appUpdateInfo
+
+    fun checkForUpdates() {
+        _appUpdateInfo.value = Response.Loading()
+        viewModelScope.launch {
+            val response = checkForAppUpdateUseCase.invoke()
+            _appUpdateInfo.postValue(response)
+        }
+    }
 
     private val _playerNameSharedPref = MutableLiveData<String>()
     val playerNameSharedPref: LiveData<String>
