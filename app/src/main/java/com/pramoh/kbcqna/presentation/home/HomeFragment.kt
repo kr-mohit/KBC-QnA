@@ -17,6 +17,7 @@ import com.pramoh.kbcqna.presentation.ExoplayerViewModel
 import com.pramoh.kbcqna.presentation.questionnaire.QuestionViewModel
 import com.pramoh.kbcqna.utils.Constants
 import com.pramoh.kbcqna.utils.Response
+import com.pramoh.kbcqna.utils.NetworkUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,6 +49,7 @@ class HomeFragment: BaseFragment() {
     }
 
     private var isOnlinePlayAttempted = false
+    private var nameToCheck = ""
 
     private fun setObservers() {
         homeViewModel.playerNameSharedPref.observe(viewLifecycleOwner) {
@@ -58,10 +60,52 @@ class HomeFragment: BaseFragment() {
             }
         }
 
+        homeViewModel.playerNameCheckResult.observe(viewLifecycleOwner) { response ->
+            if (response == null) return@observe
+            when (response) {
+                is Response.Loading -> {
+                    binding.homeProgressBar.show()
+                    binding.tvLoadingText.text = getString(R.string.checking_username)
+                    binding.tvLoadingText.show()
+                    disableAllButtonsClick()
+                }
+                is Response.Success -> {
+                    val exists = response.data ?: false
+                    if (exists) {
+                        binding.homeProgressBar.hide()
+                        binding.tvLoadingText.hide()
+                        enableAllButtonsClick()
+                        binding.etPlayerName.error = "Name already exists in leaderboard!"
+                        binding.etPlayerName.requestFocus()
+                        Toast.makeText(context, "Name already exists in the leaderboard. Please choose a different name.", Toast.LENGTH_SHORT).show()
+                        homeViewModel.resetPlayerNameCheck()
+                    } else {
+                        homeViewModel.resetPlayerNameCheck()
+                        homeViewModel.setOnStartClicked(true)
+                        homeViewModel.setPlayerNameSharedPref(nameToCheck)
+                        homeViewModel.setCurrentPlayerName(nameToCheck)
+                        if (isOnlinePlayAttempted) {
+                            questionViewModel.fetchQuestions(Constants.FULL_URL)
+                        } else {
+                            questionViewModel.fetchQuestionsOffline()
+                        }
+                    }
+                }
+                is Response.Error -> {
+                    binding.homeProgressBar.hide()
+                    binding.tvLoadingText.hide()
+                    enableAllButtonsClick()
+                    Toast.makeText(context, response.error ?: "Failed to verify username", Toast.LENGTH_SHORT).show()
+                    homeViewModel.resetPlayerNameCheck()
+                }
+            }
+        }
+
         questionViewModel.questionsLiveData.observe(viewLifecycleOwner) { response ->
             when(response) {
                 is Response.Loading -> {
                     binding.homeProgressBar.show()
+                    binding.tvLoadingText.text = getString(R.string.loading_questions)
                     binding.tvLoadingText.show()
                 }
                 is Response.Success -> {
@@ -112,12 +156,13 @@ class HomeFragment: BaseFragment() {
                 binding.etPlayerName.requestFocus()
                 Toast.makeText(context, "Please enter your name first", Toast.LENGTH_SHORT).show()
             } else {
-                disableAllButtonsClick()
-                isOnlinePlayAttempted = true
-                homeViewModel.setOnStartClicked(true)
-                homeViewModel.setPlayerNameSharedPref(name)
-                homeViewModel.setCurrentPlayerName(name)
-                questionViewModel.fetchQuestions(Constants.FULL_URL)
+                if (NetworkUtils.isOnline(requireContext())) {
+                    isOnlinePlayAttempted = true
+                    nameToCheck = name
+                    homeViewModel.checkPlayerNameExists(name)
+                } else {
+                    Toast.makeText(context, "Internet connection required to play online!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -128,12 +173,18 @@ class HomeFragment: BaseFragment() {
                 binding.etPlayerName.requestFocus()
                 Toast.makeText(context, "Please enter your name first", Toast.LENGTH_SHORT).show()
             } else {
-                disableAllButtonsClick()
-                isOnlinePlayAttempted = false
-                homeViewModel.setOnStartClicked(true)
-                homeViewModel.setPlayerNameSharedPref(name)
-                homeViewModel.setCurrentPlayerName(name)
-                questionViewModel.fetchQuestionsOffline()
+                if (NetworkUtils.isOnline(requireContext())) {
+                    isOnlinePlayAttempted = false
+                    nameToCheck = name
+                    homeViewModel.checkPlayerNameExists(name)
+                } else {
+                    disableAllButtonsClick()
+                    isOnlinePlayAttempted = false
+                    homeViewModel.setOnStartClicked(true)
+                    homeViewModel.setPlayerNameSharedPref(name)
+                    homeViewModel.setCurrentPlayerName(name)
+                    questionViewModel.fetchQuestionsOffline()
+                }
             }
         }
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "340936967664",
+    "project_id": "kbc-qna",
+    "storage_bucket": "kbc-qna.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340936967664:android:08d1dc2bb8fe5016094935",
+        "android_client_info": {
+          "package_name": "com.pramoh.kbcqna"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqVfpPcdxi-RlCJHIB-WaUhPQrlw0TYl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

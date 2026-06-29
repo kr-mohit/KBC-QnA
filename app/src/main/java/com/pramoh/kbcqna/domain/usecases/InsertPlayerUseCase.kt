@@ -4,11 +4,11 @@ import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.domain.repository.MainRepository
 import javax.inject.Inject
 
-class InsertPlayerToDBUseCase @Inject constructor(
+class InsertPlayerUseCase @Inject constructor(
     private val repository: MainRepository
 ) {
 
     suspend operator fun invoke(player: PlayerData) {
-        repository.insertPlayerToDB(player)
+        repository.insertPlayer(player)
     }
 }

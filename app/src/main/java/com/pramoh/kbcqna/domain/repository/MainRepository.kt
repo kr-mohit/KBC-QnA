@@ -10,10 +10,11 @@ interface MainRepository {
 
     suspend fun getQuestionsFromLocal(): Response<List<Question>>
 
-    suspend fun getTopPlayersFromDB(): Response<List<PlayerData>>
+    suspend fun getTopPlayers(): Response<List<PlayerData>>
 
-    suspend fun insertPlayerToDB(player: PlayerData)
+    suspend fun insertPlayer(player: PlayerData)
 
-    suspend fun deleteAllPlayersInDB()
+    suspend fun deleteAllPlayers()
 
+    suspend fun checkPlayerNameExists(name: String): Response<Boolean>
 }

@@ -1,21 +1,21 @@
 package com.pramoh.kbcqna.data.repository
 
 import android.content.Context
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.data.db.LeaderboardDB
 import com.pramoh.kbcqna.data.model.ApiDataDTO
 import com.pramoh.kbcqna.data.model.toDomainQuestion
-import com.pramoh.kbcqna.data.remote.QuestionsAPI
 import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.domain.model.Question
+import com.pramoh.kbcqna.domain.model.toEntity
 import com.pramoh.kbcqna.domain.repository.MainRepository
 import com.pramoh.kbcqna.utils.Response
-import java.io.IOException
+import kotlinx.coroutines.tasks.await
 
 class MainRepositoryImpl(
     private val context: Context,
-    private val questionsAPI: QuestionsAPI,
     private val leaderboardDB: LeaderboardDB
 ): MainRepository {
 
@@ -46,40 +46,119 @@ class MainRepositoryImpl(
 
     override suspend fun getQuestionsFromRemote(url: String): Response<List<Question>> {
         return try {
-            val response = questionsAPI.getQuestionsFromUrl(url)
-            Response.Success(response.data.map { it.toDomainQuestion() })
-        } catch (e: IOException) {
-            Response.Error(e.localizedMessage ?: "Check Internet Connection")
-        } catch (e: Exception) {
-            Response.Error(e.localizedMessage?: "Unknown Error")
-        }
-    }
 
-    override suspend fun getTopPlayersFromDB(): Response<List<PlayerData>> {
-        return try {
-            val response = leaderboardDB.getLeaderboardDAO().getTopPlayers()
-            Response.Success(response)
-        } catch (e: Exception) {
-            Response.Error(e.localizedMessage ?: "Unknown Error")
-        }
-    }
+            val db = FirebaseFirestore.getInstance()
 
-    override suspend fun insertPlayerToDB(player: PlayerData) {
-        val currentTopPlayers = leaderboardDB.getLeaderboardDAO().getTopPlayers()
+            val snapshot = db.collection("questions")
+                .get()
+                .await()
 
-        if (currentTopPlayers.size < 10) {
-            leaderboardDB.getLeaderboardDAO().insertPlayer(player)
-        } else {
-            val lowestTopPlayer = currentTopPlayers.minByOrNull { it.moneyWon }
-
-            if (lowestTopPlayer != null && player.moneyWon > lowestTopPlayer.moneyWon) {
-                leaderboardDB.getLeaderboardDAO().insertPlayer(player)
-                leaderboardDB.getLeaderboardDAO().deletePlayer(lowestTopPlayer)
+            val questionsWithIds = snapshot.documents.map { doc ->
+                doc.id to Question(
+                    question = doc.getString("question") ?: "",
+                    option1 = doc.getString("option1") ?: "",
+                    option2 = doc.getString("option2") ?: "",
+                    option3 = doc.getString("option3") ?: "",
+                    option4 = doc.getString("option4") ?: "",
+                    correctOptionNumber = (doc.getLong("correctOptionNumber") ?: 1).toInt(),
+                    prizeAmount = (doc.getLong("prizeAmount") ?: 0).toInt(),
+                    region = doc.getString("region") ?: "GLOBAL"
+                )
             }
+
+            leaderboardDB.getQuestionDAO().deleteAllQuestions()
+            leaderboardDB.getQuestionDAO().insertAll(questionsWithIds.map { (id, question) -> question.toEntity(id) })
+
+            Response.Success(questionsWithIds.map { it.second })
+
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Firestore sync failed")
         }
     }
 
-    override suspend fun deleteAllPlayersInDB() {
-        leaderboardDB.getLeaderboardDAO().deleteAllPlayers()
+    override suspend fun getTopPlayers(): Response<List<PlayerData>> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val snapshot = db.collection("leaderboard")
+                .orderBy("moneyWon", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .limit(20)
+                .get()
+                .await()
+            val players = snapshot.documents.mapIndexed { index, doc ->
+                PlayerData(
+                    id = index,
+                    playerName = doc.getString("playerName") ?: "",
+                    moneyWon = (doc.getLong("moneyWon") ?: 0).toInt()
+                )
+            }
+            Response.Success(players)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to fetch leaderboard from Firebase")
+        }
+    }
+
+    override suspend fun insertPlayer(player: PlayerData) {
+        try {
+            val db = FirebaseFirestore.getInstance()
+            val snapshot = db.collection("leaderboard")
+                .orderBy("moneyWon", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .get()
+                .await()
+
+            val playersWithDocs = snapshot.documents.map { doc ->
+                doc.id to PlayerData(
+                    id = 0,
+                    playerName = doc.getString("playerName") ?: "",
+                    moneyWon = (doc.getLong("moneyWon") ?: 0).toInt()
+                )
+            }
+
+            if (playersWithDocs.size < 20) {
+                val newDoc = mapOf(
+                    "playerName" to player.playerName,
+                    "moneyWon" to player.moneyWon
+                )
+                db.collection("leaderboard").add(newDoc).await()
+            } else {
+                val lowestPlayerPair = playersWithDocs.minByOrNull { it.second.moneyWon }
+                if (lowestPlayerPair != null && player.moneyWon > lowestPlayerPair.second.moneyWon) {
+                    val newDoc = mapOf(
+                        "playerName" to player.playerName,
+                        "moneyWon" to player.moneyWon
+                    )
+                    db.collection("leaderboard").add(newDoc).await()
+                    db.collection("leaderboard").document(lowestPlayerPair.first).delete().await()
+                }
+            }
+        } catch (e: Exception) {
+            // handle error
+        }
+    }
+
+    override suspend fun deleteAllPlayers() {
+        try {
+            val db = FirebaseFirestore.getInstance()
+            val snapshot = db.collection("leaderboard").get().await()
+            val batch = db.batch()
+            for (doc in snapshot.documents) {
+                batch.delete(doc.reference)
+            }
+            batch.commit().await()
+        } catch (e: Exception) {
+            // handle error
+        }
+    }
+
+    override suspend fun checkPlayerNameExists(name: String): Response<Boolean> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val snapshot = db.collection("leaderboard")
+                .whereEqualTo("playerName", name)
+                .get()
+                .await()
+            Response.Success(!snapshot.isEmpty)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to check if player name exists")
+        }
     }
 }

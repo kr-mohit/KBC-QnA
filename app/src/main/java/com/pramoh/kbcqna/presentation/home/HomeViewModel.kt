@@ -3,15 +3,20 @@ package com.pramoh.kbcqna.presentation.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.pramoh.kbcqna.domain.usecases.CheckPlayerNameExistsUseCase
 import com.pramoh.kbcqna.domain.usecases.GetPlayerNameSharedPrefUseCase
 import com.pramoh.kbcqna.domain.usecases.SetPlayerNameSharedPrefUseCase
+import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getPlayerNameSharedPrefUseCase: GetPlayerNameSharedPrefUseCase,
-    private val setPlayerNameSharedPrefUseCase: SetPlayerNameSharedPrefUseCase
+    private val setPlayerNameSharedPrefUseCase: SetPlayerNameSharedPrefUseCase,
+    private val checkPlayerNameExistsUseCase: CheckPlayerNameExistsUseCase
 ): ViewModel() {
 
     private var onStartClicked: Boolean = false // TODO: Check if this can be removed
@@ -46,4 +51,18 @@ class HomeViewModel @Inject constructor(
         setPlayerNameSharedPrefUseCase.invoke(playerName)
     }
 
+    private val _playerNameCheckResult = MutableLiveData<Response<Boolean>?>()
+    val playerNameCheckResult: LiveData<Response<Boolean>?>
+        get() = _playerNameCheckResult
+
+    fun checkPlayerNameExists(name: String) {
+        _playerNameCheckResult.value = Response.Loading()
+        viewModelScope.launch {
+            _playerNameCheckResult.postValue(checkPlayerNameExistsUseCase.invoke(name))
+        }
+    }
+
+    fun resetPlayerNameCheck() {
+        _playerNameCheckResult.value = null
+    }
 }

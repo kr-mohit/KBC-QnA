@@ -85,6 +85,6 @@ class ResultFragment: BaseFragment() {
     }
 
     private fun addPlayerToLeaderboard(playerName: String, moneyWon: Int) {
-        resultViewModel.insertPlayerToDB(PlayerData(0, playerName, moneyWon))
+        resultViewModel.insertPlayer(PlayerData(0, playerName, moneyWon))
     }
 }
