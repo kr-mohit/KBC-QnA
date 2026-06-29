@@ -12,7 +12,7 @@ import com.pramoh.kbcqna.presentation.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AdminFragment : BaseFragment() {
+class AdminFragment: BaseFragment() {
 
     private lateinit var binding: FragmentAdminBinding
 
@@ -24,8 +24,32 @@ class AdminFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setOnClickListeners()
+    }
+
+    private fun setOnClickListeners() {
         binding.btnBack.setOnClickListenerWithSfxAudio {
             findNavController().navigateUp()
+        }
+
+        binding.btnOptionPrizes.setOnClickListenerWithSfxAudio {
+            findNavController().navigate(AdminFragmentDirections.actionAdminFragmentToAdminPrizesFragment())
+        }
+
+        binding.btnOptionUpdates.setOnClickListenerWithSfxAudio {
+            findNavController().navigate(AdminFragmentDirections.actionAdminFragmentToAdminUpdatesFragment())
+        }
+
+        binding.btnOptionLeaderboard.setOnClickListenerWithSfxAudio {
+            findNavController().navigate(AdminFragmentDirections.actionAdminFragmentToAdminLeaderboardFragment())
+        }
+
+        binding.btnOptionStats.setOnClickListenerWithSfxAudio {
+            findNavController().navigate(AdminFragmentDirections.actionAdminFragmentToAdminStatsFragment())
+        }
+
+        binding.btnOptionMaintenance.setOnClickListenerWithSfxAudio {
+            findNavController().navigate(AdminFragmentDirections.actionAdminFragmentToAdminMaintenanceFragment())
         }
     }
 }

@@ -74,5 +74,46 @@
     <fragment
         android:id="@+id/adminFragment"
         android:name="com.pramoh.kbcqna.presentation.admin.AdminFragment"
-        android:label="AdminFragment" />
+        android:label="AdminFragment" >
+        <action
+            android:id="@+id/action_adminFragment_to_adminPrizesFragment"
+            app:destination="@id/adminPrizesFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_adminUpdatesFragment"
+            app:destination="@id/adminUpdatesFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_adminLeaderboardFragment"
+            app:destination="@id/adminLeaderboardFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_adminStatsFragment"
+            app:destination="@id/adminStatsFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_adminMaintenanceFragment"
+            app:destination="@id/adminMaintenanceFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminPrizesFragment"
+        android:name="com.pramoh.kbcqna.presentation.admin.AdminPrizesFragment"
+        android:label="AdminPrizesFragment" />
+
+    <fragment
+        android:id="@+id/adminUpdatesFragment"
+        android:name="com.pramoh.kbcqna.presentation.admin.AdminUpdatesFragment"
+        android:label="AdminUpdatesFragment" />
+
+    <fragment
+        android:id="@+id/adminLeaderboardFragment"
+        android:name="com.pramoh.kbcqna.presentation.admin.AdminLeaderboardFragment"
+        android:label="AdminLeaderboardFragment" />
+
+    <fragment
+        android:id="@+id/adminStatsFragment"
+        android:name="com.pramoh.kbcqna.presentation.admin.AdminStatsFragment"
+        android:label="AdminStatsFragment" />
+
+    <fragment
+        android:id="@+id/adminMaintenanceFragment"
+        android:name="com.pramoh.kbcqna.presentation.admin.AdminMaintenanceFragment"
+        android:label="AdminMaintenanceFragment" />
 </navigation>

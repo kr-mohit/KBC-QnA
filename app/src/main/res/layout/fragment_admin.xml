@@ -36,29 +36,100 @@
             app:layout_constraintTop_toTopOf="@id/btn_back"
             app:layout_constraintBottom_toBottomOf="@id/btn_back" />
 
-        <!-- Card Container -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Options Container ScrollView -->
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:layout_height="0dp"
             android:layout_marginTop="32dp"
-            android:background="@drawable/card_glass_dark"
+            android:fillViewport="true"
+            android:scrollbars="none"
             app:layout_constraintTop_toBottomOf="@id/btn_back"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/secret_admin_options"
-                android:textColor="@color/accent_gold"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:fontFamily="sans-serif-medium"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <!-- Option 1: Configure Prize Levels -->
+                <Button
+                    android:id="@+id/btn_option_prizes"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/_1_configure_prize_levels"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:background="@drawable/background_metallic_blue"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Option 2: Manage App Updates -->
+                <Button
+                    android:id="@+id/btn_option_updates"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/_2_manage_app_updates"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:background="@drawable/card_glass_dark"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Option 3: Configure Leaderboard -->
+                <Button
+                    android:id="@+id/btn_option_leaderboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/_3_configure_leaderboard"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:background="@drawable/card_glass_dark"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Option 4: Question Bank Statistics -->
+                <Button
+                    android:id="@+id/btn_option_stats"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/_4_question_bank_statistics"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:background="@drawable/card_glass_dark"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Option 5: Maintenance Mode Configurator -->
+                <Button
+                    android:id="@+id/btn_option_maintenance"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/_5_maintenance_mode_config"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:background="@drawable/card_glass_dark"
+                    android:layout_marginBottom="24dp" />
+
+            </LinearLayout>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

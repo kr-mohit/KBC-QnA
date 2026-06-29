@@ -61,14 +61,33 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel.appUpdateInfo.observe(this) { response ->
             if (response is Response.Success) {
                 val updateInfo = response.data
-                if (updateInfo != null && updateInfo.dialogType != "none") {
-                    val currentVersion = getCurrentVersionName()
-                    if (currentVersion != updateInfo.newVersion) {
-                        showUpdateDialog(updateInfo.dialogType, updateInfo.updateMessage)
+                if (updateInfo != null) {
+                    if (updateInfo.isMaintenanceMode) {
+                        showMaintenanceDialog(updateInfo.maintenanceMessage)
+                    } else if (updateInfo.dialogType != "none") {
+                        val currentVersion = getCurrentVersionName()
+                        if (currentVersion != updateInfo.newVersion) {
+                            showUpdateDialog(updateInfo.dialogType, updateInfo.updateMessage)
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun showMaintenanceDialog(maintenanceMessage: String) {
+        val displayMessage = maintenanceMessage.ifBlank {
+            "The server is currently undergoing maintenance. Please try again later."
+        }
+
+        android.app.AlertDialog.Builder(this)
+            .setTitle("Server Maintenance")
+            .setMessage(displayMessage)
+            .setPositiveButton("Exit") { _, _ ->
+                finish()
+            }
+            .setCancelable(false)
+            .show()
     }
 
     private fun getCurrentVersionName(): String {

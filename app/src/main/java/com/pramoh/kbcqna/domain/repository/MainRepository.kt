@@ -20,4 +20,20 @@ interface MainRepository {
     suspend fun checkPlayerNameExists(name: String): Response<Boolean>
 
     suspend fun checkForAppUpdate(): Response<AppUpdateInfo>
+
+    suspend fun getUniquePrizeAmounts(): List<Int>
+
+    suspend fun getRemotePrizeAmounts(): Response<List<Int>>
+
+    suspend fun updateRemotePrizeAmounts(prizeAmounts: List<Int>): Response<Unit>
+
+    suspend fun updateRemoteAppUpdateInfo(newVersion: String, dialogType: String, updateMessage: String): Response<Unit>
+
+    suspend fun getRemoteLeaderboardWithDocIds(): Response<List<com.pramoh.kbcqna.domain.model.LeaderboardPlayerWithId>>
+
+    suspend fun deleteRemoteLeaderboardPlayers(docIds: List<String>): Response<Unit>
+
+    suspend fun getRemoteQuestionStats(): Response<Map<Int, Int>>
+
+    suspend fun updateRemoteMaintenanceInfo(isMaintenance: Boolean, message: String): Response<Unit>
 }

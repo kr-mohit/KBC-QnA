@@ -207,12 +207,153 @@ class MainRepositoryImpl(
                 val newVersion = snapshot.getString("newVersion") ?: "1.0"
                 val dialogType = snapshot.getString("dialogType") ?: "none"
                 val updateMessage = snapshot.getString("updateMessage") ?: ""
-                Response.Success(AppUpdateInfo(newVersion, dialogType, updateMessage))
+                val isMaintenance = snapshot.getBoolean("isMaintenanceMode") ?: false
+                val maintenanceMsg = snapshot.getString("maintenanceMessage") ?: ""
+                Response.Success(AppUpdateInfo(newVersion, dialogType, updateMessage, isMaintenance, maintenanceMsg))
             } else {
-                Response.Success(AppUpdateInfo("1.0", "none", ""))
+                Response.Success(AppUpdateInfo("1.0", "none", "", false, ""))
             }
         } catch (e: Exception) {
             Response.Error(e.localizedMessage ?: "Failed to check for app update")
+        }
+    }
+
+    override suspend fun getUniquePrizeAmounts(): List<Int> {
+        // Try getting from Room DB first
+        val dbQuestions = leaderboardDB.getQuestionDAO().getAllQuestions()
+        if (dbQuestions.isNotEmpty()) {
+            return dbQuestions.map { it.prizeAmount }.distinct().sorted()
+        }
+        // Fallback to raw resource questions
+        return try {
+            val jsonString = context.resources.openRawResource(R.raw.questions).bufferedReader().use { it.readText() }
+            val apiDataDTO = Gson().fromJson(jsonString, ApiDataDTO::class.java)
+            apiDataDTO.data.map { it.toDomainQuestion() }.map { it.prizeAmount }.distinct().sorted()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    override suspend fun getRemotePrizeAmounts(): Response<List<Int>> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val configSnapshot = db.collection("config")
+                .document("game_config")
+                .get()
+                .await()
+
+            val prizeAmounts = if (configSnapshot.exists()) {
+                val list = configSnapshot.get("prizeAmounts") as? List<*>
+                list?.mapNotNull { (it as? Number)?.toInt() }
+            } else {
+                null
+            } ?: listOf(
+                1000, 5000, 10000, 20000, 40000, 80000, 160000, 320000, 640000,
+                1250000, 2500000, 5000000, 10000000, 30000000, 100000000
+            )
+            Response.Success(prizeAmounts)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to fetch remote config")
+        }
+    }
+
+    override suspend fun updateRemotePrizeAmounts(prizeAmounts: List<Int>): Response<Unit> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            db.collection("config")
+                .document("game_config")
+                .update("prizeAmounts", prizeAmounts)
+                .await()
+            Response.Success(Unit)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to update prize amounts in Firebase")
+        }
+    }
+
+    override suspend fun updateRemoteAppUpdateInfo(
+        newVersion: String,
+        dialogType: String,
+        updateMessage: String
+    ): Response<Unit> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val data = mapOf(
+                "newVersion" to newVersion,
+                "dialogType" to dialogType,
+                "updateMessage" to updateMessage
+            )
+            db.collection("config")
+                .document("app_update")
+                .set(data)
+                .await()
+            Response.Success(Unit)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to update app update settings in Firebase")
+        }
+    }
+
+    override suspend fun getRemoteLeaderboardWithDocIds(): Response<List<com.pramoh.kbcqna.domain.model.LeaderboardPlayerWithId>> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val snapshot = db.collection("leaderboard")
+                .orderBy("moneyWon", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .get()
+                .await()
+            val players = snapshot.documents.map { doc ->
+                com.pramoh.kbcqna.domain.model.LeaderboardPlayerWithId(
+                    docId = doc.id,
+                    playerName = doc.getString("playerName") ?: "",
+                    moneyWon = (doc.getLong("moneyWon") ?: 0).toInt()
+                )
+            }
+            Response.Success(players)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to fetch leaderboard from Firebase")
+        }
+    }
+
+    override suspend fun deleteRemoteLeaderboardPlayers(docIds: List<String>): Response<Unit> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val batch = db.batch()
+            for (id in docIds) {
+                val docRef = db.collection("leaderboard").document(id)
+                batch.delete(docRef)
+            }
+            batch.commit().await()
+            Response.Success(Unit)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to delete players from Firebase")
+        }
+    }
+
+    override suspend fun getRemoteQuestionStats(): Response<Map<Int, Int>> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val snapshot = db.collection("questions").get().await()
+            val countsMap = snapshot.documents.mapNotNull { doc ->
+                doc.getLong("prizeAmount")?.toInt()
+            }.groupingBy { it }.eachCount()
+            Response.Success(countsMap)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to fetch question statistics from Firebase")
+        }
+    }
+
+    override suspend fun updateRemoteMaintenanceInfo(isMaintenance: Boolean, message: String): Response<Unit> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val data = mapOf(
+                "isMaintenanceMode" to isMaintenance,
+                "maintenanceMessage" to message
+            )
+            db.collection("config")
+                .document("app_update")
+                .update(data)
+                .await()
+            Response.Success(Unit)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to update maintenance settings in Firebase")
         }
     }
 }
