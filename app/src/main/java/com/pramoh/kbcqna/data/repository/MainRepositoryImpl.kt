@@ -358,4 +358,26 @@ class MainRepositoryImpl(
             Response.Error(e.localizedMessage ?: "Failed to update maintenance settings in Firebase")
         }
     }
+
+    override suspend fun addRemoteQuestion(question: Question): Response<Unit> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val data = mapOf(
+                "question" to question.question,
+                "option1" to question.option1,
+                "option2" to question.option2,
+                "option3" to question.option3,
+                "option4" to question.option4,
+                "correctOptionNumber" to question.correctOptionNumber,
+                "prizeAmount" to question.prizeAmount,
+                "region" to question.region
+            )
+            db.collection("questions")
+                .add(data)
+                .await()
+            Response.Success(Unit)
+        } catch (e: java.lang.Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to add question to Firebase")
+        }
+    }
 }

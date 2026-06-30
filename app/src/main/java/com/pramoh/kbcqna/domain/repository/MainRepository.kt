@@ -36,4 +36,6 @@ interface MainRepository {
     suspend fun getRemoteQuestionStats(): Response<Map<Int, Int>>
 
     suspend fun updateRemoteMaintenanceInfo(isMaintenance: Boolean, message: String): Response<Unit>
+
+    suspend fun addRemoteQuestion(question: Question): Response<Unit>
 }

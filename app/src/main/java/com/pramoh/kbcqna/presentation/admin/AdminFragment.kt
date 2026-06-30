@@ -51,5 +51,9 @@ class AdminFragment: BaseFragment() {
         binding.btnOptionMaintenance.setOnClickListenerWithSfxAudio {
             findNavController().navigate(AdminFragmentDirections.actionAdminFragmentToAdminMaintenanceFragment())
         }
+
+        binding.btnOptionAddQuestion.setOnClickListenerWithSfxAudio {
+            findNavController().navigate(AdminFragmentDirections.actionAdminFragmentToAdminAddQuestionFragment())
+        }
     }
 }

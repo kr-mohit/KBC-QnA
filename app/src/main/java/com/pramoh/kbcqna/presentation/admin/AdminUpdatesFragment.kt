@@ -38,8 +38,8 @@ class AdminUpdatesFragment: BaseFragment() {
     }
 
     private fun setupSpinner() {
-        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, dialogTypes)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.spinner_selected_item, dialogTypes)
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         binding.spinnerDialogType.adapter = spinnerAdapter
     }
 

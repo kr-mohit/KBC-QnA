@@ -9,6 +9,7 @@ import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.pramoh.kbcqna.domain.model.Question
 
 @HiltViewModel
 class AdminViewModel @Inject constructor(
@@ -145,5 +146,30 @@ class AdminViewModel @Inject constructor(
 
     fun resetMaintenanceUpdateStatus() {
         _maintenanceUpdateStatus.value = null
+    }
+
+    private val _addQuestionStatus = MutableLiveData<Response<Unit>?>()
+    val addQuestionStatus: LiveData<Response<Unit>?> get() = _addQuestionStatus
+
+    private val _allPrizeAmounts = MutableLiveData<List<Int>>()
+    val allPrizeAmounts: LiveData<List<Int>> get() = _allPrizeAmounts
+
+    fun addQuestion(question: Question) {
+        _addQuestionStatus.value = Response.Loading()
+        viewModelScope.launch {
+            val result = mainRepository.addRemoteQuestion(question)
+            _addQuestionStatus.postValue(result)
+        }
+    }
+
+    fun resetAddQuestionStatus() {
+        _addQuestionStatus.value = null
+    }
+
+    fun loadAllPrizeAmounts() {
+        viewModelScope.launch {
+            val prizes = mainRepository.getUniquePrizeAmounts()
+            _allPrizeAmounts.postValue(prizes)
+        }
     }
 }

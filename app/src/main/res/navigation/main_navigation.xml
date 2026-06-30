@@ -90,6 +90,9 @@
         <action
             android:id="@+id/action_adminFragment_to_adminMaintenanceFragment"
             app:destination="@id/adminMaintenanceFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_adminAddQuestionFragment"
+            app:destination="@id/adminAddQuestionFragment" />
     </fragment>
 
     <fragment
@@ -116,4 +119,9 @@
         android:id="@+id/adminMaintenanceFragment"
         android:name="com.pramoh.kbcqna.presentation.admin.AdminMaintenanceFragment"
         android:label="AdminMaintenanceFragment" />
+
+    <fragment
+        android:id="@+id/adminAddQuestionFragment"
+        android:name="com.pramoh.kbcqna.presentation.admin.AdminAddQuestionFragment"
+        android:label="AdminAddQuestionFragment" />
 </navigation>

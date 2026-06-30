@@ -126,6 +126,21 @@
                     android:paddingStart="24dp"
                     android:paddingEnd="24dp"
                     android:background="@drawable/card_glass_dark"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Option 6: Add Question to Firebase -->
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_option_add_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/_6_add_question"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="start|center_vertical"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:background="@drawable/card_glass_dark"
                     android:layout_marginBottom="24dp" />
 
             </LinearLayout>

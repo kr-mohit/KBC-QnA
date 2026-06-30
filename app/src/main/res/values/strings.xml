@@ -71,4 +71,22 @@
     <string name="_0">0</string>
     <string name="total_remote_questions">Total Remote Questions</string>
     <string name="question_statistics">Question Statistics</string>
+    <string name="add_question_to_firebase">Add Question to Firebase</string>
+    <string name="_6_add_question">6. Add Question to Firebase</string>
+    <string name="enter_question">Enter Question</string>
+    <string name="enter_option_1">Enter Option 1</string>
+    <string name="enter_option_2">Enter Option 2</string>
+    <string name="enter_option_3">Enter Option 3</string>
+    <string name="enter_option_4">Enter Option 4</string>
+    <string name="select_correct_option">Select Correct Option</string>
+    <string name="select_prize_amount">Select Prize Amount</string>
+    <string name="select_region">Select Region</string>
+    <string name="adding_question_">Adding Question…</string>
+    <string name="add_question">Add Question</string>
+    <string name="question_added_successfully">Question added successfully!</string>
+    <string name="type_question_here">Type question here…</string>
+    <string name="option_1">Option 1</string>
+    <string name="option_2">Option 2</string>
+    <string name="option_3">Option 3</string>
+    <string name="option_4">Option 4</string>
 </resources>
