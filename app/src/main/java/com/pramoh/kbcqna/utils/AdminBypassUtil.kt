@@ -11,7 +11,14 @@ object AdminBypassUtil {
 
     private const val REQUIRED_CLICKS = 15
     private const val CLICK_TIME_WINDOW = 2000L // 2 seconds
-    private const val ADMIN_PASSCODE = "2911"
+    private var remoteAdminPasskey: String? = null
+
+    /**
+     * Sets the admin passkey fetched from Firebase.
+     */
+    fun setAdminPasskey(passkey: String?) {
+        remoteAdminPasskey = passkey
+    }
 
     /**
      * Attaches the click listener for the developer admin bypass.
@@ -35,7 +42,16 @@ object AdminBypassUtil {
 
             if (clickCount >= REQUIRED_CLICKS) {
                 clickCount = 0
-                showPasscodeDialog(view.context, onSuccess)
+                val context = view.context
+                if (!NetworkUtils.isOnline(context)) {
+                    Toast.makeText(context, "Internet connection required to bypass", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                if (remoteAdminPasskey.isNullOrBlank()) {
+                    Toast.makeText(context, "Admin passkey not loaded from server", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                showPasscodeDialog(context, onSuccess)
             }
         }
     }
@@ -60,11 +76,12 @@ object AdminBypassUtil {
 
         builder.setPositiveButton("Verify") { dialog, _ ->
             val enteredText = input.text.toString().trim()
-            if (enteredText == ADMIN_PASSCODE) {
+            if (enteredText == remoteAdminPasskey) {
                 dialog.dismiss()
                 onSuccess()
             } else {
                 Toast.makeText(context, "Invalid PIN", Toast.LENGTH_SHORT).show()
+                showPasscodeDialog(context, onSuccess)
             }
         }
 
@@ -72,6 +89,10 @@ object AdminBypassUtil {
             dialog.cancel()
         }
 
-        builder.show()
+        builder.setCancelable(false)
+
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 }

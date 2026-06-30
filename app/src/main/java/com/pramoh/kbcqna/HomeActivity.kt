@@ -64,6 +64,7 @@ class HomeActivity : AppCompatActivity() {
             if (response is Response.Success) {
                 val updateInfo = response.data
                 if (updateInfo != null) {
+                    AdminBypassUtil.setAdminPasskey(updateInfo.adminPasskey)
                     if (updateInfo.isMaintenanceMode) {
                         showMaintenanceDialog(updateInfo.maintenanceMessage)
                     } else if (updateInfo.dialogType != "none") {

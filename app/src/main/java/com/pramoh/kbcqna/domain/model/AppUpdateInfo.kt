@@ -5,5 +5,6 @@ data class AppUpdateInfo(
     val dialogType: String,
     val updateMessage: String,
     val isMaintenanceMode: Boolean = false,
-    val maintenanceMessage: String = ""
+    val maintenanceMessage: String = "",
+    val adminPasskey: String? = null
 )

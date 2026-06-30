@@ -210,9 +210,10 @@ class MainRepositoryImpl(
                 val updateMessage = snapshot.getString("updateMessage") ?: ""
                 val isMaintenance = snapshot.getBoolean("isMaintenanceMode") ?: false
                 val maintenanceMsg = snapshot.getString("maintenanceMessage") ?: ""
-                Response.Success(AppUpdateInfo(newVersion, dialogType, updateMessage, isMaintenance, maintenanceMsg))
+                val adminPasskey = snapshot.getString("adminPasskey")
+                Response.Success(AppUpdateInfo(newVersion, dialogType, updateMessage, isMaintenance, maintenanceMsg, adminPasskey))
             } else {
-                Response.Success(AppUpdateInfo("1.0", "none", "", false, ""))
+                Response.Success(AppUpdateInfo("1.0", "none", "", false, "", null))
             }
         } catch (e: Exception) {
             Response.Error(e.localizedMessage ?: "Failed to check for app update")
@@ -285,7 +286,7 @@ class MainRepositoryImpl(
             )
             db.collection("config")
                 .document("app_update")
-                .set(data)
+                .set(data, com.google.firebase.firestore.SetOptions.merge())
                 .await()
             Response.Success(Unit)
         } catch (e: Exception) {
