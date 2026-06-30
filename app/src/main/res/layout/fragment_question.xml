@@ -260,7 +260,7 @@
             app:layout_constraintBottom_toBottomOf="@id/tv_option_3" />
 
         <!-- Lock Button -->
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:id="@+id/btn_lock"
             android:layout_width="match_parent"
             android:layout_height="56dp"

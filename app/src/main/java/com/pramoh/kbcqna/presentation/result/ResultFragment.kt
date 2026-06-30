@@ -52,7 +52,7 @@ class ResultFragment: BaseFragment() {
 
         setUI()
         setOnClickListeners()
-        saveData()
+        promptSaveToLeaderboard()
         playMusic(MusicToPlay.RESULT_SCREEN)
     }
 
@@ -163,5 +163,20 @@ class ResultFragment: BaseFragment() {
 
     private fun addPlayerToLeaderboard(playerName: String, moneyWon: Int) {
         resultViewModel.insertPlayer(PlayerData(0, playerName, moneyWon))
+    }
+
+    private fun promptSaveToLeaderboard() {
+        if (questionViewModel.isOnlineGame()) {
+            showDialog(
+                context = requireContext(),
+                dialogTitle = "Save Score",
+                titleText = "Would you like to submit your score to the online leaderboard?",
+                positiveButtonText = "Submit",
+                positiveButtonAction = {
+                    saveData()
+                },
+                negativeButtonText = "Cancel"
+            )
+        }
     }
 }
