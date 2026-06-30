@@ -102,7 +102,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Buttons Stack -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_play_online"
             android:layout_width="220dp"
             android:layout_height="56dp"
@@ -118,7 +118,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn_play_offline"
             app:layout_constraintVertical_chainStyle="packed" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_play_offline"
             android:layout_width="220dp"
             android:layout_height="56dp"

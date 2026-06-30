@@ -54,7 +54,7 @@
                 android:orientation="vertical">
 
                 <!-- Option 1: Configure Prize Levels -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_option_prizes"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -69,7 +69,7 @@
                     android:layout_marginBottom="16dp" />
 
                 <!-- Option 2: Manage App Updates -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_option_updates"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -84,7 +84,7 @@
                     android:layout_marginBottom="16dp" />
 
                 <!-- Option 3: Configure Leaderboard -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_option_leaderboard"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -99,7 +99,7 @@
                     android:layout_marginBottom="16dp" />
 
                 <!-- Option 4: Question Bank Statistics -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_option_stats"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -114,7 +114,7 @@
                     android:layout_marginBottom="16dp" />
 
                 <!-- Option 5: Maintenance Mode Configurator -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_option_maintenance"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"

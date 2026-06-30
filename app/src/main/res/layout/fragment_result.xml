@@ -116,7 +116,7 @@
         </LinearLayout>
 
         <!-- Share Score Button -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_share_score"
             android:layout_width="match_parent"
             android:layout_height="64dp"
@@ -132,7 +132,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn_start_again" />
 
         <!-- Bottom Action Buttons Chain -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_start_again"
             android:layout_width="0dp"
             android:layout_height="56dp"
@@ -146,7 +146,7 @@
             app:layout_constraintEnd_toStartOf="@id/btn_home"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_home"
             android:layout_width="0dp"
             android:layout_height="56dp"

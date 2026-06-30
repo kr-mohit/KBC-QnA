@@ -5,6 +5,9 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        
+        <!-- Force view inflation to use AppCompatViewInflater so <Button> tag is inflated as AppCompatButton and respects background drawables -->
+        <item name="viewInflaterClass">androidx.appcompat.app.AppCompatViewInflater</item>
     </style>
 
     <style name="Theme.KBCQnA" parent="Base.Theme.KBCQnA" />

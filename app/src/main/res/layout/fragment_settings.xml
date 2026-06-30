@@ -65,7 +65,7 @@
                 app:layout_constraintTop_toTopOf="@id/btn_music"
                 app:layout_constraintBottom_toBottomOf="@id/btn_music" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_music"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -97,7 +97,7 @@
                 app:layout_constraintTop_toTopOf="@id/btn_sfx_Audio"
                 app:layout_constraintBottom_toBottomOf="@id/btn_sfx_Audio" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_sfx_Audio"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -130,7 +130,7 @@
                 app:layout_constraintTop_toTopOf="@id/btn_region"
                 app:layout_constraintBottom_toBottomOf="@id/btn_region" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_region"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"

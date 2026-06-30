@@ -66,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="24dp">
+                        android:layout_marginBottom="12dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -92,9 +92,9 @@
                         android:layout_height="wrap_content"
                         android:text="@string/maintenance_alert_message"
                         android:textColor="@color/accent_gold"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
-                        android:layout_marginBottom="6dp" />
+                        android:layout_marginBottom="12dp" />
 
                     <EditText
                         android:id="@+id/et_maintenance_message"
@@ -128,7 +128,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Save Button -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="56dp"
