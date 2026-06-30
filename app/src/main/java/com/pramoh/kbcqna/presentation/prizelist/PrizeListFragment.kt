@@ -14,6 +14,8 @@ import com.pramoh.kbcqna.databinding.FragmentPrizeListBinding
 import com.pramoh.kbcqna.presentation.BaseFragment
 import com.pramoh.kbcqna.presentation.questionnaire.QuestionViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.activity.OnBackPressedCallback
+import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
 
 @AndroidEntryPoint
 class PrizeListFragment : BaseFragment() {
@@ -29,6 +31,13 @@ class PrizeListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showQuitDialog()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         setObservers()
         setOnClickListeners()
@@ -51,5 +60,24 @@ class PrizeListFragment : BaseFragment() {
         binding.btnNext.setOnClickListenerWithSfxAudio {
             findNavController().navigate(PrizeListFragmentDirections.actionPrizeListFragmentToQuestionFragment(args.questionToBeAsked))
         }
+    }
+
+    private fun showQuitDialog() {
+        val moneyWon = if (args.questionToBeAsked > 1) {
+            questionViewModel.questionsLiveData.value?.data?.get(args.questionToBeAsked - 2)?.prizeAmount ?: 0
+        } else {
+            0
+        }
+
+        showDialog(
+            requireContext(),
+            "Do you want to Quit?\nYou will be getting ${MoneyTypeConversionUtil.convertToString(moneyWon)}",
+            "No",
+            "Yes",
+            positiveButtonAction = {
+                val destination = PrizeListFragmentDirections.actionPrizeListFragmentToResultFragment(false, moneyWon)
+                findNavController().navigate(destination)
+            }
+        )
     }
 }
