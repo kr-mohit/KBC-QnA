@@ -12,6 +12,7 @@ import com.pramoh.kbcqna.R
 import com.pramoh.kbcqna.databinding.FragmentSettingsBinding
 import com.pramoh.kbcqna.presentation.BaseFragment
 import com.pramoh.kbcqna.presentation.ExoplayerViewModel
+import com.pramoh.kbcqna.utils.AdminBypassUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,8 +22,7 @@ class SettingsFragment : BaseFragment() {
     private val settingViewModel: SettingsViewModel by viewModels()
     private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
-    private var developerClickCount = 0
-    private var lastDeveloperClickTime: Long = 0
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
@@ -107,19 +107,8 @@ class SettingsFragment : BaseFragment() {
     }
 
     private fun setupDeveloperModeClick() {
-        binding.tvAppVersion.setOnClickListener {
-            val currentTime = System.currentTimeMillis()
-            if (currentTime - lastDeveloperClickTime < 2000) {
-                developerClickCount++
-            } else {
-                developerClickCount = 1
-            }
-            lastDeveloperClickTime = currentTime
-
-            if (developerClickCount >= 15) {
-                developerClickCount = 0
-                findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToAdminFragment())
-            }
+        AdminBypassUtil.attachBypass(binding.tvAppVersion) {
+            findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToAdminFragment())
         }
     }
 }

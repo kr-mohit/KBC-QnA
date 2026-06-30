@@ -8,6 +8,7 @@ import com.pramoh.kbcqna.data.db.LeaderboardDB
 import com.pramoh.kbcqna.data.model.ApiDataDTO
 import com.pramoh.kbcqna.data.model.toDomainQuestion
 import com.pramoh.kbcqna.domain.model.AppUpdateInfo
+import com.pramoh.kbcqna.domain.model.LeaderboardPlayerWithId
 import com.pramoh.kbcqna.domain.model.PlayerData
 import com.pramoh.kbcqna.domain.model.Question
 import com.pramoh.kbcqna.domain.model.toEntity
@@ -292,7 +293,7 @@ class MainRepositoryImpl(
         }
     }
 
-    override suspend fun getRemoteLeaderboardWithDocIds(): Response<List<com.pramoh.kbcqna.domain.model.LeaderboardPlayerWithId>> {
+    override suspend fun getRemoteLeaderboardWithDocIds(): Response<List<LeaderboardPlayerWithId>> {
         return try {
             val db = FirebaseFirestore.getInstance()
             val snapshot = db.collection("leaderboard")
@@ -300,7 +301,7 @@ class MainRepositoryImpl(
                 .get()
                 .await()
             val players = snapshot.documents.map { doc ->
-                com.pramoh.kbcqna.domain.model.LeaderboardPlayerWithId(
+                LeaderboardPlayerWithId(
                     docId = doc.id,
                     playerName = doc.getString("playerName") ?: "",
                     moneyWon = (doc.getLong("moneyWon") ?: 0).toInt()

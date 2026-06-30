@@ -2,10 +2,8 @@ package com.pramoh.kbcqna.presentation.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -16,9 +14,10 @@ import com.pramoh.kbcqna.presentation.BaseFragment
 import com.pramoh.kbcqna.presentation.ExoplayerViewModel
 import com.pramoh.kbcqna.presentation.questionnaire.QuestionViewModel
 import com.pramoh.kbcqna.utils.Constants
-import com.pramoh.kbcqna.utils.Response
 import com.pramoh.kbcqna.utils.NetworkUtils
+import com.pramoh.kbcqna.utils.Response
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.core.graphics.drawable.toDrawable
 
 @AndroidEntryPoint
 class HomeFragment: BaseFragment() {
@@ -183,23 +182,46 @@ class HomeFragment: BaseFragment() {
         }
 
         binding.ivOption.setOnClickListenerWithSfxAudio {
-            val popup = PopupMenu(requireContext(), binding.ivOption)
-            popup.menu.add(Menu.NONE, 1, Menu.NONE, "Leaderboard")
-            popup.menu.add(Menu.NONE, 2, Menu.NONE, "Settings")
-            popup.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    1 -> {
-                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLeaderboardFragment())
-                        true
-                    }
-                    2 -> {
-                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
-                        true
-                    }
-                    else -> false
-                }
+            val popupView = layoutInflater.inflate(R.layout.layout_home_options_popup, null)
+            val popupWindow = android.widget.PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+            )
+
+            popupWindow.setBackgroundDrawable(android.graphics.Color.TRANSPARENT.toDrawable())
+
+            val tvLeaderboard = popupView.findViewById<android.widget.TextView>(R.id.tv_popup_option_leaderboard)
+            val tvSettings = popupView.findViewById<android.widget.TextView>(R.id.tv_popup_option_settings)
+
+            tvLeaderboard.setOnClickListener {
+                playSfxAudio()
+                popupWindow.dismiss()
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLeaderboardFragment())
             }
-            popup.show()
+
+            tvSettings.setOnClickListener {
+                playSfxAudio()
+                popupWindow.dismiss()
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToSettingsFragment())
+            }
+
+            // Measure popup view to calculate exact width/height in pixels
+            popupView.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            )
+
+            val popupWidth = popupView.measuredWidth
+            val xOffset = binding.ivOption.width - popupWidth
+            val yOffset = -binding.ivOption.height
+
+            popupWindow.showAsDropDown(
+                binding.ivOption,
+                xOffset,
+                yOffset
+            )
         }
     }
 

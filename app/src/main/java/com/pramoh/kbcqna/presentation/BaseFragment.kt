@@ -2,7 +2,6 @@ package com.pramoh.kbcqna.presentation
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.view.View
 import android.view.WindowInsets
@@ -12,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.media3.common.MediaItem
@@ -31,38 +31,68 @@ open class BaseFragment: Fragment() {
 
     fun showDialog(
         context: Context,
-        titleText: String,
-        negativeButtonText: String,
+        titleText: String, // Kept as 2nd parameter for backward compatibility, sets tv_popup_window_text
+        negativeButtonText: String? = null,
         positiveButtonText: String? = null,
-        positiveButtonAction: (() -> Unit)? = null
+        positiveButtonAction: (() -> Unit)? = null,
+        dialogTitle: String? = null,
+        negativeButtonAction: (() -> Unit)? = null
     ) {
 
         val dialog = AlertDialog.Builder(context).create()
         val dialogView = layoutInflater.inflate(R.layout.dialog_box, null)
+        val titleView = dialogView.findViewById<TextView>(R.id.tv_popup_window_title)
         val textView = dialogView.findViewById<TextView>(R.id.tv_popup_window_text)
         val positiveButton = dialogView.findViewById<Button>(R.id.btn_popup_window_button_1)
         val negativeButton = dialogView.findViewById<Button>(R.id.btn_popup_window_button_2)
+        val layoutButtons = dialogView.findViewById<View>(R.id.layout_buttons)
 
-        textView.text = titleText
-        positiveButton.apply {
-            visibility = if (positiveButtonText != null) View.VISIBLE else View.GONE
-            text = positiveButtonText
-            setOnClickListener {
+        if (!dialogTitle.isNullOrBlank()) {
+            titleView.text = dialogTitle
+            titleView.show()
+        } else {
+            titleView.hide()
+        }
+
+        if (titleText.isNotBlank()) {
+            textView.text = titleText
+            textView.show()
+        } else {
+            textView.hide()
+        }
+
+        if (positiveButtonText != null) {
+            positiveButton.text = positiveButtonText
+            positiveButton.show()
+            positiveButton.setOnClickListener {
                 playSfxAudio()
                 positiveButtonAction?.invoke()
                 dialog.dismiss()
             }
+        } else {
+            positiveButton.hide()
         }
-        negativeButton.apply {
-            text = negativeButtonText
-            setOnClickListener {
+
+        if (negativeButtonText != null) {
+            negativeButton.text = negativeButtonText
+            negativeButton.show()
+            negativeButton.setOnClickListener {
                 playSfxAudio()
+                negativeButtonAction?.invoke()
                 dialog.dismiss()
             }
+        } else {
+            negativeButton.hide()
+        }
+
+        if (positiveButtonText == null && negativeButtonText == null) {
+            layoutButtons.visibility = View.GONE
+        } else {
+            layoutButtons.visibility = View.VISIBLE
         }
 
         dialog.setView(dialogView)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         dialog.setCancelable(false)
         dialog.show()
 
@@ -72,6 +102,7 @@ open class BaseFragment: Fragment() {
                 systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         } else {
+            @Suppress("DEPRECATION")
             dialog.window?.decorView?.systemUiVisibility = (
                     View.SYSTEM_UI_FLAG_LOW_PROFILE
                             or View.SYSTEM_UI_FLAG_FULLSCREEN
