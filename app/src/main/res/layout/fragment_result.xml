@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="24dp"
         android:background="@drawable/screen_background_gradient"
+        android:padding="24dp"
         tools:context=".presentation.result.ResultFragment">
 
         <!-- Title / Status Container -->
@@ -15,43 +15,43 @@
             android:id="@+id/layout_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
             android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tv_congratulations_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
                 android:text="@string/congratulations"
                 android:textColor="@color/accent_gold"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:fontFamily="sans-serif-medium" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_player_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-medium"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:layout_marginTop="8dp"
-                tools:text="Player Name"
-                android:fontFamily="sans-serif-medium" />
+                tools:text="Player Name" />
 
             <TextView
                 android:id="@+id/tv_you_won"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
                 android:text="@string/you_won"
                 android:textColor="@color/white"
-                android:textSize="20sp"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:fontFamily="sans-serif" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <!-- Prize Cheque Card -->
@@ -59,28 +59,28 @@
             android:id="@+id/card_prize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="24dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/card_glass_dark"
-            app:layout_constraintTop_toBottomOf="@id/layout_status"
+            android:padding="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/layout_status">
 
             <TextView
                 android:id="@+id/tv_prize_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Rs. 12,50,000"
-                android:textSize="38sp"
-                android:textStyle="bold"
-                android:textColor="@color/accent_cyan"
-                android:gravity="center"
                 android:fontFamily="sans-serif-medium"
+                android:gravity="center"
                 android:shadowColor="@color/black"
-                android:shadowRadius="6"
                 android:shadowDx="1"
                 android:shadowDy="1"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:shadowRadius="6"
+                android:textColor="@color/accent_cyan"
+                android:textSize="38sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Rs. 12,50,000" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -89,30 +89,30 @@
             android:id="@+id/layout_better_luck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
             android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/card_prize">
 
             <TextView
                 android:id="@+id/tv_better_luck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
                 android:text="@string/better_luck"
-                android:textSize="22sp"
-                android:textStyle="bold"
                 android:textColor="@color/accent_gold"
-                android:fontFamily="sans-serif-medium" />
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_next_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/next_time"
-                android:textSize="22sp"
-                android:textColor="@color/white"
                 android:layout_marginTop="4dp"
-                android:fontFamily="sans-serif" />
+                android:fontFamily="sans-serif"
+                android:text="@string/next_time"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
         </LinearLayout>
 
         <!-- Share Score Button -->
@@ -120,45 +120,72 @@
             android:id="@+id/btn_share_score"
             android:layout_width="match_parent"
             android:layout_height="64dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/background_metallic_blue"
+            android:gravity="center"
             android:text="@string/share_score"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@drawable/background_metallic_blue"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btn_start_again"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/btn_start_again" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Bottom Action Buttons Chain -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_start_again"
             android:layout_width="0dp"
             android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/background_metallic_gold"
             android:text="@string/start_again"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:background="@drawable/background_metallic_gold"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_home"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_home"
             android:layout_width="0dp"
             android:layout_height="56dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/background_metallic_blue"
             android:text="@string/home"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:background="@drawable/background_metallic_blue"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@id/btn_start_again"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/btn_start_again" />
+
+        <!-- Loading Overlay for Leaderboard Save -->
+        <ProgressBar
+            android:id="@+id/progress_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/accent_gold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/tv_loading_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textColor="@color/accent_gold"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_loading" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

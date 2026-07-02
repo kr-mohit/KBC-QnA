@@ -89,4 +89,10 @@
     <string name="option_2">Option 2</string>
     <string name="option_3">Option 3</string>
     <string name="option_4">Option 4</string>
+    <string name="play">Play</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">SUBMIT</string>
+    <string name="your_name">Your Name</string>
+    <string name="would_you_like_to_submit_your_score_to_the_online_leaderboard_enter_your_name_below">Would you like to submit your score to the online leaderboard? Enter your name below:</string>
+    <string name="submit_to_leaderboard">Submit to Leaderboard</string>
 </resources>

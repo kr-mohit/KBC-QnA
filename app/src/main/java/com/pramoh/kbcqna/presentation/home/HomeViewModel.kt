@@ -20,10 +20,11 @@ class HomeViewModel @Inject constructor(
     private val setPlayerNameSharedPrefUseCase: SetPlayerNameSharedPrefUseCase,
     private val checkPlayerNameExistsUseCase: CheckPlayerNameExistsUseCase,
     private val checkForAppUpdateUseCase: CheckForAppUpdateUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private var onStartClicked: Boolean = false // TODO: Check if this can be removed
-    private lateinit var currentPlayerName: String // TODO: Check if this should be passed in activities or used like this by two fragments
+    private var currentPlayerName: String =
+        "" // TODO: Check if this should be passed in activities or used like this by two fragments
 
     private val _appUpdateInfo = MutableLiveData<Response<AppUpdateInfo>>()
     val appUpdateInfo: LiveData<Response<AppUpdateInfo>>

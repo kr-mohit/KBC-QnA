@@ -20,14 +20,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.graphics.drawable.toDrawable
 
 @AndroidEntryPoint
-class HomeFragment: BaseFragment() {
+class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val questionViewModel: QuestionViewModel by activityViewModels() // TODO: See if you can remove this, and get the currentPlayerName by something else
     private val homeViewModel: HomeViewModel by activityViewModels() // TODO: See if you can remove this, and get the currentPlayerName by something else
     private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         return binding.root
     }
@@ -48,72 +52,30 @@ class HomeFragment: BaseFragment() {
     }
 
     private var isOnlinePlayAttempted = false
-    private var nameToCheck = ""
 
     private fun setObservers() {
-        homeViewModel.playerNameSharedPref.observe(viewLifecycleOwner) {
-            if (!it.isNullOrEmpty()) {
-                binding.etPlayerName.setText(it)
-            } else {
-                binding.etPlayerName.setText("")
-            }
-        }
-
-        homeViewModel.playerNameCheckResult.observe(viewLifecycleOwner) { response ->
-            if (response == null) return@observe
-            when (response) {
-                is Response.Loading -> {
-                    binding.homeProgressBar.show()
-                    binding.tvLoadingText.text = getString(R.string.checking_username)
-                    binding.tvLoadingText.show()
-                    disableAllButtonsClick()
-                }
-                is Response.Success -> {
-                    val exists = response.data ?: false
-                    if (exists) {
-                        binding.homeProgressBar.hide()
-                        binding.tvLoadingText.hide()
-                        enableAllButtonsClick()
-                        binding.etPlayerName.error = "Name already exists in leaderboard!"
-                        binding.etPlayerName.requestFocus()
-                        Toast.makeText(context, "Name already exists in the leaderboard. Please choose a different name.", Toast.LENGTH_SHORT).show()
-                        homeViewModel.resetPlayerNameCheck()
-                    } else {
-                        homeViewModel.resetPlayerNameCheck()
-                        homeViewModel.setOnStartClicked(true)
-                        homeViewModel.setPlayerNameSharedPref(nameToCheck)
-                        homeViewModel.setCurrentPlayerName(nameToCheck)
-                        if (isOnlinePlayAttempted) {
-                            questionViewModel.fetchQuestions(Constants.FULL_URL)
-                        } else {
-                            questionViewModel.fetchQuestionsOffline()
-                        }
-                    }
-                }
-                is Response.Error -> {
-                    binding.homeProgressBar.hide()
-                    binding.tvLoadingText.hide()
-                    enableAllButtonsClick()
-                    Toast.makeText(context, response.error ?: "Failed to verify username", Toast.LENGTH_SHORT).show()
-                    homeViewModel.resetPlayerNameCheck()
-                }
-            }
-        }
+        homeViewModel.getPlayerNameSharedPref() // Keep this to populate SharedPreferences cache in VM
 
         questionViewModel.questionsLiveData.observe(viewLifecycleOwner) { response ->
-            when(response) {
+            when (response) {
                 is Response.Loading -> {
                     binding.homeProgressBar.show()
                     binding.tvLoadingText.text = getString(R.string.loading_questions)
                     binding.tvLoadingText.show()
                 }
+
                 is Response.Success -> {
                     binding.homeProgressBar.hide()
                     binding.tvLoadingText.hide()
                     if (homeViewModel.getOnStartClicked()) {
-                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPrizeListFragment(1))
+                        findNavController().navigate(
+                            HomeFragmentDirections.actionHomeFragmentToPrizeListFragment(
+                                1
+                            )
+                        )
                     }
                 }
+
                 is Response.Error -> {
                     binding.homeProgressBar.hide()
                     binding.tvLoadingText.hide()
@@ -126,11 +88,9 @@ class HomeFragment: BaseFragment() {
                             "No",
                             "Yes",
                             positiveButtonAction = {
-                                if (binding.etPlayerName.text.isNotBlank()) {
-                                    disableAllButtonsClick()
-                                    homeViewModel.setOnStartClicked(true)
-                                    questionViewModel.fetchQuestionsOffline()
-                                }
+                                disableAllButtonsClick()
+                                homeViewModel.setOnStartClicked(true)
+                                questionViewModel.fetchQuestionsOffline()
                             }
                         )
                     } else {
@@ -148,35 +108,16 @@ class HomeFragment: BaseFragment() {
     }
 
     private fun setOnClickListeners() {
-        binding.btnPlayOnline.setOnClickListenerWithSfxAudio {
-            val name = binding.etPlayerName.text.toString().trim()
-            if (name.isEmpty()) {
-                binding.etPlayerName.error = "Name is required to play!"
-                binding.etPlayerName.requestFocus()
-                Toast.makeText(context, "Please enter your name first", Toast.LENGTH_SHORT).show()
+        binding.btnPlay.setOnClickListenerWithSfxAudio {
+            disableAllButtonsClick()
+            homeViewModel.setCurrentPlayerName("")
+            if (NetworkUtils.isOnline(requireContext())) {
+                isOnlinePlayAttempted = true
+                homeViewModel.setOnStartClicked(true)
+                questionViewModel.fetchQuestions(Constants.FULL_URL)
             } else {
-                if (NetworkUtils.isOnline(requireContext())) {
-                    isOnlinePlayAttempted = true
-                    nameToCheck = name
-                    homeViewModel.checkPlayerNameExists(name)
-                } else {
-                    Toast.makeText(context, "Internet connection required to play online!", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        binding.btnPlayOffline.setOnClickListenerWithSfxAudio {
-            val name = binding.etPlayerName.text.toString().trim()
-            if (name.isEmpty()) {
-                binding.etPlayerName.error = "Name is required to play!"
-                binding.etPlayerName.requestFocus()
-                Toast.makeText(context, "Please enter your name first", Toast.LENGTH_SHORT).show()
-            } else {
-                disableAllButtonsClick()
                 isOnlinePlayAttempted = false
                 homeViewModel.setOnStartClicked(true)
-                homeViewModel.setPlayerNameSharedPref(name)
-                homeViewModel.setCurrentPlayerName(name)
                 questionViewModel.fetchQuestionsOffline()
             }
         }
@@ -192,8 +133,10 @@ class HomeFragment: BaseFragment() {
 
             popupWindow.setBackgroundDrawable(android.graphics.Color.TRANSPARENT.toDrawable())
 
-            val tvLeaderboard = popupView.findViewById<android.widget.TextView>(R.id.tv_popup_option_leaderboard)
-            val tvSettings = popupView.findViewById<android.widget.TextView>(R.id.tv_popup_option_settings)
+            val tvLeaderboard =
+                popupView.findViewById<android.widget.TextView>(R.id.tv_popup_option_leaderboard)
+            val tvSettings =
+                popupView.findViewById<android.widget.TextView>(R.id.tv_popup_option_settings)
 
             tvLeaderboard.setOnClickListener {
                 playSfxAudio()
@@ -226,16 +169,12 @@ class HomeFragment: BaseFragment() {
     }
 
     private fun disableAllButtonsClick() {
-        binding.btnPlayOnline.isClickable = false
-        binding.btnPlayOffline.isClickable = false
-        binding.etPlayerName.isEnabled = false
+        binding.btnPlay.isClickable = false
         binding.ivOption.isClickable = false
     }
 
     private fun enableAllButtonsClick() {
-        binding.btnPlayOnline.isClickable = true
-        binding.btnPlayOffline.isClickable = true
-        binding.etPlayerName.isEnabled = true
+        binding.btnPlay.isClickable = true
         binding.ivOption.isClickable = true
     }
 }
