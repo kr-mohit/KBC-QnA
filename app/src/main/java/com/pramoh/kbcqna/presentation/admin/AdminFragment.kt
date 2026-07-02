@@ -12,11 +12,15 @@ import com.pramoh.kbcqna.presentation.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AdminFragment: BaseFragment() {
+class AdminFragment : BaseFragment() {
 
     private lateinit var binding: FragmentAdminBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_admin, container, false)
         return binding.root
     }
@@ -54,6 +58,10 @@ class AdminFragment: BaseFragment() {
 
         binding.btnOptionAddQuestion.setOnClickListenerWithSfxAudio {
             findNavController().navigate(AdminFragmentDirections.actionAdminFragmentToAdminAddQuestionFragment())
+        }
+
+        binding.btnOptionFeedback.setOnClickListenerWithSfxAudio {
+            findNavController().navigate(AdminFragmentDirections.actionAdminFragmentToAdminFeedbackFragment())
         }
     }
 }

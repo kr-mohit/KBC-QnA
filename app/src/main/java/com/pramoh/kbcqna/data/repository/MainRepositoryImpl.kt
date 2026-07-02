@@ -19,11 +19,12 @@ import kotlinx.coroutines.tasks.await
 class MainRepositoryImpl(
     private val context: Context,
     private val leaderboardDB: LeaderboardDB
-): MainRepository {
+) : MainRepository {
 
     override suspend fun getQuestionsFromLocal(): Response<List<Question>> {
         return try {
-            val jsonString = context.resources.openRawResource(R.raw.questions).bufferedReader().use { it.readText() }
+            val jsonString = context.resources.openRawResource(R.raw.questions).bufferedReader()
+                .use { it.readText() }
             val apiDataDTO = Gson().fromJson(jsonString, ApiDataDTO::class.java)
             val allQuestions = apiDataDTO.data.map { it.toDomainQuestion() }
 
@@ -46,7 +47,10 @@ class MainRepositoryImpl(
         }
     }
 
-    override suspend fun getQuestionsFromRemote(url: String, questionCount: Int?): Response<List<Question>> {
+    override suspend fun getQuestionsFromRemote(
+        url: String,
+        questionCount: Int?
+    ): Response<List<Question>> {
         return try {
 
             val db = FirebaseFirestore.getInstance()
@@ -90,7 +94,8 @@ class MainRepositoryImpl(
             }
 
             leaderboardDB.getQuestionDAO().deleteAllQuestions()
-            leaderboardDB.getQuestionDAO().insertAll(questionsWithIds.map { (id, question) -> question.toEntity(id) })
+            leaderboardDB.getQuestionDAO()
+                .insertAll(questionsWithIds.map { (id, question) -> question.toEntity(id) })
 
             val allQuestions = questionsWithIds.map { it.second }
 
@@ -211,7 +216,16 @@ class MainRepositoryImpl(
                 val isMaintenance = snapshot.getBoolean("isMaintenanceMode") ?: false
                 val maintenanceMsg = snapshot.getString("maintenanceMessage") ?: ""
                 val adminPasskey = snapshot.getString("adminPasskey")
-                Response.Success(AppUpdateInfo(newVersion, dialogType, updateMessage, isMaintenance, maintenanceMsg, adminPasskey))
+                Response.Success(
+                    AppUpdateInfo(
+                        newVersion,
+                        dialogType,
+                        updateMessage,
+                        isMaintenance,
+                        maintenanceMsg,
+                        adminPasskey
+                    )
+                )
             } else {
                 Response.Success(AppUpdateInfo("1.0", "none", "", false, "", null))
             }
@@ -228,7 +242,8 @@ class MainRepositoryImpl(
         }
         // Fallback to raw resource questions
         return try {
-            val jsonString = context.resources.openRawResource(R.raw.questions).bufferedReader().use { it.readText() }
+            val jsonString = context.resources.openRawResource(R.raw.questions).bufferedReader()
+                .use { it.readText() }
             val apiDataDTO = Gson().fromJson(jsonString, ApiDataDTO::class.java)
             apiDataDTO.data.map { it.toDomainQuestion() }.map { it.prizeAmount }.distinct().sorted()
         } catch (e: Exception) {
@@ -338,11 +353,16 @@ class MainRepositoryImpl(
             }.groupingBy { it }.eachCount()
             Response.Success(countsMap)
         } catch (e: Exception) {
-            Response.Error(e.localizedMessage ?: "Failed to fetch question statistics from Firebase")
+            Response.Error(
+                e.localizedMessage ?: "Failed to fetch question statistics from Firebase"
+            )
         }
     }
 
-    override suspend fun updateRemoteMaintenanceInfo(isMaintenance: Boolean, message: String): Response<Unit> {
+    override suspend fun updateRemoteMaintenanceInfo(
+        isMaintenance: Boolean,
+        message: String
+    ): Response<Unit> {
         return try {
             val db = FirebaseFirestore.getInstance()
             val data = mapOf(
@@ -355,7 +375,9 @@ class MainRepositoryImpl(
                 .await()
             Response.Success(Unit)
         } catch (e: Exception) {
-            Response.Error(e.localizedMessage ?: "Failed to update maintenance settings in Firebase")
+            Response.Error(
+                e.localizedMessage ?: "Failed to update maintenance settings in Firebase"
+            )
         }
     }
 
@@ -378,6 +400,68 @@ class MainRepositoryImpl(
             Response.Success(Unit)
         } catch (e: java.lang.Exception) {
             Response.Error(e.localizedMessage ?: "Failed to add question to Firebase")
+        }
+    }
+
+    override suspend fun submitFeedback(
+        name: String,
+        email: String,
+        type: String,
+        message: String
+    ): Response<Unit> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val data = mapOf(
+                "name" to name,
+                "email" to email,
+                "type" to type,
+                "message" to message,
+                "timestamp" to System.currentTimeMillis()
+            )
+            db.collection("feedback")
+                .add(data)
+                .await()
+            Response.Success(Unit)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to submit feedback")
+        }
+    }
+
+    override suspend fun getRemoteFeedbacks(): Response<List<com.pramoh.kbcqna.presentation.admin.AdminFeedbackOption>> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val snapshot = db.collection("feedback")
+                .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .get()
+                .await()
+            val feedbacks = snapshot.documents.map { doc ->
+                com.pramoh.kbcqna.presentation.admin.AdminFeedbackOption(
+                    docId = doc.id,
+                    name = doc.getString("name") ?: "",
+                    email = doc.getString("email") ?: "",
+                    type = doc.getString("type") ?: "",
+                    message = doc.getString("message") ?: "",
+                    timestamp = doc.getLong("timestamp") ?: 0L
+                )
+            }
+            Response.Success(feedbacks)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to fetch feedbacks")
+        }
+    }
+
+    override suspend fun deleteRemoteFeedbacks(docIds: List<String>): Response<Unit> {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val batch = db.batch()
+            for (id in docIds) {
+                val docRef = db.collection("feedback").document(id)
+                batch.delete(docRef)
+            }
+            batch.commit().await()
+            Response.Success(Unit)
+        } catch (e: Exception) {
+            Response.Error(e.localizedMessage ?: "Failed to delete feedbacks")
         }
     }
 }

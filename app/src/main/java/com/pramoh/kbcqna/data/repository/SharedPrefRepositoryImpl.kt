@@ -4,7 +4,7 @@ import android.content.Context
 import com.pramoh.kbcqna.domain.repository.SharedPrefRepository
 import com.pramoh.kbcqna.utils.Constants
 
-class SharedPrefRepositoryImpl(val context: Context): SharedPrefRepository {
+class SharedPrefRepositoryImpl(val context: Context) : SharedPrefRepository {
 
     private val pref = context.getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE)
     private val editor = pref.edit()
@@ -14,7 +14,7 @@ class SharedPrefRepositoryImpl(val context: Context): SharedPrefRepository {
     }
 
     override fun getMusicOnOff(): Boolean {
-        return Constants.PREF_MUSIC_ON_OFF.getBoolean()
+        return Constants.PREF_MUSIC_ON_OFF.getBoolean(true)
     }
 
     override fun setSfxAudioOnOff(value: Boolean) {
@@ -22,7 +22,7 @@ class SharedPrefRepositoryImpl(val context: Context): SharedPrefRepository {
     }
 
     override fun getSfxAudioOnOff(): Boolean {
-        return Constants.PREF_SFX_AUDIO_ON_OFF.getBoolean()
+        return Constants.PREF_SFX_AUDIO_ON_OFF.getBoolean(true)
     }
 
     override fun setSelectedRegion(value: String) {
@@ -62,6 +62,7 @@ class SharedPrefRepositoryImpl(val context: Context): SharedPrefRepository {
         editor.commit()
     }
 
-    private fun String.getBoolean() = pref.getBoolean(this, false)
+    private fun String.getBoolean(defaultValue: Boolean = false) =
+        pref.getBoolean(this, defaultValue)
 
 }

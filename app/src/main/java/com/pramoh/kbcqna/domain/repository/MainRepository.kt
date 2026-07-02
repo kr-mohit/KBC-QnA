@@ -7,7 +7,10 @@ import com.pramoh.kbcqna.utils.Response
 
 interface MainRepository {
 
-    suspend fun getQuestionsFromRemote(url: String, questionCount: Int? = null): Response<List<Question>>
+    suspend fun getQuestionsFromRemote(
+        url: String,
+        questionCount: Int? = null
+    ): Response<List<Question>>
 
     suspend fun getQuestionsFromLocal(): Response<List<Question>>
 
@@ -27,7 +30,11 @@ interface MainRepository {
 
     suspend fun updateRemotePrizeAmounts(prizeAmounts: List<Int>): Response<Unit>
 
-    suspend fun updateRemoteAppUpdateInfo(newVersion: String, dialogType: String, updateMessage: String): Response<Unit>
+    suspend fun updateRemoteAppUpdateInfo(
+        newVersion: String,
+        dialogType: String,
+        updateMessage: String
+    ): Response<Unit>
 
     suspend fun getRemoteLeaderboardWithDocIds(): Response<List<com.pramoh.kbcqna.domain.model.LeaderboardPlayerWithId>>
 
@@ -38,4 +45,15 @@ interface MainRepository {
     suspend fun updateRemoteMaintenanceInfo(isMaintenance: Boolean, message: String): Response<Unit>
 
     suspend fun addRemoteQuestion(question: Question): Response<Unit>
+
+    suspend fun submitFeedback(
+        name: String,
+        email: String,
+        type: String,
+        message: String
+    ): Response<Unit>
+
+    suspend fun getRemoteFeedbacks(): Response<List<com.pramoh.kbcqna.presentation.admin.AdminFeedbackOption>>
+
+    suspend fun deleteRemoteFeedbacks(docIds: List<String>): Response<Unit>
 }

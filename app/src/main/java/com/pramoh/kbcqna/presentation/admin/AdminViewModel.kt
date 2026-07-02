@@ -14,7 +14,7 @@ import com.pramoh.kbcqna.domain.model.Question
 @HiltViewModel
 class AdminViewModel @Inject constructor(
     private val mainRepository: MainRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _prizeOptions = MutableLiveData<Response<List<AdminPrizeOption>>>()
     val prizeOptions: LiveData<Response<List<AdminPrizeOption>>> get() = _prizeOptions
@@ -22,7 +22,8 @@ class AdminViewModel @Inject constructor(
     private val _updateStatus = MutableLiveData<Response<Unit>?>()
     val updateStatus: LiveData<Response<Unit>?> get() = _updateStatus
 
-    private val _appUpdateInfo = MutableLiveData<Response<com.pramoh.kbcqna.domain.model.AppUpdateInfo>>()
+    private val _appUpdateInfo =
+        MutableLiveData<Response<com.pramoh.kbcqna.domain.model.AppUpdateInfo>>()
     val appUpdateInfo: LiveData<Response<com.pramoh.kbcqna.domain.model.AppUpdateInfo>> get() = _appUpdateInfo
 
     private val _updateInfoStatus = MutableLiveData<Response<Unit>?>()
@@ -42,12 +43,14 @@ class AdminViewModel @Inject constructor(
                     }
                     _prizeOptions.postValue(Response.Success(options))
                 }
+
                 is Response.Error -> {
                     val options = allPrizes.map { prize ->
                         AdminPrizeOption(prize, false)
                     }
                     _prizeOptions.postValue(Response.Success(options))
                 }
+
                 is Response.Loading -> {}
             }
         }
@@ -76,7 +79,8 @@ class AdminViewModel @Inject constructor(
     fun updateAppUpdateConfig(newVersion: String, dialogType: String, updateMessage: String) {
         _updateInfoStatus.value = Response.Loading()
         viewModelScope.launch {
-            val result = mainRepository.updateRemoteAppUpdateInfo(newVersion, dialogType, updateMessage)
+            val result =
+                mainRepository.updateRemoteAppUpdateInfo(newVersion, dialogType, updateMessage)
             _updateInfoStatus.postValue(result)
         }
     }
@@ -98,13 +102,24 @@ class AdminViewModel @Inject constructor(
             when (result) {
                 is Response.Success -> {
                     val options = result.data?.map { player ->
-                        AdminLeaderboardOption(player.docId, player.playerName, player.moneyWon, false)
+                        AdminLeaderboardOption(
+                            player.docId,
+                            player.playerName,
+                            player.moneyWon,
+                            false
+                        )
                     } ?: emptyList()
                     _leaderboardOptions.postValue(Response.Success(options))
                 }
+
                 is Response.Error -> {
-                    _leaderboardOptions.postValue(Response.Error(result.error ?: "Failed to load leaderboard"))
+                    _leaderboardOptions.postValue(
+                        Response.Error(
+                            result.error ?: "Failed to load leaderboard"
+                        )
+                    )
                 }
+
                 is Response.Loading -> {}
             }
         }
@@ -120,6 +135,32 @@ class AdminViewModel @Inject constructor(
 
     fun resetDeleteLeaderboardStatus() {
         _deleteLeaderboardStatus.value = null
+    }
+
+    private val _feedbackOptions = MutableLiveData<Response<List<AdminFeedbackOption>>>()
+    val feedbackOptions: LiveData<Response<List<AdminFeedbackOption>>> get() = _feedbackOptions
+
+    private val _deleteFeedbackStatus = MutableLiveData<Response<Unit>?>()
+    val deleteFeedbackStatus: LiveData<Response<Unit>?> get() = _deleteFeedbackStatus
+
+    fun loadFeedbackConfig() {
+        _feedbackOptions.value = Response.Loading()
+        viewModelScope.launch {
+            val result = mainRepository.getRemoteFeedbacks()
+            _feedbackOptions.postValue(result)
+        }
+    }
+
+    fun deleteSelectedFeedbacks(docIds: List<String>) {
+        _deleteFeedbackStatus.value = Response.Loading()
+        viewModelScope.launch {
+            val result = mainRepository.deleteRemoteFeedbacks(docIds)
+            _deleteFeedbackStatus.postValue(result)
+        }
+    }
+
+    fun resetDeleteFeedbackStatus() {
+        _deleteFeedbackStatus.value = null
     }
 
     private val _questionStats = MutableLiveData<Response<Map<Int, Int>>>()

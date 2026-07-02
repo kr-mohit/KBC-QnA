@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.pramoh.kbcqna.presentation.home.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/prizeListFragment"
         android:name="com.pramoh.kbcqna.presentation.prizelist.PrizeListFragment"
-        android:label="PrizeListFragment" >
+        android:label="PrizeListFragment">
         <action
             android:id="@+id/action_prizeListFragment_to_questionFragment"
             app:destination="@id/questionFragment" />
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/questionFragment"
         android:name="com.pramoh.kbcqna.presentation.questionnaire.QuestionFragment"
-        android:label="QuestionFragment" >
+        android:label="QuestionFragment">
         <action
             android:id="@+id/action_questionFragment_to_prizeListFragment"
             app:destination="@id/prizeListFragment" />
@@ -44,24 +44,33 @@
             app:destination="@id/resultFragment" />
         <argument
             android:name="questionToBeAsked"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.pramoh.kbcqna.presentation.settings.SettingsFragment"
-        android:label="SettingsFragment" >
+        android:label="SettingsFragment">
         <action
             android:id="@+id/action_settingsFragment_to_adminFragment"
             app:destination="@id/adminFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_feedbackFragment"
+            app:destination="@id/feedbackFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/feedbackFragment"
+        android:name="com.pramoh.kbcqna.presentation.feedback.FeedbackFragment"
+        android:label="FeedbackFragment" />
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.pramoh.kbcqna.presentation.result.ResultFragment"
-        android:label="ResultFragment" >
+        android:label="ResultFragment">
         <action
             android:id="@+id/action_resultFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="didUserWin"
             app:argType="boolean" />
@@ -77,7 +86,7 @@
     <fragment
         android:id="@+id/adminFragment"
         android:name="com.pramoh.kbcqna.presentation.admin.AdminFragment"
-        android:label="AdminFragment" >
+        android:label="AdminFragment">
         <action
             android:id="@+id/action_adminFragment_to_adminPrizesFragment"
             app:destination="@id/adminPrizesFragment" />
@@ -96,6 +105,9 @@
         <action
             android:id="@+id/action_adminFragment_to_adminAddQuestionFragment"
             app:destination="@id/adminAddQuestionFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_adminFeedbackFragment"
+            app:destination="@id/adminFeedbackFragment" />
     </fragment>
 
     <fragment
@@ -127,4 +139,9 @@
         android:id="@+id/adminAddQuestionFragment"
         android:name="com.pramoh.kbcqna.presentation.admin.AdminAddQuestionFragment"
         android:label="AdminAddQuestionFragment" />
+
+    <fragment
+        android:id="@+id/adminFeedbackFragment"
+        android:name="com.pramoh.kbcqna.presentation.admin.AdminFeedbackFragment"
+        android:label="AdminFeedbackFragment" />
 </navigation>

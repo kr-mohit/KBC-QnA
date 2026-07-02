@@ -21,7 +21,7 @@ import androidx.media3.datasource.RawResourceDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import com.pramoh.kbcqna.R
 
-open class BaseFragment: Fragment() {
+open class BaseFragment : Fragment() {
 
     private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
@@ -115,32 +115,42 @@ open class BaseFragment: Fragment() {
 
     @OptIn(UnstableApi::class)
     fun playMusic(musicToPlay: MusicToPlay, ticktock: Boolean = true) {
-        if (exoplayerViewModel.isMusicOn.value == true) {
-            when(musicToPlay) {
+        if (isAdded && exoplayerViewModel.isMusicOn.value == true) {
+            when (musicToPlay) {
                 MusicToPlay.HOME_SCREEN -> {
-                    val mediaItem = MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(musicToPlay.source))
+                    val mediaItem =
+                        MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(musicToPlay.source))
                     if (exoplayerViewModel.musicPlayer.currentMediaItem != mediaItem) {
                         exoplayerViewModel.playMusic(musicToPlay.source, true)
                     }
                 }
+
                 MusicToPlay.PRIZE_LIST,
                 MusicToPlay.SUSPENSE,
                 MusicToPlay.RESULT_SCREEN -> exoplayerViewModel.playMusic(musicToPlay.source, true)
+
                 MusicToPlay.QUESTIONNAIRE -> {
                     exoplayerViewModel.playMusic(musicToPlay.source, false)
-                    if (ticktock) setQuestionnaireTransition(MusicToPlay.TICKTOCK) else setQuestionnaireTransition(MusicToPlay.SUSPENSE)
+                    if (ticktock) setQuestionnaireTransition(MusicToPlay.TICKTOCK) else setQuestionnaireTransition(
+                        MusicToPlay.SUSPENSE
+                    )
                 }
-                else -> {exoplayerViewModel.playMusic(musicToPlay.source, false)}
+
+                else -> {
+                    exoplayerViewModel.playMusic(musicToPlay.source, false)
+                }
             }
         }
     }
 
     fun stopMusic() {
-        exoplayerViewModel.stopMusic()
+        if (isAdded) {
+            exoplayerViewModel.stopMusic()
+        }
     }
 
     fun playSfxAudio() {
-        if (exoplayerViewModel.isSfxAudioOn.value == true) {
+        if (isAdded && exoplayerViewModel.isSfxAudioOn.value == true) {
             exoplayerViewModel.playSfxAudio()
         }
     }
@@ -177,8 +187,8 @@ open class BaseFragment: Fragment() {
 
     fun View.setOnClickListenerWithSfxAudio(onClickAction: () -> Unit) {
         setOnClickListener {
-            onClickAction.invoke()
             playSfxAudio()
+            onClickAction.invoke()
         }
     }
 }

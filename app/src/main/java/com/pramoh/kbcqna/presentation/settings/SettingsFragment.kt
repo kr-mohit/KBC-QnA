@@ -23,8 +23,11 @@ class SettingsFragment : BaseFragment() {
     private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
         return binding.root
     }
@@ -90,6 +93,10 @@ class SettingsFragment : BaseFragment() {
 //            settingViewModel.onRegionClicked()
         }
 
+        binding.btnFeedback.setOnClickListenerWithSfxAudio {
+            findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToFeedbackFragment())
+        }
+
         binding.btnBack.setOnClickListenerWithSfxAudio {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -98,7 +105,8 @@ class SettingsFragment : BaseFragment() {
     private fun setAppVersionText() {
         val appName = getString(R.string.app_name)
         val version = try {
-            val packageInfo = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
+            val packageInfo =
+                requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
             packageInfo.versionName ?: "1.0"
         } catch (e: Exception) {
             "1.0"

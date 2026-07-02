@@ -95,4 +95,25 @@
     <string name="your_name">Your Name</string>
     <string name="would_you_like_to_submit_your_score_to_the_online_leaderboard_enter_your_name_below">Would you like to submit your score to the online leaderboard? Enter your name below:</string>
     <string name="submit_to_leaderboard">Submit to Leaderboard</string>
+    <string name="feedback_and_bugs">Feedback &amp; Bugs</string>
+    <string name="write">WRITE</string>
+    <string name="feedback_title">Feedback &amp; Bug Report</string>
+    <string name="feedback_type">Feedback Type</string>
+    <string name="type_feedback_here">Type your feedback or bug details here…</string>
+    <string name="enter_name_optional">Your Name (Optional)</string>
+    <string name="enter_email_optional">Your Email (Optional)</string>
+    <string name="submit_feedback">Submit Feedback</string>
+    <string name="submitting_feedback_">Submitting Feedback…</string>
+    <string name="feedback_submitted_successfully">Feedback submitted successfully!</string>
+    <string name="please_enter_message">Please enter a description/message.</string>
+    <string name="bug_report">Bug Report</string>
+    <string name="feedback">Feedback</string>
+    <string name="_7_manage_feedbacks">7. Manage Feedbacks</string>
+    <string name="feedback_manager">Feedback Manager</string>
+    <string name="select_feedbacks_to_mark_done">Select Feedbacks to Mark as Done</string>
+    <string name="mark_done">Mark as Done</string>
+    <string name="marking_done_">Marking Done…</string>
+    <string name="feedbacks_marked_done_successfully">Feedbacks marked as done successfully!</string>
+    <string name="please_select_at_least_one_feedback">Please select at least one feedback to mark done.</string>
+    <string name="email_example_com">email@example.com</string>
 </resources>
