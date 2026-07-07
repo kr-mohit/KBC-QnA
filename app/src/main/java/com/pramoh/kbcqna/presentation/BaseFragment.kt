@@ -25,6 +25,10 @@ open class BaseFragment : Fragment() {
 
     private val exoplayerViewModel: ExoplayerViewModel by activityViewModels()
 
+    fun isMusicOn(): Boolean {
+        return exoplayerViewModel.isMusicOn.value == true
+    }
+
     fun showComingSoonToast() {
         Toast.makeText(context, "Feature Coming Soon", Toast.LENGTH_SHORT).show()
     }

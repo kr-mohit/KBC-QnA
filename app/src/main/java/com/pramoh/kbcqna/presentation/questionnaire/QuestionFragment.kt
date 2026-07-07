@@ -21,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 import kotlin.time.Duration.Companion.milliseconds
 
 @AndroidEntryPoint
@@ -132,7 +133,11 @@ class QuestionFragment : BaseFragment() {
     private fun showQuitDialog() {
         showDialog(
             requireContext(),
-            "Do you want to Quit?\nYou will be getting ${MoneyTypeConversionUtil.convertToString(questionViewModel.getMoneyWonTillNow())}",
+            "Do you want to Quit?\nYou will be getting ${
+                MoneyTypeConversionUtil.convertToString(
+                    questionViewModel.getMoneyWonTillNow()
+                )
+            }",
             "No",
             "Yes",
             positiveButtonAction = {
@@ -153,14 +158,18 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun handleLifelineClick(lifeline: Lifeline, positiveButtonNeeded: Boolean) {
-        if (questionViewModel.lifelines.value?.get(lifeline.num-1) != false) {
+        if (questionViewModel.lifelines.value?.get(lifeline.num - 1) != false) {
             if (!positiveButtonNeeded) questionViewModel.onLifelineClick(lifeline.num)
             showDialog(
                 requireContext(),
                 getTextForLifelines(lifeline),
                 if (positiveButtonNeeded) "No" else "Okay",
                 if (positiveButtonNeeded) "Yes" else null,
-                positiveButtonAction = { if (positiveButtonNeeded) onLifelinePositiveButtonClick(lifeline) }
+                positiveButtonAction = {
+                    if (positiveButtonNeeded) onLifelinePositiveButtonClick(
+                        lifeline
+                    )
+                }
             )
         }
     }
@@ -168,21 +177,25 @@ class QuestionFragment : BaseFragment() {
     private fun getTextForLifelines(lifeline: Lifeline): String {
         val correctOptionNumber = questionViewModel.currentQuestion.value?.correctOptionNumber ?: 0
 
-        return when(lifeline) {
+        return when (lifeline) {
             Lifeline.AUDIENCE_POLL -> {
-                val percentageList = MutableList(3) {(0..15).random() }
+                val percentageList = MutableList(3) { (0..15).random() }
                 val correctOptionPercentage = 100 - percentageList.sum()
-                percentageList.add(correctOptionNumber-1, correctOptionPercentage)
+                percentageList.add(correctOptionNumber - 1, correctOptionPercentage)
 
                 String.format(
+                    Locale.US,
                     "Option A: %d %%\nOption B: %d %%\nOption C: %d %%\nOption D: %d %%",
                     percentageList[0], percentageList[1], percentageList[2], percentageList[3]
                 )
             }
+
             Lifeline.PHONE_A_FRIEND -> {
-                val stringMap = mapOf(1 to "Option A", 2 to "Option B", 3 to "Option C", 4 to "Option D")
+                val stringMap =
+                    mapOf(1 to "Option A", 2 to "Option B", 3 to "Option C", 4 to "Option D")
                 "Your friend has suggested you the ${stringMap[correctOptionNumber]} with ${(61..85).random()}% probability."
             }
+
             Lifeline.SKIP_QUESTION -> "Do you want to skip the question ?"
             Lifeline.FIFTY_FIFTY -> "Do you want to use 50-50 ?"
         }
@@ -191,12 +204,18 @@ class QuestionFragment : BaseFragment() {
     private fun onLifelinePositiveButtonClick(lifeline: Lifeline) {
         questionViewModel.onLifelineClick(lifeline.num)
         if (lifeline == Lifeline.FIFTY_FIFTY) {
-            val viewsMap = mapOf(0 to binding.tvOption1, 1 to binding.tvOption2, 2 to binding.tvOption3, 3 to binding.tvOption4)
-            val correctOptionNumber = questionViewModel.currentQuestion.value?.correctOptionNumber ?: 0
+            val viewsMap = mapOf(
+                0 to binding.tvOption1,
+                1 to binding.tvOption2,
+                2 to binding.tvOption3,
+                3 to binding.tvOption4
+            )
+            val correctOptionNumber =
+                questionViewModel.currentQuestion.value?.correctOptionNumber ?: 0
 
-            val optionVisibility = MutableList(3) {false}
-            optionVisibility[(0.. 2).random()] = true
-            optionVisibility.add(correctOptionNumber-1, true)
+            val optionVisibility = MutableList(3) { false }
+            optionVisibility[(0..2).random()] = true
+            optionVisibility.add(correctOptionNumber - 1, true)
 
             optionVisibility.forEachIndexed { index, isVisible ->
                 if (!isVisible) {
@@ -288,7 +307,10 @@ class QuestionFragment : BaseFragment() {
                 changeOptionColors(questionViewModel.getCurrentSelectedOption() to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.CORRECT_ANSWER)
                 val destination = if (args.questionToBeAsked >= totalQuestions) {
-                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(true, questionViewModel.getFinalPrizeAmount())
+                    QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                        true,
+                        questionViewModel.getFinalPrizeAmount()
+                    )
                 } else {
                     QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
                 }
@@ -301,28 +323,38 @@ class QuestionFragment : BaseFragment() {
                     correctOptionNumber to R.drawable.background_metallic_green
                 )
                 playMusic(MusicToPlay.WRONG_ANSWER)
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getLastSafeZone())
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                    false,
+                    questionViewModel.getLastSafeZone()
+                )
                 navigateWithDelay(destination, 7000)
             }
 
             ResultType.TIMER_UP -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.WRONG_ANSWER)
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getLastSafeZone())
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                    false,
+                    questionViewModel.getLastSafeZone()
+                )
                 navigateWithDelay(destination)
             }
 
             ResultType.QUIT -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.WRONG_ANSWER)
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(false, questionViewModel.getMoneyWonTillNow())
+                val destination = QuestionFragmentDirections.actionQuestionFragmentToResultFragment(
+                    false,
+                    questionViewModel.getMoneyWonTillNow()
+                )
                 navigateWithDelay(destination)
             }
 
             ResultType.SKIP_QUESTION -> {
                 changeOptionColors(correctOptionNumber to R.drawable.background_metallic_green)
                 playMusic(MusicToPlay.CORRECT_ANSWER)
-                val destination = QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
+                val destination =
+                    QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
                 navigateWithDelay(destination)
             }
         }
@@ -330,9 +362,9 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun navigateWithDelay(destination: NavDirections, delayDuration: Long = 5000) {
-
+        val finalDelay = if (isMusicOn()) delayDuration else 1500L
         CoroutineScope(Dispatchers.Main).launch {
-            delay(delayDuration.milliseconds)
+            delay(finalDelay.milliseconds)
             findNavController().navigate(destination)
         }
     }
