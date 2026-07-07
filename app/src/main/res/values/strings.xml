@@ -116,4 +116,25 @@
     <string name="feedbacks_marked_done_successfully">Feedbacks marked as done successfully!</string>
     <string name="please_select_at_least_one_feedback">Please select at least one feedback to mark done.</string>
     <string name="email_example_com">email@example.com</string>
+    <string name="hang_up">Hang Up</string>
+    <string name="calling">Calling…</string>
+    <string name="connected_00_00">Connected (00:00)</string>
+    <string name="ringing">Ringing…</string>
+    <string name="ok">OK</string>
+    <string name="friend_s_avatar">Friend\'s Avatar</string>
+    <string name="friends_desc_3">Very cautious. Accurate, but won\'t guess on hard questions.</string>
+    <string name="friend_name_3">Neha (The Cautious)</string>
+    <string name="friend_3">Friend 3</string>
+    <string name="friend_desc_2"><![CDATA[Pop Culture, Sports & Media expert. Guesses on History.]]></string>
+    <string name="friend_name_2">Aman (The Gamer)</string>
+    <string name="friend_2">Friend 2</string>
+    <string name="friend_desc_1"><![CDATA[Expert in History & Science. Weak on Pop Culture.]]></string>
+    <string name="friend_name_1">Rahul (The Scholar)</string>
+    <string name="friend_1">Friend 1</string>
+    <string name="choose_a_friend_to_call">Choose a Friend to Call</string>
+    <string name="option_d">Option D</string>
+    <string name="option_c">Option C</string>
+    <string name="option_b">Option B</string>
+    <string name="option_a">Option A</string>
+    <string name="audience_poll_results">Audience Poll Results</string>
 </resources>
