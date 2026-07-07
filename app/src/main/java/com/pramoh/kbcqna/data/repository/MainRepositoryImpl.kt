@@ -14,6 +14,7 @@ import com.pramoh.kbcqna.domain.model.Question
 import com.pramoh.kbcqna.domain.model.toEntity
 import com.pramoh.kbcqna.domain.repository.MainRepository
 import com.pramoh.kbcqna.utils.Response
+import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
 import kotlinx.coroutines.tasks.await
 
 class MainRepositoryImpl(
@@ -59,6 +60,11 @@ class MainRepositoryImpl(
                 .document("game_config")
                 .get()
                 .await()
+
+            if (configSnapshot.exists()) {
+                MoneyTypeConversionUtil.prefix = configSnapshot.getString("currencyPrefix") ?: ""
+                MoneyTypeConversionUtil.suffix = configSnapshot.getString("currencySuffix") ?: ""
+            }
 
             var prizeAmounts = if (configSnapshot.exists()) {
                 val list = configSnapshot.get("prizeAmounts") as? List<*>
@@ -209,6 +215,18 @@ class MainRepositoryImpl(
                 .get()
                 .await()
 
+            val gameConfigSnapshot = db.collection("config")
+                .document("game_config")
+                .get()
+                .await()
+
+            val prefixVal =
+                if (gameConfigSnapshot.exists()) gameConfigSnapshot.getString("currencyPrefix")
+                    ?: "" else ""
+            val suffixVal =
+                if (gameConfigSnapshot.exists()) gameConfigSnapshot.getString("currencySuffix")
+                    ?: "" else ""
+
             if (snapshot.exists()) {
                 val newVersion = snapshot.getString("newVersion") ?: "1.0"
                 val dialogType = snapshot.getString("dialogType") ?: "none"
@@ -218,16 +236,29 @@ class MainRepositoryImpl(
                 val adminPasskey = snapshot.getString("adminPasskey")
                 Response.Success(
                     AppUpdateInfo(
-                        newVersion,
-                        dialogType,
-                        updateMessage,
-                        isMaintenance,
-                        maintenanceMsg,
-                        adminPasskey
+                        newVersion = newVersion,
+                        dialogType = dialogType,
+                        updateMessage = updateMessage,
+                        isMaintenanceMode = isMaintenance,
+                        maintenanceMessage = maintenanceMsg,
+                        adminPasskey = adminPasskey,
+                        currencyPrefix = prefixVal,
+                        currencySuffix = suffixVal
                     )
                 )
             } else {
-                Response.Success(AppUpdateInfo("1.0", "none", "", false, "", null))
+                Response.Success(
+                    AppUpdateInfo(
+                        newVersion = "1.0",
+                        dialogType = "none",
+                        updateMessage = "",
+                        isMaintenanceMode = false,
+                        maintenanceMessage = "",
+                        adminPasskey = null,
+                        currencyPrefix = prefixVal,
+                        currencySuffix = suffixVal
+                    )
+                )
             }
         } catch (e: Exception) {
             Response.Error(e.localizedMessage ?: "Failed to check for app update")

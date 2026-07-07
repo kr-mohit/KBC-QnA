@@ -1,28 +1,51 @@
 package com.pramoh.kbcqna.utils
 
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
+
 class MoneyTypeConversionUtil {
 
     companion object {
+        var prefix: String = ""
+        var suffix: String = ""
 
-        fun convertToString(money: Int): String {
-            return when (money) {
-                100000000 -> "Rs. 10 Crores"
-                30000000 -> "Rs. 3 Crores"
-                10000000 -> "Rs. 1 Crore"
-                5000000 -> "Rs. 50,00,000"
-                2500000 -> "Rs. 25,00,000"
-                1250000 -> "Rs. 12,50,000"
-                640000 -> "Rs. 6,40,000"
-                320000 -> "Rs. 3,20,000"
-                160000 -> "Rs. 1,60,000"
-                80000 -> "Rs. 80,000"
-                40000 -> "Rs. 40,000"
-                20000 -> "Rs. 20,000"
-                10000 -> "Rs. 10,000"
-                5000 -> "Rs. 5,000"
-                1000 -> "Rs. 1,000"
-                else -> "Rs. 0"
+        fun convertToString(
+            money: Int,
+            prefix: String = Companion.prefix,
+            suffix: String = Companion.suffix
+        ): String {
+            val isNegative = money < 0
+            val absMoney = kotlin.math.abs(money.toLong())
+
+            if (absMoney == 0L) {
+                return "${prefix}0${suffix}"
             }
+
+            val formatted = if (absMoney >= 10_000_000L) {
+                val crores = absMoney.toDouble() / 10_000_000.0
+                val symbols = DecimalFormatSymbols(Locale.US)
+                val df = DecimalFormat("#.##", symbols)
+                val croresStr = df.format(crores)
+                val croreSuffix = if (croresStr == "1") " Crore" else " Crores"
+                "$croresStr$croreSuffix"
+            } else {
+                val numStr = absMoney.toString()
+                if (numStr.length <= 3) {
+                    numStr
+                } else {
+                    val lastThree = numStr.substring(numStr.length - 3)
+                    val remaining = numStr.substring(0, numStr.length - 3)
+                    val groupedRemaining = remaining.reversed()
+                        .chunked(2)
+                        .joinToString(",")
+                        .reversed()
+                    "$groupedRemaining,$lastThree"
+                }
+            }
+
+            val sign = if (isNegative) "-" else ""
+            return "$sign$prefix$formatted$suffix"
         }
     }
 }

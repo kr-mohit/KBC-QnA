@@ -6,5 +6,7 @@ data class AppUpdateInfo(
     val updateMessage: String,
     val isMaintenanceMode: Boolean = false,
     val maintenanceMessage: String = "",
-    val adminPasskey: String? = null
+    val adminPasskey: String? = null,
+    val currencyPrefix: String = "",
+    val currencySuffix: String = ""
 )

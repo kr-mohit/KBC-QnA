@@ -11,6 +11,7 @@ import com.pramoh.kbcqna.databinding.ActivityHomeBinding
 import com.pramoh.kbcqna.presentation.ExoplayerViewModel
 import com.pramoh.kbcqna.presentation.home.HomeViewModel
 import com.pramoh.kbcqna.utils.Response
+import com.pramoh.kbcqna.utils.MoneyTypeConversionUtil
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.graphics.drawable.toDrawable
 import com.pramoh.kbcqna.utils.AdminBypassUtil
@@ -64,6 +65,8 @@ class HomeActivity : AppCompatActivity() {
             if (response is Response.Success) {
                 val updateInfo = response.data
                 if (updateInfo != null) {
+                    MoneyTypeConversionUtil.prefix = updateInfo.currencyPrefix
+                    MoneyTypeConversionUtil.suffix = updateInfo.currencySuffix
                     AdminBypassUtil.setAdminPasskey(updateInfo.adminPasskey)
                     if (updateInfo.isMaintenanceMode) {
                         showMaintenanceDialog(updateInfo.maintenanceMessage)
@@ -182,8 +185,10 @@ class HomeActivity : AppCompatActivity() {
 
         val titleView = dialogView.findViewById<android.widget.TextView>(R.id.tv_popup_window_title)
         val textView = dialogView.findViewById<android.widget.TextView>(R.id.tv_popup_window_text)
-        val positiveButton = dialogView.findViewById<android.widget.Button>(R.id.btn_popup_window_button_1)
-        val negativeButton = dialogView.findViewById<android.widget.Button>(R.id.btn_popup_window_button_2)
+        val positiveButton =
+            dialogView.findViewById<android.widget.Button>(R.id.btn_popup_window_button_1)
+        val negativeButton =
+            dialogView.findViewById<android.widget.Button>(R.id.btn_popup_window_button_2)
         val layoutButtons = dialogView.findViewById<android.view.View>(R.id.layout_buttons)
 
         if (!titleText.isNullOrBlank()) {
@@ -237,7 +242,8 @@ class HomeActivity : AppCompatActivity() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             dialog.window?.insetsController?.apply {
                 hide(android.view.WindowInsets.Type.systemBars())
-                systemBarsBehavior = android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                systemBarsBehavior =
+                    android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         } else {
             @Suppress("DEPRECATION")
