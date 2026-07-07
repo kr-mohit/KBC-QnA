@@ -309,7 +309,7 @@ class ResultFragment : BaseFragment() {
     }
 
     private fun promptSaveToLeaderboard() {
-        if (questionViewModel.isOnlineGame()) {
+        if (questionViewModel.isOnlineGame() && args.prizeMoney > 0) {
             showLeaderboardSubmissionDialog()
         }
     }

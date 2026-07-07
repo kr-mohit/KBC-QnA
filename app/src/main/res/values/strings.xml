@@ -137,4 +137,8 @@
     <string name="option_b">Option B</string>
     <string name="option_a">Option A</string>
     <string name="audience_poll_results">Audience Poll Results</string>
+    <string name="milestone_reached_icon">Milestone reached icon</string>
+    <string name="safe_haven_reached">Safe Haven Reached!</string>
+    <string name="congratulations_you_have_secured_your_prize_money">Congratulations! You have secured your prize money.</string>
+    <string name="continue_">CONTINUE</string>
 </resources>

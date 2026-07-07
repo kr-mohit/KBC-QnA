@@ -127,13 +127,37 @@ class QuestionFragment : BaseFragment() {
             btnLock.setOnClickListenerWithSfxAudio {
                 timerViewModel.cancelTimer()
                 disableAllButtonsClick()
-                questionViewModel.currentQuestion.value?.let {
-                    if (it.correctOptionNumber == questionViewModel.getCurrentSelectedOption()) {
-                        showResult(ResultType.RIGHT_ANSWER)
-                    } else {
-                        showResult(ResultType.WRONG_ANSWER, it.correctOptionNumber)
-                    }
+                
+                val selectedOption = questionViewModel.getCurrentSelectedOption()
+                val selectedView = when (selectedOption) {
+                    1 -> tvOption1
+                    2 -> tvOption2
+                    3 -> tvOption3
+                    else -> tvOption4
                 }
+                
+                val animator = android.animation.ObjectAnimator.ofFloat(selectedView, "alpha", 1f, 0.3f)
+                animator.duration = 250
+                animator.repeatCount = 5
+                animator.repeatMode = android.animation.ValueAnimator.REVERSE
+                animator.addListener(object : android.animation.Animator.AnimatorListener {
+                    override fun onAnimationStart(animation: android.animation.Animator) {}
+                    override fun onAnimationEnd(animation: android.animation.Animator) {
+                        selectedView.alpha = 1f
+                        questionViewModel.currentQuestion.value?.let {
+                            if (it.correctOptionNumber == questionViewModel.getCurrentSelectedOption()) {
+                                showResult(ResultType.RIGHT_ANSWER)
+                            } else {
+                                showResult(ResultType.WRONG_ANSWER, it.correctOptionNumber)
+                            }
+                        }
+                    }
+                    override fun onAnimationCancel(animation: android.animation.Animator) {
+                        selectedView.alpha = 1f
+                    }
+                    override fun onAnimationRepeat(animation: android.animation.Animator) {}
+                })
+                animator.start()
             }
         }
     }
@@ -353,7 +377,31 @@ class QuestionFragment : BaseFragment() {
                 } else {
                     QuestionFragmentDirections.actionQuestionFragmentToPrizeListFragment(args.questionToBeAsked + 1)
                 }
-                navigateWithDelay(destination)
+                
+                val isMilestone = args.questionToBeAsked == 6 || args.questionToBeAsked == 9 || args.questionToBeAsked >= totalQuestions
+                if (isMilestone) {
+                    val title = if (args.questionToBeAsked >= totalQuestions) "KBC Champion!" else "Safe Haven Reached!"
+                    val description = if (args.questionToBeAsked >= totalQuestions) {
+                        "Congratulations! You have completed the game and won the ultimate prize!"
+                    } else {
+                        "Congratulations! You have secured your prize money at Level ${args.questionToBeAsked}."
+                    }
+                    val amountVal = if (args.questionToBeAsked >= totalQuestions) {
+                        questionViewModel.getFinalPrizeAmount()
+                    } else {
+                        questionViewModel.currentQuestion.value?.prizeAmount ?: 0
+                    }
+                    val amountStr = MoneyTypeConversionUtil.convertToString(amountVal)
+                    
+                    CoroutineScope(Dispatchers.Main).launch {
+                        delay(1000.milliseconds)
+                        showMilestoneDialog(title, description, amountStr) {
+                            findNavController().navigate(destination)
+                        }
+                    }
+                } else {
+                    navigateWithDelay(destination)
+                }
             }
 
             ResultType.WRONG_ANSWER -> {
@@ -774,6 +822,32 @@ class QuestionFragment : BaseFragment() {
                             or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                             or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                             or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+        }
+    }
+
+    private fun showMilestoneDialog(title: String, description: String, amount: String, onContinue: () -> Unit) {
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext()).create()
+        val dialogView = layoutInflater.inflate(R.layout.dialog_milestone, null)
+        dialog.setView(dialogView)
+        dialog.window?.setBackgroundDrawable(android.graphics.Color.TRANSPARENT.toDrawable())
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+
+        val tvTitle = dialogView.findViewById<android.widget.TextView>(R.id.tv_milestone_title)
+        val tvDesc = dialogView.findViewById<android.widget.TextView>(R.id.tv_milestone_desc)
+        val tvAmount = dialogView.findViewById<android.widget.TextView>(R.id.tv_secured_amount)
+        val btnContinue = dialogView.findViewById<android.widget.Button>(R.id.btn_continue)
+
+        tvTitle.text = title
+        tvDesc.text = description
+        tvAmount.text = amount
+
+        dialog.show()
+        hideSystemBarsForDialog(dialog)
+
+        btnContinue.setOnClickListener {
+            dialog.dismiss()
+            onContinue()
         }
     }
 
