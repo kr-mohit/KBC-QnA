@@ -141,4 +141,7 @@
     <string name="safe_haven_reached">Safe Haven Reached!</string>
     <string name="congratulations_you_have_secured_your_prize_money">Congratulations! You have secured your prize money.</string>
     <string name="continue_">CONTINUE</string>
+    <string name="downloading_update">Downloading Update</string>
+    <string name="please_wait_while_the_update_downloads">Please wait while the update downloads…</string>
+    <string name="exit">Exit</string>
 </resources>

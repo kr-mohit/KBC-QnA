@@ -228,12 +228,19 @@ class MainRepositoryImpl(
                     ?: "" else ""
 
             if (snapshot.exists()) {
-                val newVersion = snapshot.getString("newVersion") ?: "1.0"
-                val dialogType = snapshot.getString("dialogType") ?: "none"
-                val updateMessage = snapshot.getString("updateMessage") ?: ""
+                val newVersion = snapshot.getString("newVersion")
+                    ?: snapshot.getString("versionName")
+                    ?: "1.0"
+                val dialogType = snapshot.getString("dialogType")
+                    ?: if (snapshot.getBoolean("forceUpdate") == true) "hard" else "soft"
+                val updateMessage = snapshot.getString("updateMessage")
+                    ?: snapshot.getString("message")
+                    ?: ""
                 val isMaintenance = snapshot.getBoolean("isMaintenanceMode") ?: false
                 val maintenanceMsg = snapshot.getString("maintenanceMessage") ?: ""
                 val adminPasskey = snapshot.getString("adminPasskey")
+                val apkUrl = snapshot.getString("apkUrl")
+
                 Response.Success(
                     AppUpdateInfo(
                         newVersion = newVersion,
@@ -243,7 +250,8 @@ class MainRepositoryImpl(
                         maintenanceMessage = maintenanceMsg,
                         adminPasskey = adminPasskey,
                         currencyPrefix = prefixVal,
-                        currencySuffix = suffixVal
+                        currencySuffix = suffixVal,
+                        apkUrl = apkUrl
                     )
                 )
             } else {
