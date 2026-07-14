@@ -9,6 +9,7 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.media3.common.util.UnstableApi
+import com.google.firebase.messaging.FirebaseMessaging
 import com.pramoh.kbcqna.databinding.ActivityHomeBinding
 import com.pramoh.kbcqna.presentation.ExoplayerViewModel
 import com.pramoh.kbcqna.presentation.home.HomeViewModel
@@ -32,6 +33,13 @@ class HomeActivity : AppCompatActivity() {
 
     private var progressDialog: androidx.appcompat.app.AlertDialog? = null
 
+    private val requestNotificationPermissionLauncher =
+        registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                // Notification permission granted
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
@@ -41,6 +49,24 @@ class HomeActivity : AppCompatActivity() {
         observeAppUpdate()
         observeDownloadProgress()
         homeViewModel.checkForUpdates()
+        checkAndRequestNotificationPermission()
+        subscribeToFcmTopic()
+    }
+
+    private fun subscribeToFcmTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
+    }
+
+    private fun checkAndRequestNotificationPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (androidx.core.content.ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) != android.content.pm.PackageManager.PERMISSION_GRANTED
+            ) {
+                requestNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
     override fun onResume() {
