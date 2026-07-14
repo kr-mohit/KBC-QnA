@@ -91,6 +91,9 @@ class QuestionFragment : BaseFragment() {
 
         timerViewModel.timerValue.observe(viewLifecycleOwner) {
             binding.tvTimer.text = it.toString()
+            if (it in 1..5) {
+                com.pramoh.kbcqna.utils.HapticFeedbackHelper.vibrateHeartbeat(requireContext())
+            }
         }
 
         questionViewModel.lifelines.observe(viewLifecycleOwner) {
@@ -127,6 +130,7 @@ class QuestionFragment : BaseFragment() {
             btnLock.setOnClickListenerWithSfxAudio {
                 timerViewModel.cancelTimer()
                 disableAllButtonsClick()
+                com.pramoh.kbcqna.utils.HapticFeedbackHelper.vibrateLock(requireContext())
                 
                 val selectedOption = questionViewModel.getCurrentSelectedOption()
                 val selectedView = when (selectedOption) {
@@ -183,6 +187,7 @@ class QuestionFragment : BaseFragment() {
     }
 
     private fun handleOptionClick(option: Int) {
+        com.pramoh.kbcqna.utils.HapticFeedbackHelper.vibrateTap(requireContext())
         changeOptionColors(option to R.drawable.background_metallic_gold)
         binding.btnLock.setBackgroundColor(requireContext().getColor(R.color.metallic_green))
         binding.btnLock.isEnabled = true
@@ -191,6 +196,7 @@ class QuestionFragment : BaseFragment() {
 
     private fun handleLifelineClick(lifeline: Lifeline, positiveButtonNeeded: Boolean) {
         if (questionViewModel.lifelines.value?.get(lifeline.num - 1) != false) {
+            com.pramoh.kbcqna.utils.HapticFeedbackHelper.vibrateTap(requireContext())
             val remainingSeconds = timerViewModel.timerValue.value ?: 15L
 
             if (lifeline == Lifeline.AUDIENCE_POLL) {
