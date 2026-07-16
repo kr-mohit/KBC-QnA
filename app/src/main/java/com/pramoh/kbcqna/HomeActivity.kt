@@ -183,7 +183,7 @@ class HomeActivity : AppCompatActivity() {
                     if (updateInfo.isMaintenanceMode) {
                         showMaintenanceDialog(updateInfo.maintenanceMessage)
                     } else if (updateInfo.dialogType != "none") {
-                        val currentVersion = getCurrentVersionName()
+                        val currentVersion = BuildConfig.VERSION_NAME
                         if (currentVersion != updateInfo.newVersion) {
                             showUpdateDialog(
                                 updateInfo.dialogType,
@@ -217,15 +217,6 @@ class HomeActivity : AppCompatActivity() {
             AdminBypassUtil.attachBypass(textView) {
                 dialog.dismiss()
             }
-        }
-    }
-
-    private fun getCurrentVersionName(): String {
-        return try {
-            val packageInfo = packageManager.getPackageInfo(packageName, 0)
-            packageInfo.versionName ?: "1.0"
-        } catch (e: Exception) {
-            "1.0"
         }
     }
 
