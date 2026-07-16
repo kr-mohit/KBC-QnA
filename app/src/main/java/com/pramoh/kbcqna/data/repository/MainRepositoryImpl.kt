@@ -68,7 +68,7 @@ class MainRepositoryImpl(
 
             var prizeAmounts = if (configSnapshot.exists()) {
                 val list = configSnapshot.get("prizeAmounts") as? List<*>
-                list?.mapNotNull { (it as? Number)?.toInt() }
+                list?.mapNotNull { (it as? Number)?.toInt() }?.sorted()
             } else {
                 null
             } ?: listOf(

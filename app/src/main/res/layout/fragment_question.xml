@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
         android:background="@drawable/screen_background_gradient"
+        android:padding="20dp"
         tools:context=".presentation.questionnaire.QuestionFragment">
 
         <!-- Lifelines Header Card -->
@@ -15,25 +15,25 @@
             android:id="@+id/layout_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
             android:background="@drawable/card_glass_dark"
-            app:layout_constraintTop_toTopOf="parent"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <!-- Lifeline 1 -->
             <ImageView
                 android:id="@+id/iv_lifeline_1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_audience_poll"
-                android:padding="6dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:padding="6dp"
+                android:src="@drawable/ic_audience_poll"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_lifeline_2"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/iv_lifeline_2"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 tools:ignore="ContentDescription" />
 
             <ImageView
@@ -42,10 +42,10 @@
                 android:layout_height="40dp"
                 android:src="@drawable/ic_cross_red"
                 android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="@id/iv_lifeline_1"
-                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_1"
-                app:layout_constraintTop_toTopOf="@id/iv_lifeline_1"
                 app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_1"
+                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_1"
+                app:layout_constraintStart_toStartOf="@id/iv_lifeline_1"
+                app:layout_constraintTop_toTopOf="@id/iv_lifeline_1"
                 tools:ignore="ContentDescription" />
 
             <!-- Lifeline 2 -->
@@ -53,13 +53,13 @@
                 android:id="@+id/iv_lifeline_2"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_phone_a_friend"
-                android:padding="6dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                app:layout_constraintStart_toEndOf="@id/iv_lifeline_1"
-                app:layout_constraintEnd_toStartOf="@id/iv_lifeline_3"
-                app:layout_constraintTop_toTopOf="parent"
+                android:padding="6dp"
+                android:src="@drawable/ic_phone_a_friend"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_lifeline_3"
+                app:layout_constraintStart_toEndOf="@id/iv_lifeline_1"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
             <ImageView
@@ -68,10 +68,10 @@
                 android:layout_height="40dp"
                 android:src="@drawable/ic_cross_red"
                 android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="@id/iv_lifeline_2"
-                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_2"
-                app:layout_constraintTop_toTopOf="@id/iv_lifeline_2"
                 app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_2"
+                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_2"
+                app:layout_constraintStart_toStartOf="@id/iv_lifeline_2"
+                app:layout_constraintTop_toTopOf="@id/iv_lifeline_2"
                 tools:ignore="ContentDescription" />
 
             <!-- Lifeline 3 -->
@@ -79,13 +79,13 @@
                 android:id="@+id/iv_lifeline_3"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_50_50"
-                android:padding="6dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                app:layout_constraintStart_toEndOf="@id/iv_lifeline_2"
-                app:layout_constraintEnd_toStartOf="@id/iv_lifeline_4"
-                app:layout_constraintTop_toTopOf="parent"
+                android:padding="6dp"
+                android:src="@drawable/ic_50_50"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_lifeline_4"
+                app:layout_constraintStart_toEndOf="@id/iv_lifeline_2"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
             <ImageView
@@ -94,10 +94,10 @@
                 android:layout_height="40dp"
                 android:src="@drawable/ic_cross_red"
                 android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="@id/iv_lifeline_3"
-                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_3"
-                app:layout_constraintTop_toTopOf="@id/iv_lifeline_3"
                 app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_3"
+                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_3"
+                app:layout_constraintStart_toStartOf="@id/iv_lifeline_3"
+                app:layout_constraintTop_toTopOf="@id/iv_lifeline_3"
                 tools:ignore="ContentDescription" />
 
             <!-- Lifeline 4 -->
@@ -105,13 +105,13 @@
                 android:id="@+id/iv_lifeline_4"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_skip_question"
-                android:padding="6dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
-                app:layout_constraintStart_toEndOf="@id/iv_lifeline_3"
-                app:layout_constraintEnd_toStartOf="@id/tv_quit"
-                app:layout_constraintTop_toTopOf="parent"
+                android:padding="6dp"
+                android:src="@drawable/ic_skip_question"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_quit"
+                app:layout_constraintStart_toEndOf="@id/iv_lifeline_3"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
             <ImageView
@@ -120,10 +120,10 @@
                 android:layout_height="40dp"
                 android:src="@drawable/ic_cross_red"
                 android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="@id/iv_lifeline_4"
-                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_4"
-                app:layout_constraintTop_toTopOf="@id/iv_lifeline_4"
                 app:layout_constraintBottom_toBottomOf="@id/iv_lifeline_4"
+                app:layout_constraintEnd_toEndOf="@id/iv_lifeline_4"
+                app:layout_constraintStart_toStartOf="@id/iv_lifeline_4"
+                app:layout_constraintTop_toTopOf="@id/iv_lifeline_4"
                 tools:ignore="ContentDescription" />
 
             <!-- Quit Button inside header -->
@@ -131,17 +131,17 @@
                 android:id="@+id/tv_quit"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text="@string/quit"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
                 android:background="@drawable/background_metallic_red"
                 android:gravity="center"
                 android:paddingHorizontal="16dp"
-                app:layout_constraintStart_toEndOf="@id/iv_lifeline_4"
+                android:text="@string/quit"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/iv_lifeline_4"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Prize Amount Display -->
@@ -149,130 +149,186 @@
             android:id="@+id/tv_prize_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Rs. 25,000"
-            android:textSize="36sp"
-            android:textColor="@color/accent_gold"
-            android:textStyle="bold"
-            android:shadowColor="@color/black"
-            android:shadowRadius="8"
-            android:shadowDx="1.5"
-            android:shadowDy="1.5"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-medium"
-            app:layout_constraintStart_toStartOf="parent"
+            android:shadowColor="@color/black"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:shadowRadius="8"
+            android:textColor="@color/accent_gold"
+            android:textSize="36sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_header" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_header"
+            tools:text="25,000" />
 
         <!-- Timer Circle -->
         <TextView
             android:id="@+id/tv_timer"
             android:layout_width="72dp"
             android:layout_height="72dp"
-            tools:text="15"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/timer_background"
+            android:gravity="center"
+            android:textColor="@color/white"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@drawable/timer_background"
-            android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_prize_amount" />
-
-        <!-- Question Card -->
-        <TextView
-            android:id="@+id/tv_question"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            tools:text="Which is the longest river in the world?"
-            android:textSize="20sp"
-            android:textColor="@color/white"
-            android:background="@drawable/card_glass_dark"
-            android:gravity="center"
-            android:padding="20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="sans-serif"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_prize_amount"
+            tools:text="15" />
+
+        <!-- Content Scroll Area -->
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginVertical="16dp"
+            android:fillViewport="true"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@id/btn_lock"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_timer"
-            app:layout_constraintBottom_toTopOf="@id/tv_option_1"
-            app:layout_constraintVertical_bias="0.5" />
-
-        <!-- Options (2x2 Grid) -->
-        <TextView
-            android:id="@+id/tv_option_1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            tools:text="Option 1"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@drawable/background_metallic_blue"
-            android:layout_marginBottom="12dp"
-            android:padding="14dp"
-            app:layout_constraintStart_toStartOf="@id/tv_option_3"
-            app:layout_constraintEnd_toEndOf="@id/tv_option_3"
-            app:layout_constraintBottom_toTopOf="@id/tv_option_3" />
-
-        <TextView
-            android:id="@+id/tv_option_2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            tools:text="Option 2"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:background="@drawable/background_metallic_blue"
-            android:gravity="center"
-            android:padding="14dp"
-            app:layout_constraintStart_toStartOf="@id/tv_option_4"
-            app:layout_constraintEnd_toEndOf="@id/tv_option_4"
-            app:layout_constraintBottom_toBottomOf="@id/tv_option_1" />
-
-        <TextView
-            android:id="@+id/tv_option_3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            tools:text="Option 3"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@drawable/background_metallic_blue"
-            android:layout_marginBottom="16dp"
-            android:padding="14dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_option_4"
-            app:layout_constraintBottom_toTopOf="@id/btn_lock" />
+            app:layout_constraintTop_toBottomOf="@id/tv_timer">
 
-        <TextView
-            android:id="@+id/tv_option_4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            tools:text="Option 4"
-            android:textSize="16sp"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@drawable/background_metallic_blue"
-            android:layout_marginStart="12dp"
-            android:padding="14dp"
-            app:layout_constraintStart_toEndOf="@id/tv_option_3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/tv_option_3" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Spacers to center the question and push options to the bottom -->
+                <Space
+                    android:id="@+id/space_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@id/tv_question"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_weight="1" />
+
+                <!-- Question Card -->
+                <TextView
+                    android:id="@+id/tv_question"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/card_glass_dark"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@id/space_bottom"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/space_top"
+                    tools:text="Which is the longest river in the world?" />
+
+                <Space
+                    android:id="@+id/space_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@id/layout_options_row_1"
+                    app:layout_constraintTop_toBottomOf="@id/tv_question"
+                    app:layout_constraintVertical_weight="1" />
+
+                <!-- Options Row 1 -->
+                <LinearLayout
+                    android:id="@+id/layout_options_row_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@id/layout_options_row_2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/space_bottom">
+
+                    <TextView
+                        android:id="@+id/tv_option_1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_metallic_blue"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        tools:text="Option 1" />
+
+                    <TextView
+                        android:id="@+id/tv_option_2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_metallic_blue"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        tools:text="Option 2" />
+                </LinearLayout>
+
+                <!-- Options Row 2 -->
+                <LinearLayout
+                    android:id="@+id/layout_options_row_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_options_row_1">
+
+                    <TextView
+                        android:id="@+id/tv_option_3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_metallic_blue"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        tools:text="Option 3" />
+
+                    <TextView
+                        android:id="@+id/tv_option_4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_metallic_blue"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        tools:text="Option 4" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
         <!-- Lock Button -->
         <Button
             android:id="@+id/btn_lock"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:backgroundTint="@color/metallic_grey"
+            android:enabled="false"
             android:text="@string/lock"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:enabled="false"
-            android:backgroundTint="@color/metallic_grey"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
